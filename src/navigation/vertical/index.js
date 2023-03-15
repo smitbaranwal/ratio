@@ -16,46 +16,46 @@ const navigation = () => {
       path: '/account-settings'
     },
     {
-      sectionTitle: 'Pages'
+      sectionTitle: 'Reports'
     },
     {
       title: 'Transactions',
       icon: AccountDetailsOutline,
-      path: '/pages/transactions',
+      path: '/reports/transactions',
       openInNewTab: false
-    },
-    {
-      title: 'Analysis',
-      icon: ChartTimelineVariant,
-      path: '/pages/login',
-      openInNewTab: true
-    },
-    {
-      sectionTitle: 'Reports'
     },
     {
       title: 'Cashflow Statement',
       icon: CashCheck,
-      path: '/pages/cashflow',
-      openInNewTab: true
+      path: '/reports/cashflow',
+      openInNewTab: false
     },
     {
       title: 'Profit & Loss Statement',
       icon: TextAccount,
-      path: '/pages/pnlstatement',
-      openInNewTab: true
+      path: '/reports/pnlstatement',
+      openInNewTab: false
     },
     {
       title: 'Balance Sheet',
       icon: CurrencyEth,
-      path: '/pages/balancesheet',
-      openInNewTab: true
+      path: '/reports/balancesheet',
+      openInNewTab: false
+    },
+    {
+      sectionTitle: 'Automation'
+    },
+    {
+      title: 'Analysis',
+      icon: ChartTimelineVariant,
+      path: '/automation/analysis',
+      openInNewTab: false
     },
     {
       title: 'Rule Book',
       icon: BookSettingsOutline,
-      path: '/pages/rulebook',
-      openInNewTab: true
+      path: '/automation/rulebook',
+      openInNewTab: false
     }
     // ,
     // {

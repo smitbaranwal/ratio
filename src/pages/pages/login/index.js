@@ -129,7 +129,8 @@ const Index = () => {
   const closeSafe = (selectedSafe) => {
     console.log('selected safe is ', selectedSafe)
     setSelectedSafe(selectedSafe)
-    let path = `/account-settings`
+    // setDisconnect(disconnect)
+    let path = `/reports/transactions`
     router.push(path)
   }
 
@@ -154,18 +155,6 @@ const Index = () => {
             <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
               <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ImgStyled src={'/images/fin_grow.jpg'} alt='Profile Pic' />
-                {/* <Typography
-                  variant='h6'
-                  sx={{
-                    ml: 3,
-                    lineHeight: 1,
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    fontSize: '1.5rem !important'
-                  }}
-                >
-                  {themeConfig.templateName}
-                </Typography> */}
               </Box>
               <Box sx={{ mb: 6 }}>
                 <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
@@ -174,37 +163,6 @@ const Index = () => {
                 <Typography variant='body2'>Please link your wallet and start the adventure</Typography>
               </Box>
               <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-                {/* <TextField autoFocus fullWidth id='email' label='Email' sx={{ marginBottom: 4 }} /> */}
-                {/* <FormControl fullWidth>
-                  <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
-                  <OutlinedInput
-                    label='Password'
-                    value={values.password}
-                    id='auth-login-password'
-                    onChange={handleChange('password')}
-                    type={values.showPassword ? 'text' : 'password'}
-                    endAdornment={
-                      <InputAdornment position='end'>
-                        <IconButton
-                          edge='end'
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          aria-label='toggle password visibility'
-                        >
-                          {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl> */}
-                {/* <Box
-                  sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-                >
-                  <FormControlLabel control={<Checkbox />} label='Remember Me' />
-                  <Link passHref href='/'>
-                    <LinkStyled onClick={e => e.preventDefault()}>Forgot Password?</LinkStyled>
-                  </Link>
-                </Box> */}
                 <Button
                   fullWidth
                   size='large'
@@ -214,53 +172,6 @@ const Index = () => {
                 >
                   Connect Wallet
                 </Button>
-                <Button
-                  fullWidth
-                  size='large'
-                  variant='contained'
-                  sx={{ marginBottom: 7 }}
-                  onClick={async () => {
-                    const walletsConnected = await disconnect(wallet)
-                    console.log('connected wallets: ', walletsConnected)
-                  }}
-                >
-                  Disconnect Wallet
-                </Button>
-                {/* <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  <Typography variant='body2' sx={{ marginRight: 2 }}>
-                    New on our platform?
-                  </Typography>
-                  <Typography variant='body2'>
-                    <Link passHref href='/pages/register'>
-                      <LinkStyled>Create an account</LinkStyled>
-                    </Link>
-                  </Typography>
-                </Box> */}
-                {/* <Divider sx={{ my: 5 }}>or</Divider> */}
-                {/* <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Link href='/' passHref>
-                    <IconButton component='a' onClick={e => e.preventDefault()}>
-                      <Facebook sx={{ color: '#497ce2' }} />
-                    </IconButton>
-                  </Link>
-                  <Link href='/' passHref>
-                    <IconButton component='a' onClick={e => e.preventDefault()}>
-                      <Twitter sx={{ color: '#1da1f2' }} />
-                    </IconButton>
-                  </Link>
-                  <Link href='/' passHref>
-                    <IconButton component='a' onClick={e => e.preventDefault()}>
-                      <Github
-                        sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
-                      />
-                    </IconButton>
-                  </Link>
-                  <Link href='/' passHref>
-                    <IconButton component='a' onClick={e => e.preventDefault()}>
-                      <Google sx={{ color: '#db4437' }} />
-                    </IconButton>
-                  </Link>
-                </Box> */}
               </form>
             </CardContent>
           </Card>

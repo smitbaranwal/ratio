@@ -1,3 +1,5 @@
+import TableCustomized from "../tables/TableCustomized"
+
 const { CardContent } = require("@mui/material")
 
 
@@ -6,7 +8,7 @@ const ForReview = () => {
 
     return (
         <CardContent>
-            Review Tab Working!
+            <TableCustomized />
         </CardContent>
     )
 }

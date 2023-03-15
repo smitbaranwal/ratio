@@ -11,7 +11,7 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.palette.common.white,
-    backgroundColor: theme.palette.common.black
+    backgroundColor: '#b892fe'
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14
@@ -34,11 +34,11 @@ const createData = (name, calories, fat, carbs, protein) => {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9)
+  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa', 6.0, 24, 4.0, 0, 0, 0),
+  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  9.0, 37, 4.3, 0, 0, 0),
+  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  16.0, 24, 6.0, 0, 0, 0),
+  createData('Deposit', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa', 3.7, 67, 4.3, 0, 0, 0),
+  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  16.0, 49, 3.9, 0, 0, 0)
 ]
 
 const TableCustomized = () => {
@@ -47,11 +47,15 @@ const TableCustomized = () => {
       <Table sx={{ minWidth: 700 }} aria-label='customized table'>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align='right'>Calories</StyledTableCell>
-            <StyledTableCell align='right'>Fat (g)</StyledTableCell>
-            <StyledTableCell align='right'>Carbs (g)</StyledTableCell>
-            <StyledTableCell align='right'>Protein (g)</StyledTableCell>
+            <StyledTableCell>Date (UTC)</StyledTableCell>
+            <StyledTableCell align='right'>From</StyledTableCell>
+            <StyledTableCell align='right'>To</StyledTableCell>
+            <StyledTableCell align='right'>Amount</StyledTableCell>
+            <StyledTableCell align='right'>Fee</StyledTableCell>
+            <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
+            <StyledTableCell align='right'>Description</StyledTableCell>
+            <StyledTableCell align='right'>NFT Collection</StyledTableCell>
+            <StyledTableCell align='right'>Token</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

@@ -47,6 +47,9 @@ const UserDropdown = () => {
   }
 
   const handleDropdownClose = url => {
+    if (url === '/pages/login') {
+      // disconnect(account)
+    }
     if (url) {
       router.push(url)
     }

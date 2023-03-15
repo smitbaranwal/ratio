@@ -6,7 +6,7 @@ const WalletContext = createContext({})
 // ** Create Context Provider
 export const WalletContextProvider = ({ children }) => {
   const [account, setAccount] = useState(null)
-  const [disconnect, setDisconnect] = useState(null)
+  // const [disconnect, setDisconnect] = useState(null)
   const [selectedSafe, setSelectedSafe] = useState(null)
 
   // useEffect(() => {
@@ -20,9 +20,9 @@ export const WalletContextProvider = ({ children }) => {
         account,
         setAccount,
         selectedSafe,
-        setSelectedSafe,
-        setDisconnect,
-        setDisconnect
+        setSelectedSafe
+        // disconnect,
+        // setDisconnect
       }}
     >
       {children}
