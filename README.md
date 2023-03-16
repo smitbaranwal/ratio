@@ -8,11 +8,11 @@ Integrating the tool on payment gateways lets you identify the nature of the tra
 [![NPM](https://img.shields.io/npm/v/coinbase?style=plastic)](https://www.npmjs.com/package/@web3-onboard/coinbase)
 [![Material UI](https://img.shields.io/npm/v/material?style=plastic)](https://www.npmjs.com/package/@mui/material)
 
-FinGrow is a online accounting and analytical software designed for buisnesses in web3 to support its growth, Parcel Inc. partnered with Fingrow to automate NFT accounting, including easier reporting of primary and secondary income, automated categorization, and robust documentation of capital gains/losses in compliance with GAAP.
+FinGrow is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., FinGrow has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance with GAAP.
 
-* [Operators] Gain a real-time P&L across your accounts. Be world-class at financial planning.
-* [Accountants] Unlock new client segments with powerful integrations across crypto platforms and accounting software.
-* [Auditors] Have all of your wallets, exchanges, banks, and custodians in one place to easily verify and reconcile transactions.
+* [Operators] FinGrow provides real-time P&L across their accounts, enabling them to achieve world-class financial planning.
+* [Accountants] Accountants can benefit from powerful integrations across crypto platforms and accounting software, which can help them unlock new client segments. 
+* [Auditors] Auditors can easily verify and reconcile transactions across all wallets, exchanges, banks, and custodians in one place.
 
 ## Requirements
 
@@ -22,16 +22,13 @@ FinGrow is a online accounting and analytical software designed for buisnesses i
 
 ## Framework
 
-FinGrow uses [nextJS](https://nextjs.org/), the best existing React framework, as the foundation framework and [Module](https://github.com/fingrow/module) package for Apps.
+FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) package for Apps.
 
 ## Installation ⚒️
 
-Installing and running the template is super easy in Materio, please follow these steps and you should be ready to rock 🤘
+1. Make sure Node.js (LTS). If Node.js is already installed in your system, make sure the installed version is LTS (and not the latest version)
+2. Navigate to the `src` folder and run following command to install our local dependencies listed in `package.json`. You can use `npm` OR `yarn` as per your preference.
 
-1. Make sure you have installed Node.js (LTS). If Node.js is already installed in your system, make sure the installed version is LTS (and not the latest version)
-2. Navigate to the `typescript-version` or `javascript-version` folder and run following command to install our local dependencies listed in `package.json`. You can use `npm` OR `yarn` as per your preference.
-
-> It is recommended to use yarn for better dependency management
 ```bash
 # For npm
 npm install --legacy-peer-deps
@@ -57,10 +54,8 @@ When contributing code to fingrow, you must follow the PSR coding standards. The
 
 Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 
+
 ## Changelog
 
-Please see [Releases](../../releases) for more information what has changed recently.
+To view recent changes, click [Releases](../../releases).
 
-## License
-
-fingrow is released under the [GPLv3 license](LICENSE.txt).
