@@ -22,7 +22,7 @@ FinGrow is an advanced online accounting and analytical software that is specifi
 
 ## Framework
 
-FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) package for Apps.
+FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
 
 ## Installation ⚒️
 
