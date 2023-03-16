@@ -22,10 +22,10 @@ const Dashboard = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={12} lg={8}>
           <SalesByCountries />
         </Grid>
-        <Grid item xs={12} md={12} lg={8}>
+        <Grid item xs={12} md={12} lg={12}>
           <DepositWithdraw />
         </Grid>
         <Grid item xs={12}>
