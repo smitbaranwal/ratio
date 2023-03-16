@@ -44,6 +44,9 @@ npm run dev
 # For yarn
 yarn dev
 ```
+## Login
+
+Step by Step process of registering and logging in [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
 
 
 ## Contributing
