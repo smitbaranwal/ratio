@@ -16,25 +16,6 @@
     "url": "https://github.com/themeselection/materio-mui-react-nextjs-admin-template-free.git"
   },
   "homepage": "https://themeselection.com/products/materio-free-mui-react-nextjs-admin-template/",
-  "keywords": [
-    "react",
-    "javascript",
-    "admin",
-    "typescript",
-    "dashboard",
-    "material-design",
-    "nextjs",
-    "material-ui",
-    "admin-dashboard",
-    "free",
-    "mui",
-    "admin-template",
-    "admin-panel",
-    "freebies",
-    "nextjs-template",
-    "react-dashboard",
-    "themeselection"
-  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -37,7 +37,7 @@ const UserDropdown = () => {
   // ** States
   const [anchorEl, setAnchorEl] = useState(null)
 
-  const {account, selectedSafe} = useContext(WalletContext);
+  const {wallet, account, selectedSafe, setSelectedSafe, handleDisconnect} = useContext(WalletContext);
 
   // ** Hooks
   const router = useRouter()
@@ -46,9 +46,10 @@ const UserDropdown = () => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleDropdownClose = url => {
+  const handleDropdownClose =async url => {
     if (url === '/pages/login') {
-      // disconnect(account)
+      setSelectedSafe(null)
+      await handleDisconnect();
     }
     if (url) {
       router.push(url)
