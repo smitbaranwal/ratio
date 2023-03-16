@@ -64,17 +64,18 @@ To begin using FinGrow and authorize with Metamask as a blockchain wallet, follo
 
 8. You will now be redirected to the Transactions page. Congratulations, you have successfully created and connected your blockchain wallet with Metamask!
 
-Step by Step detail process of registering and logging in with the screenshots [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
+Detailed process of registering and logging in with the screenshots [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
 
 
-## Contributing
+## Contribution
 
-Please, be very clear on your commit messages and pull requests, empty pull request messages may be rejected without reason.
+To ensure that your contributions are accepted when submitting code to Fingrow, please adhere to the following guidelines:
 
-When contributing code to fingrow, you must follow the PSR coding standards. The golden rule is: Imitate the existing fingrow code.
+1. Provide clear and concise commit messages and pull requests. Empty pull request messages may be rejected without explanation.
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+2. Follow the PSR coding standards when contributing code to Fingrow. The best approach is to emulate the existing Fingrow code.
 
+3. Keep in mind that this project is governed by a Contributor Code of Conduct. By participating in this project, you agree to abide by its rules and regulations.
 
 ## Changelog
 
