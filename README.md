@@ -46,7 +46,25 @@ yarn dev
 ```
 ## Login
 
-Step by Step process of registering and logging in [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
+To begin using FinGrow and authorize with Metamask as a blockchain wallet, follow these steps:
+
+1. Install the Metamask extension on Google Chrome using [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en-GB).
+
+2. Click "Add to Chrome" and follow the prompts to create a new wallet or import an existing one. Accept the terms and conditions and choose a new password for your wallet.
+
+3. Follow the recommended flow to generate a secret word phrase, which will be used as a recovery password. Click "Reveal Secret Word Phrase" to see a 12-word phrase, copy it and keep it safe for future use. Click "Next" and complete the phrase you generated in the previous step.
+
+4. Pin the Metamask extension from the list of extensions, so that it will always be visible on Chrome tabs.
+
+5. To connect to the FinGrow app, go to [Local Environment](http://localhost:3000/pages/login) or [Production Environment](https://fin-grow.vercel.app/pages/login) and click "Connect Wallet".
+
+6. Select "Metamask" from the list of wallets and authorize the FinGrow app to access your public key accounts.
+
+7. Click "Next" and then "Connect". Select one safe address which pops up after authorizing using the "Connect" button.
+
+8. You will now be redirected to the Transactions page. Congratulations, you have successfully created and connected your blockchain wallet with Metamask!
+
+Step by Step detail process of registering and logging in with the screenshots [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
 
 
 ## Contributing
