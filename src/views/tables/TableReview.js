@@ -7,11 +7,14 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
+import { useEffect, useState } from 'react'
+import getTransactions from 'src/@core/utils/queries/getTransactions'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.palette.common.white,
-    backgroundColor: '#b892fe'
+    backgroundColor: '#b892fe',
+    // innerWidth: '50px'
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14
@@ -29,45 +32,47 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 }))
 
-const createData = (name, calories, fat, carbs, protein) => {
-  return { name, calories, fat, carbs, protein }
-}
 
-const rows = [
-  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa', 6.0, 24, 4.0, 0, 0, 0),
-  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  9.0, 37, 4.3, 0, 0, 0),
-  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  16.0, 24, 6.0, 0, 0, 0),
-  createData('Deposit', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa', 3.7, 67, 4.3, 0, 0, 0),
-  createData('Withdral', '0x9F902...D0983be4eFa', '0x9F902...D0983be4eFa',  16.0, 49, 3.9, 0, 0, 0)
-]
 
 const TableCustomized = () => {
+  const [transactions, setTransactions] = useState([])
+
+  useEffect(() => {
+    getTransactions(setTransactions)
+  }, [])
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label='customized table'>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Date (UTC)</StyledTableCell>
-            <StyledTableCell align='right'>From</StyledTableCell>
-            <StyledTableCell align='right'>To</StyledTableCell>
+            <StyledTableCell >Date (UTC)</StyledTableCell>
+            <StyledTableCell >From</StyledTableCell>
+            <StyledTableCell size='small' align='right'>To</StyledTableCell>
             <StyledTableCell align='right'>Amount</StyledTableCell>
             <StyledTableCell align='right'>Fee</StyledTableCell>
             <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
-            <StyledTableCell align='right'>Description</StyledTableCell>
-            <StyledTableCell align='right'>NFT Collection</StyledTableCell>
+            <StyledTableCell align='right'>Status</StyledTableCell>
+            <StyledTableCell align='right'>Tag</StyledTableCell>
             <StyledTableCell align='right'>Token</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(row => (
-            <StyledTableRow key={row.name}>
+          {transactions.map((row, index) => (
+            <StyledTableRow key={index}>
               <StyledTableCell component='th' scope='row'>
-                {row.name}
+                {row.Executedat}
+                {row.Category}
+                {row.Type}
               </StyledTableCell>
-              <StyledTableCell align='right'>{row.calories}</StyledTableCell>
-              <StyledTableCell align='right'>{row.fat}</StyledTableCell>
-              <StyledTableCell align='right'>{row.carbs}</StyledTableCell>
-              <StyledTableCell align='right'>{row.protein}</StyledTableCell>
+              <StyledTableCell size='small' align='right'>{row.FromAddress}</StyledTableCell>
+              <StyledTableCell align='right'>{row.ToAddress}</StyledTableCell>
+              <StyledTableCell align='right'>{row.TokenAmount}</StyledTableCell>
+              <StyledTableCell align='right'>{row.Transactionfees}</StyledTableCell>
+              <StyledTableCell align='right'>{row.USDAmount}</StyledTableCell>
+              <StyledTableCell align='right'>{row.TransactionStatus}</StyledTableCell>
+              <StyledTableCell align='right'>{row.Tag}</StyledTableCell>
+              <StyledTableCell align='right'>{row.TokenSymbol}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

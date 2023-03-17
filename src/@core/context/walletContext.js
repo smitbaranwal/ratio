@@ -17,7 +17,7 @@ export const WalletContextProvider = ({ children }) => {
   const [provider, setProvider] = useState(null)
   const router = useRouter();
   
-  // console.log({wallet,account,selectedSafe,connecting},'from walletContext')
+  console.log({wallet,account,selectedSafe,connecting},'from walletContext')
 
 
   useEffect(() => {

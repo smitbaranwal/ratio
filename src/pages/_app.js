@@ -57,7 +57,7 @@ const initialSettings = {
 // ** Configure JSS & ClassName
 const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
-
+  
   // Variables
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 

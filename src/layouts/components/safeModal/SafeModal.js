@@ -54,7 +54,7 @@ SafeDialog.propTypes = {
 
 export default function SafeDemo({ handleSafe, closeSafeDialog }) {
   const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState(null);
+  const [selectedValue, setSelectedValue] = React.useState('');
 
   React.useEffect(() => {
     handleSafe.current = handleClickOpen

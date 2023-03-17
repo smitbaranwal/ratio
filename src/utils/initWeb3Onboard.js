@@ -45,7 +45,7 @@ export const initWeb3Onboard = init({
   apiKey: dappId,
   appMetadata: {
     name: 'FinGrow',
-    icon: '/images/fin_grow.jpg', // svg string icon
+    icon: '/images/fin_grow.svg', // svg string icon
     description: 'Payment OS for Contributor Economy',
     recommendedInjectedWallets: [
       { name: 'MetaMask', url: 'https://metamask.io' },

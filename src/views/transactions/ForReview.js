@@ -1,4 +1,4 @@
-import TableCustomized from "../tables/TableCustomized"
+import TableCustomized from "../tables/TableReview"
 
 const { CardContent } = require("@mui/material")
 
