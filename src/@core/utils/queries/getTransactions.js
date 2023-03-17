@@ -1,4 +1,4 @@
-const getTransactions = setTransactions => {
+const getTransactions = (setTransactions, setOpen) => {
   var myHeaders = new Headers()
   const rows = []
   myHeaders.append('x-parcel-export-token', '0xa4e8b26ae20b02a964a20eb10cc5dc26197d71ed7434a1abb280d608a3f8edff')
@@ -26,18 +26,19 @@ const getTransactions = setTransactions => {
         rows.push(createDataRow(element, result.headers))
       })
       setTransactions(rows)
+      setOpen(false)
       console.log({ rows })
     })
     .catch(error => console.log('error', error))
 }
 
 const createDataRow = (row, header) => {
-    const rowData = {}
-    header.forEach((prop, index) => {
-      rowData[prop.replace(' ', '')] = row[index]
-    })
-  
-    return rowData
-  }
-  
+  const rowData = {}
+  header.forEach((prop, index) => {
+    rowData[prop.replace(' ', '')] = row[index]
+  })
+
+  return rowData
+}
+
 export default getTransactions

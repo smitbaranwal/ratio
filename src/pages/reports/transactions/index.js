@@ -59,7 +59,7 @@ const Transactions = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <AccountOutline />
-                <TabName>For Review(1029)</TabName>
+                <TabName>For Review(22)</TabName>
               </Box>
             }
           />
@@ -68,7 +68,7 @@ const Transactions = () => {
             label={
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <LockOpenOutline />
-                <TabName>Categorized(556)</TabName>
+                <TabName>Categorized(0)</TabName>
               </Box>
             }
           />
