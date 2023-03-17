@@ -8,7 +8,7 @@ Integrating the tool on payment gateways lets you identify the nature of the tra
 [![NPM](https://img.shields.io/npm/v/coinbase?style=plastic)](https://www.npmjs.com/package/@web3-onboard/coinbase)
 [![Material UI](https://img.shields.io/npm/v/material?style=plastic)](https://www.npmjs.com/package/@mui/material)
 
-FinGrow is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., FinGrow has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance with GAAP.
+FinGrow is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., FinGrow has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance standards.
 
 * [Operators] FinGrow provides real-time P&L across their accounts, enabling them to achieve world-class financial planning.
 * [Accountants] Accountants can benefit from powerful integrations across crypto platforms and accounting software, which can help them unlock new client segments. 
