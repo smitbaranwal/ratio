@@ -17,20 +17,24 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import Table from 'src/views/dashboard/Table'
 import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
+import AsofdateChart from 'src/views/dashboard/AsofdateChart'
 
 const Dashboard = () => {
   return (
     <ApexChartWrapper>
       <Grid container spacing={6}>
-        <Grid item xs={12} md={12} lg={8}>
-          <SalesByCountries />
-        </Grid>
         <Grid item xs={12} md={12} lg={12}>
-          <DepositWithdraw />
+          {/* <SalesByCountries /> */}
+          <AsofdateChart />
         </Grid>
+       
         <Grid item xs={12}>
           <Table />
         </Grid>
+
+        {/* <Grid item xs={12} md={12} lg={12}>
+          <DepositWithdraw />
+        </Grid> */}
       </Grid>
     </ApexChartWrapper>
   )

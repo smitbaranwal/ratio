@@ -81,9 +81,9 @@ const TableCustomized = () => {
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '150px', content: '' }}>
                       {row.Type === 'Outgoing' ? (
-                        <ArrowUpBoldCircleOutline style={{ color: 'red' }} />
+                        <ArrowUpBoldCircleOutline style={{ color: '#f44336' }} />
                       ) : row.Type === 'Incoming' ? (
-                        <ArrowDownBoldCircleOutline style={{ color: 'green' }} />
+                        <ArrowDownBoldCircleOutline style={{ color: '#4caf50' }} />
                       ) : (
                         ''
                       )}
