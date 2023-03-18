@@ -1,6 +1,7 @@
 # FinGrow
 Integrating the tool on payment gateways lets you identify the nature of the transaction at the time of the transaction &amp; generate these reports with the click integrated tool.
-
+# Demo™
+TBF
 # FinGrow™
 
 [![Release](https://img.shields.io/github/v/release/smitbaranwal/Fin-Grow_React_App)](https://github.com/fingrow/fingrow/releases)
@@ -23,6 +24,18 @@ FinGrow is an advanced online accounting and analytical software that is specifi
 ## Framework
 
 FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
+
+## Frontend
+TBF
+## Backend
+TBF
+
+## PRD link
+TBF
+## UX Wireframes link
+TBF
+## HLD link
+TBF
 
 ## Installation ⚒️
 
