@@ -35,7 +35,7 @@ Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain
 FinGrow uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api)
 
 ## PRD link
-[Notion Documentation](https://salty-lung-b66.notion.site/Fin-Grow-18afbc011f4c4e9a99caa23de753c393)
+[Notion Documentation](https://salty-lung-b66.notion.site/FinGrow-18afbc011f4c4e9a99caa23de753c393)
 
 ## UX Wireframes
 ![image](https://user-images.githubusercontent.com/15996942/226088154-511d0c3a-a865-4af7-96f7-ab6a44423db0.png)
