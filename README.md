@@ -26,16 +26,26 @@ FinGrow is an advanced online accounting and analytical software that is specifi
 FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
 
 ## Frontend
-TBF
+[FinGrow App](https://fin-grow.vercel.app)
+
 ## Backend
-TBF
+FinGrow uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api)
 
 ## PRD link
-TBF
-## UX Wireframes link
-TBF
-## HLD link
-TBF
+[Notion Documentation](https://salty-lung-b66.notion.site/Fin-Grow-18afbc011f4c4e9a99caa23de753c393)
+
+## UX Wireframes
+![image](https://user-images.githubusercontent.com/15996942/226088154-511d0c3a-a865-4af7-96f7-ab6a44423db0.png)
+
+
+[Figma](https://www.figma.com/proto/1vkwdqMkEIi6XV2zoENefG/Fingrow?node-id=56-454&scaling=min-zoom&page-id=0%3A1&starting-point-node-id=56%3A454&show-proto-sidebar=1)
+
+## HLD
+
+<img width="929" alt="image" src="https://user-images.githubusercontent.com/15996942/226088095-1a264575-ce4d-4b54-9983-f2bed9ab9c89.png">
+
+[miro link](https://miro.com/welcomeonboard/YW9tTWdQaWZRbU9seXByOWRyckJjWEVDcnYwR1N1S25kMlZFemhUSVRMSDFEcXZyZ2NubVVnenUya2M3VE56dHwzNDU4NzY0NTQ4ODU5NDgyMDczfDI=?share_link_id=416606536523)
+
 
 ## Installation ⚒️
 
@@ -77,7 +87,7 @@ To begin using FinGrow and authorize with Metamask as a blockchain wallet, follo
 
 8. You will now be redirected to the Transactions page. Congratulations, you have successfully created and connected your blockchain wallet with Metamask!
 
-Detailed process of registering and logging in with the screenshots [Login Process](https://docs.google.com/document/d/e/2PACX-1vRIiLl36e6EfLfJ8QNhfak0bBH1kaazMahIxtum_KxqixzOky-YR7YpxdKN1XleJ2tLLB_gFs6peRk3/pub)
+Detailed process of registering and logging in with the screenshots [Login Process](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/Login_Process.pdf)
 
 
 ## Contribution
@@ -93,4 +103,13 @@ To ensure that your contributions are accepted when submitting code to Fingrow, 
 ## Changelog
 
 To view recent changes, click [Releases](../../releases).
+
+# Authors
+ + Smit Baranwal
+ + Vineeth Purshotam
+ + Kapil Shinde
+ 
+# License
+
+[MIT](https://opensource.org/licenses/MIT)
 
