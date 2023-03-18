@@ -25,7 +25,10 @@ FinGrow is an advanced online accounting and analytical software that is specifi
 
 FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
 
-## Frontend
+## Frontend 
+FinGrow uses [React](https://react.dev/) and some of its libraries includes [Material](https://www.npmjs.com/package/@mui/material), [web3-onboard](https://www.npmjs.com/package/web3-onboard), [recharts](https://www.npmjs.com/package/recharts), etc.
+Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. With built-in modules for more than 35 unique hardware and software wallets, Web3-Onboard saves you time and headaches.
+
 [FinGrow App](https://fin-grow.vercel.app)
 
 ## Backend
