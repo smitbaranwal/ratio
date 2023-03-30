@@ -1,4 +1,7 @@
+import { CardHeader, Grid } from '@mui/material'
 import Card from '@mui/material/Card'
+import TableCollapsible from 'src/views/tables/TableCollapsible'
+import TableSpanning from 'src/views/tables/TableSpanning'
 
 const Cashflow = () => {
     const imageStyle = {
@@ -8,11 +11,11 @@ const Cashflow = () => {
        }
 
     return (
-        <Card sx={{
-            width:"100%", height:"100%", position:"relative"
-        }}>
-            <img style={imageStyle} src="/images/feature_underprogress.png" alt="" />
-        </Card>
+        // <Grid item xs={12}>
+        // <Card>
+          <TableCollapsible />
+      //   </Card>
+      // </Grid>
     )
 }
 
