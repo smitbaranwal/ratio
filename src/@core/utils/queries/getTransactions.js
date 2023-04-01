@@ -20,7 +20,7 @@ const getTransactions = (setTransactions, setOpen) => {
   )
     .then(response => response.text())
     .then(result => {
-      console.log({ result })
+      console.log('data', { result })
       result = JSON.parse(result)
       result.rows.forEach(element => {
         rows.push(createDataRow(element, result.headers))
