@@ -26,6 +26,9 @@ import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline } from 'm
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import moment from 'moment'
+import  XLSX from 'sheetjs-style'
+import Cashflow from 'src/pages/reports/cashflow'
+import CashflowSpreadsheet from '../reports/Cashflow'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -170,6 +173,7 @@ const TableCollapsible = () => {
   const daoObject = {};
 
   const [transactionTypeList, setTransactionTypeList] = useState([])
+  const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
 
   const updateTrx = function (data) {
@@ -223,15 +227,20 @@ const TableCollapsible = () => {
      console.log('data from table collapsible', data)
      console.log('new list from table collapsible', daoObject)
     let daoList = []
+    let excelData = []
     Object.keys(daoObject).forEach(key => {
       daoList.push({
         name: key,
         trxTypeTotalTokenAmt: daoObject[key].trxTypeTotalTokenAmt,
         categories: daoObject[key].categories
       })
+      console.log('categories data', daoObject[key].categories)
+      excelData.push(...daoObject[key].categories)
     })
     console.log('new daoList from table collapsible', daoList)
+    console.log('new spreadsheetData from table collapsible', spreadsheetData)
     setTransactionTypeList(daoList)
+    setSpreadsheetData(excelData)
   }
 
   const financialCategory = ['Token Release', 'Compensation']
@@ -241,6 +250,7 @@ const TableCollapsible = () => {
     'Bounty',
     'Other',
     'Others',
+    'Expenses',
     'Coordinape',
     'Services Rendered',
     'Product Purchase',
@@ -275,9 +285,21 @@ const TableCollapsible = () => {
     getTransactions(updateTrx, setOpen)
   }, [])
 
+  const convertToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(transactionTypeList)
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")
+    XLSX.writeFile(workbook, 'test_gen1' + ".xlsx")
+  }
+
   return (
     <Fragment>
+      <button onClick={convertToExcel}>Download Excel</button>
+      
+        <CashflowSpreadsheet data={spreadsheetData} /> 
+
       <BackdropLoader open={open} />
+      
       {transactionTypeList.map(doa => (
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>

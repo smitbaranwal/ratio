@@ -1,4 +1,5 @@
 import Card from '@mui/material/Card'
+import Cashflow from '../cashflow'
 
 const BalanceSheet = () => {
     const imageStyle = {
