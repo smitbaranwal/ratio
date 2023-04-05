@@ -29,6 +29,8 @@
     "@mui/lab": "^5.0.0-alpha.70",
     "@mui/material": "^5.4.3",
     "@popperjs/core": "^2.11.2",
+    "@syncfusion/ej2-base": "^21.1.38",
+    "@syncfusion/ej2-react-spreadsheet": "^21.1.37",
     "@web3-onboard/coinbase": "^2.2.0",
     "@web3-onboard/core": "^2.15.4",
     "@web3-onboard/dcent": "^2.2.3",
@@ -72,7 +74,8 @@
     "react-perfect-scrollbar": "^1.5.8",
     "react-popper": "^2.2.5",
     "react-router-dom": "^6.9.0",
-    "recharts": "2.0.6"
+    "recharts": "2.0.6",
+    "sheetjs-style": "^0.15.8"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
