@@ -26,9 +26,10 @@ import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline } from 'm
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import moment from 'moment'
-import  XLSX from 'sheetjs-style'
+import XLSX from 'sheetjs-style'
 import Cashflow from 'src/pages/reports/cashflow'
 import CashflowSpreadsheet from '../reports/Cashflow'
+import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,7 +52,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0
   }
 }))
-
 
 const Row = props => {
   // ** Props
@@ -78,9 +78,7 @@ const Row = props => {
           {row.name}
         </TableCell>
         <TableCell align='right'>
-        <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>
-          {row.totalTokenAmt}
-          </div>
+          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt}</div>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -99,7 +97,7 @@ const Row = props => {
                         <StyledTableCell align='center'>From</StyledTableCell>
                         <StyledTableCell align='center'>To</StyledTableCell>
                         <StyledTableCell align='center'>Amount</StyledTableCell>
-                        <StyledTableCell align='center'>Fee</StyledTableCell>
+                        <StyledTableCell align='center'>Fiat</StyledTableCell>
                         <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                         <StyledTableCell align='right'>Status</StyledTableCell>
                       </TableRow>
@@ -138,7 +136,7 @@ const Row = props => {
                             <div>{item.TokenAmount !== '--' ? '$' + item.TokenAmount : '--'}</div>
                           </StyledTableCell>
                           <StyledTableCell align='right'>
-                            <div style={{ width: '150px' }}>{item.Transactionfees}</div>
+                            <div style={{ width: '150px' }}>${item.FiatValue}</div>
                           </StyledTableCell>
                           <StyledTableCell align='right'>
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
@@ -168,16 +166,21 @@ const operationTransactionKey = 'Cash Flow From Operation'
 const investmentTransactionKey = 'Cash Flow From Investment'
 const financeTransactionKey = 'Cash Flow from Financing Activity'
 
-const TableCollapsible = () => {
-
-  const daoObject = {};
+const TableCollapsible = props => {
+  const { setSpreadsheetData } = props
+  const daoObject = {}
 
   const [transactionTypeList, setTransactionTypeList] = useState([])
-  const [spreadsheetData, setSpreadsheetData] = useState([])
+  // const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
 
+  const getFiatValues = function(data) {
+    // data.
+    getFiatCurrency(updateTrx, data)
+    // updateTrx()
+  }
+
   const updateTrx = function (data) {
-    
     data.forEach(trx => {
       let insertInTransactionType = ''
       if (operationCategory.findIndex(c => c == trx.Category) > -1) {
@@ -192,7 +195,7 @@ const TableCollapsible = () => {
       }
       if (insertInTransactionType !== '') {
         if (!daoObject[insertInTransactionType] || !daoObject[insertInTransactionType].categories) {
-          daoObject[insertInTransactionType] = {trxTypeTotalTokenAmt: 0, categories: []}
+          daoObject[insertInTransactionType] = { trxTypeTotalTokenAmt: 0, categories: [] }
         }
         let availableCatIndex = daoObject[insertInTransactionType].categories.findIndex(c => c.name == trx.Category)
         if (availableCatIndex < 0) {
@@ -210,7 +213,6 @@ const TableCollapsible = () => {
             categoryData.totalTokenAmt = trx.TokenAmount
           }
           daoObject[insertInTransactionType].categories.push(categoryData)
-
         } else {
           if (trx.Type == 'Outgoing') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt -= trx.TokenAmount
@@ -222,10 +224,10 @@ const TableCollapsible = () => {
           daoObject[insertInTransactionType].categories[availableCatIndex].transactions.push(trx)
         }
       }
-    });
+    })
 
-     console.log('data from table collapsible', data)
-     console.log('new list from table collapsible', daoObject)
+    console.log('data from table collapsible', data)
+    console.log('new list from table collapsible', daoObject)
     let daoList = []
     let excelData = []
     Object.keys(daoObject).forEach(key => {
@@ -238,18 +240,18 @@ const TableCollapsible = () => {
       excelData.push(...daoObject[key].categories)
     })
     console.log('new daoList from table collapsible', daoList)
-    console.log('new spreadsheetData from table collapsible', spreadsheetData)
+    // console.log('new spreadsheetData from table collapsible', spreadsheetData)
     setTransactionTypeList(daoList)
     setSpreadsheetData(excelData)
   }
-
+  
   const financialCategory = ['Token Release', 'Compensation']
 
   const operationCategory = [
     'Salary',
     'Bounty',
-    'Other',
-    'Others',
+    // 'Other',
+    // 'Others',
     'Expenses',
     'Coordinape',
     'Services Rendered',
@@ -262,19 +264,19 @@ const TableCollapsible = () => {
     'Reimbursement',
     'Service Purchase',
     'Commission',
-    'Miscellaneous',
+    // 'Miscellaneous',
+    'Grants',
+    'Grant',
     'Donation',
     'Product Sale',
-    'Service Sale'
+    'Service Sale',
+    'Asset Purchase'
   ]
 
   const investmentCategory = [
-    'Product Purchase',
-    'Donation',
-    'Grants',
-    'Grant',
+    // 'Product Purchase',
+    // 'Donation',
     'Token Swaps',
-    'Asset Purchase',
     'Investment Income',
     'Capital Return',
     'Asset Sale'
@@ -282,24 +284,24 @@ const TableCollapsible = () => {
 
   useEffect(() => {
     setOpen(true)
-    getTransactions(updateTrx, setOpen)
+    getTransactions(getFiatValues, setOpen)
   }, [])
 
   const convertToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(transactionTypeList)
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1")
-    XLSX.writeFile(workbook, 'test_gen1' + ".xlsx")
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1')
+    XLSX.writeFile(workbook, 'test_gen1' + '.xlsx')
   }
 
   return (
     <Fragment>
-      <button onClick={convertToExcel}>Download Excel</button>
-      
-        <CashflowSpreadsheet data={spreadsheetData} /> 
+      {/* <button onClick={convertToExcel}>Download Excel</button> */}
+
+      {/* <CashflowSpreadsheet data={spreadsheetData} />  */}
 
       <BackdropLoader open={open} />
-      
+
       {transactionTypeList.map(doa => (
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>
@@ -309,12 +311,9 @@ const TableCollapsible = () => {
                 <Table aria-label='collapsible table'>
                   <TableHead>
                     <TableRow>
-                      <TableCell />
+                      <TableCell width={'50px'} />
                       <TableCell align='left'>Departments</TableCell>
                       <TableCell align='right'>Total Flow</TableCell>
-                      {/* <TableCell align='right'>Fat (g)</TableCell>
-            <TableCell align='right'>Carbs (g)</TableCell>
-            <TableCell align='right'>Protein (g)</TableCell> */}
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -328,9 +327,9 @@ const TableCollapsible = () => {
                       </TableCell>
                       <TableCell align='right'>
                         <b>
-                        <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                          ${doa.trxTypeTotalTokenAmt}
-                        </div>
+                          <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
+                            ${doa.trxTypeTotalTokenAmt}
+                          </div>
                         </b>
                       </TableCell>
                     </TableRow>
