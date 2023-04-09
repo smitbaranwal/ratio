@@ -92,6 +92,8 @@ const CashflowSpreadsheet = props => {
       rowsModel.push({ index: currentIndex, cells: [{value: '', height: 25}, {value: 'Net CashFlow', height: 25, style:{fontWeight: 'bold'} },
       {value: total, height: 25, style:{fontWeight: 'bold', color: total < -1 ? '#ff0000' : '#000000'}}] })
     spreadsheet.insertRow(rowsModel)
+    // spreadsheet.numberFormat('_($#,##0.00_);_($* (#,##0.00);_($"-"??_);_(@_)', 'C5:C15')
+    spreadsheet.numberFormat('[Red][<0]$#,##0.0000;[Black][>=0]$#,##0.0000', 'C5:C15')
   }
 
   function beforeCellRender(args) {
