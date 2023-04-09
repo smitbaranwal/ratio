@@ -96,9 +96,9 @@ const Row = props => {
                         <StyledTableCell>Date (UTC)</StyledTableCell>
                         <StyledTableCell align='center'>From</StyledTableCell>
                         <StyledTableCell align='center'>To</StyledTableCell>
-                        <StyledTableCell align='center'>Amount</StyledTableCell>
-                        <StyledTableCell align='center'>Fiat</StyledTableCell>
-                        <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
+                        <StyledTableCell align='center'>Token Amount/ <br/> Fiat </StyledTableCell>
+                        {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
+                        {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
                         <StyledTableCell align='right'>Status</StyledTableCell>
                       </TableRow>
                     </TableHead>
@@ -133,14 +133,17 @@ const Row = props => {
                             </div>
                           </StyledTableCell>
                           <StyledTableCell align='left'>
-                            <div>{item.TokenAmount !== '--' ? '$' + item.TokenAmount : '--'}</div>
+                            <div>
+                              <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/>
+                              ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'})
+                              </div>
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          {/* <StyledTableCell align='right'>
                             <div style={{ width: '150px' }}>${item.FiatValue}</div>
-                          </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          </StyledTableCell> */}
+                          {/* <StyledTableCell align='right'>
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
-                          </StyledTableCell>
+                          </StyledTableCell> */}
                           <StyledTableCell align='right'>
                             <div style={{ color: item.TransactionStatus === 'Success' ? 'green' : 'red' }}>
                               {item.TransactionStatus}
@@ -167,7 +170,7 @@ const investmentTransactionKey = 'Cash Flow From Investment'
 const financeTransactionKey = 'Cash Flow from Financing Activity'
 
 const TableCollapsible = props => {
-  const { setSpreadsheetData } = props
+  const { setSpreadsheetData, setTransactionsData } = props
   const daoObject = {}
 
   const [transactionTypeList, setTransactionTypeList] = useState([])
@@ -242,6 +245,7 @@ const TableCollapsible = props => {
     console.log('new daoList from table collapsible', daoList)
     // console.log('new spreadsheetData from table collapsible', spreadsheetData)
     setTransactionTypeList(daoList)
+    setTransactionsData(daoList)
     setSpreadsheetData(excelData)
   }
   
