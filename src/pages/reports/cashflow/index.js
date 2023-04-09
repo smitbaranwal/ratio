@@ -22,6 +22,7 @@ const Cashflow = () => {
   // ** State
   const [value, setValue] = useState('1')
   const [spreadsheetData, setSpreadsheetData] = useState([])
+  const [transactionsData, setTransactionsData] = useState([])
 
   const handleChange = (event, newValue) => {
     setValue(newValue)
@@ -33,15 +34,15 @@ const Cashflow = () => {
         <TabContext value={value}>
           <TabList onChange={handleChange} aria-label='Cashflow Statement'>
             <Tab value='1' label='Grid View' />
-            <Tab value='2' label='Spreadsheet View' />
+            <Tab value='2' label='Report View' />
             <Tab value='3' label='Download' />
           </TabList>
           <CardContent>
             <TabPanel value='1' sx={{ p: 0 }}>
-              <TableCollapsible setSpreadsheetData={setSpreadsheetData} />
+              <TableCollapsible setSpreadsheetData={setSpreadsheetData} setTransactionsData={setTransactionsData} />
             </TabPanel>
             <TabPanel value='2' sx={{ p: 0 }}>
-              <CashflowSpreadsheet data={spreadsheetData} />
+              <CashflowSpreadsheet data={spreadsheetData} categorisedData={transactionsData} />
             </TabPanel>
             <TabPanel value='3' sx={{ p: 0 }}>
               <Typography variant='h6' sx={{ marginBottom: 2 }}>
