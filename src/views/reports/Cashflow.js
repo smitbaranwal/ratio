@@ -145,39 +145,7 @@ const CashflowSpreadsheet = props => {
                 </RowDirective>
                 {/* heading ends */}
                 {/* category starts */}
-                {/* {categorisedData.map(category => (
-                  <div key={category.name}> */}
-                    {/* <RowDirective height={35}>
-                      <CellsDirective>
-                        <CellDirective
-                          index={1}
-                          value={'category.name'}
-                          colSpan={3}
-                          style={boldCenterCategory}
-                        ></CellDirective>
-                      </CellsDirective>
-                    </RowDirective> */}
-
-                    {/* {categorisedData[0].categories.map(cat => (
-                      <RowDirective key={cat.name} height={25}>
-                        <CellsDirective>
-                          <CellDirective index={2} value={cat.name}></CellDirective>
-                          <CellDirective index={3} value={cat.totalTokenAmt}></CellDirective>
-                        </CellsDirective>
-                      </RowDirective>
-                    ))} */}
-                  {/* </div>
-                ))} */}
-                {/* <RowDirective height={25}>
-                  <CellsDirective>
-                    <CellDirective
-                      index={2}
-                      value='Net Cash Flow From Financing Activity'
-                      style={{ fontWeight: 'bold' }}
-                    ></CellDirective>
-                    <CellDirective index={2} value='$ 1,213,667' style={{ fontWeight: 'bold' }}></CellDirective>
-                  </CellsDirective>
-                </RowDirective> */}
+                
                 {/* row space between multiple categories */}
                 <RowDirective height={35}>
                   <CellsDirective>
@@ -185,8 +153,6 @@ const CashflowSpreadsheet = props => {
                   </CellsDirective>
                 </RowDirective>
                 {/* category ends */}
-                {/* </Fragment>
-              ))} */}
               </RowsDirective>
               <ColumnsDirective>
                 <ColumnDirective index={1} width={190}></ColumnDirective>
@@ -201,14 +167,6 @@ const CashflowSpreadsheet = props => {
                 <RangesDirective>
                   <RangeDirective dataSource={category.transactions}></RangeDirective>
                 </RangesDirective>
-                {/* <ColumnsDirective>
-                        <ColumnDirective width={100}></ColumnDirective>
-                        <ColumnDirective width={110}></ColumnDirective>
-                        <ColumnDirective width={100}></ColumnDirective>
-                        <ColumnDirective width={180}></ColumnDirective>
-                        <ColumnDirective width={130}></ColumnDirective>
-                        <ColumnDirective width={130}></ColumnDirective>
-                    </ColumnsDirective> */}
               </SheetDirective>
             ))}
           </SheetsDirective>
