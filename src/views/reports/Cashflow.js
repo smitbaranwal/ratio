@@ -113,13 +113,24 @@ const CashflowSpreadsheet = props => {
     console.log(data)
   }, [data])
 
+  const saveClicked = () => {
+    // spreadsheet.save()
+    spreadsheet.save({ url: 'https://services.syncfusion.com/react/production/api/spreadsheet/save',
+    fileName: 'CashflowSpreadsheet',
+    saveType: 'Xlsx' })
+  }
+
   return (
     <Fragment>
+      <button onClick={saveClicked}> Save</button>
       {data.length ? (
         <SpreadsheetComponent
           created={onCreated.bind(this)}
           beforeCellRender={beforeCellRender.bind(this)}
+          allowSave={true}
+          saveUrl='https://services.syncfusion.com/react/production/api/spreadsheet/save'
           ref={ssObj => {
+            console.log('ssObj', ssObj)
             spreadsheet = ssObj
           }}
           showFormulaBar={false}
