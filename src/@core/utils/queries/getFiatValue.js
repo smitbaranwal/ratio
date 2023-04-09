@@ -29,6 +29,7 @@ const getFiatCurrency = (callback, data) => {
     data.forEach(trx => {
       if (addressFiats[trx.Token]) {
         trx['FiatValue'] = addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount
+        trx['FiatPrice'] = addressFiats[trx.Token]['fiatPrice']
       }
     })
     callback(data)
