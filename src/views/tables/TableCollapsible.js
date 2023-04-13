@@ -269,8 +269,6 @@ const TableCollapsible = props => {
     'Service Purchase',
     'Commission',
     // 'Miscellaneous',
-    'Grants',
-    'Grant',
     'Donation',
     'Product Sale',
     'Service Sale',
@@ -281,6 +279,8 @@ const TableCollapsible = props => {
     // 'Product Purchase',
     // 'Donation',
     'Token Swaps',
+    'Grants',
+    'Grant',
     'Investment Income',
     'Capital Return',
     'Asset Sale'

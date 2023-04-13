@@ -35,7 +35,7 @@ const Cashflow = () => {
           <TabList onChange={handleChange} aria-label='Cashflow Statement'>
             <Tab value='1' label='Grid View' />
             <Tab value='2' label='Report View' />
-            <Tab value='3' label='Download' />
+            {/* <Tab value='3' label='Download' /> */}
           </TabList>
           <CardContent>
             <TabPanel value='1' sx={{ p: 0 }}>
