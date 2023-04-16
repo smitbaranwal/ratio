@@ -1,6 +1,7 @@
 // ** Next Imports
 import Head from 'next/head'
 import { Router } from 'next/router'
+import "./app.css"
 
 // ** Loader Import
 import NProgress from 'nprogress'

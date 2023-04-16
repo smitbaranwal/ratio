@@ -17,7 +17,7 @@ const FooterContent = () => {
         </Box>
         {` by `}
         <Link target='_blank' href='https://fingrow.com/'>
-          FinGrow
+          Ratio
         </Link>
       </Typography>
       {hidden ? null : (
