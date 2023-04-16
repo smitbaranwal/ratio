@@ -68,15 +68,16 @@ const TableCustomized = () => {
                 <StyledTableCell align='center'>From</StyledTableCell>
                 <StyledTableCell align='center'>To</StyledTableCell>
                 <StyledTableCell align='center'>Amount</StyledTableCell>
-                <StyledTableCell align='center'>Fee</StyledTableCell>
+                {/* <StyledTableCell align='center'>Fee</StyledTableCell>
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
-                <StyledTableCell align='right'>Status</StyledTableCell>
-                <StyledTableCell align='right'>Tag</StyledTableCell>
-                <StyledTableCell align='right'>Token</StyledTableCell>
+                <StyledTableCell align='right'>Status</StyledTableCell> */}
+                <StyledTableCell align='center'>Tag</StyledTableCell>
+                <StyledTableCell align='center'>Description</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {transactions.map((row, index) => (
+                
                 <StyledTableRow key={index}>
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '150px', content: '' }}>
@@ -90,7 +91,8 @@ const TableCustomized = () => {
                       <span style={{ verticalAlign: 'super' }}> {row.Category} </span>
                     </div>
                     <br />
-                    {moment(row.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('DD/MM/YYYY hh:mm a')}
+                    {/* {moment(row.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('DD/MM/YYYY hh:mm a')} */}
+                    {moment(row.Executedat, 'DD-MM-YYYY').format('DD/MM/YYYY')}
                   </StyledTableCell>
                   <StyledTableCell size='small' align='right'>
                     <div style={{ width: '180px' }}>
@@ -112,22 +114,25 @@ const TableCustomized = () => {
                       </span>
                     </div>
                   </StyledTableCell>
-                  <StyledTableCell align='left'>
+                  <StyledTableCell align='center'>
                     <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div>
                   </StyledTableCell>
-                  <StyledTableCell align='right'>
-                    <div style={{ width: '150px' }}>{row.Transactionfees}</div></StyledTableCell>
-                  <StyledTableCell align='right'>
-                  <div>{row.USDAmount !== '--' ? '$' + row.USDAmount : '--'}</div></StyledTableCell>
-                  <StyledTableCell align='right'>
+                  {/* <StyledTableCell align='right'>
+                    <div style={{ width: '150px' }}>{row.Transactionfees}</div>
+                    </StyledTableCell> */}
+                  {/* <StyledTableCell align='right'>
+                  <div>{row.USDAmount !== '--' ? '$' + row.USDAmount : '--'}</div>
+                  </StyledTableCell> */}
+                  {/* <StyledTableCell align='right'>
                   <div style={{ color: row.TransactionStatus === 'Success' ? 'green' : 'red' }}>{row.TransactionStatus}</div>
-                  </StyledTableCell>
-                  <StyledTableCell align='right'>
+                  </StyledTableCell> */}
+                  <StyledTableCell align='center'>
                     {
                       row.Tag && row.Tag !== '--' ? <span style={tagStyle}>{row.Tag}</span> : ''
                     }
                   </StyledTableCell>
-                  <StyledTableCell align='right'>{row.TokenSymbol}</StyledTableCell>
+
+                  <StyledTableCell align='left'>{row.Description}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>

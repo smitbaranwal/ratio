@@ -45,11 +45,13 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 const Index = () => {
   
+  const {connect,setSelectedSafe,account,connecting} = useContext(WalletContext);
 
-  const {connect, setSelectedSafe,account,connecting} = useContext(WalletContext);
+  console.log("account", account)
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
+
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
@@ -65,6 +67,7 @@ const Index = () => {
   const handleSafe = React.useRef(null)
 
   useEffect(() => {
+
     if(!!account && !connecting){
       handleSafe.current();
     }
@@ -94,7 +97,7 @@ const Index = () => {
   return (
     <>
       <Box className='content-center'>
-        <SafeDemo handleSafe={handleSafe} closeSafeDialog={closeSafe} />
+        <SafeDemo handleSafe={handleSafe} />
 
           <Card sx={{ zIndex: 1 }}>
             <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
@@ -113,6 +116,7 @@ const Index = () => {
                   size='large'
                   variant='contained'
                   sx={{ marginBottom: 7 }}
+                  
                   onClick={async () => await connect()}
                 >
                   Connect Wallet
