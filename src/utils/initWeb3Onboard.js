@@ -44,7 +44,7 @@ export const initWeb3Onboard = init({
 
   apiKey: dappId,
   appMetadata: {
-    name: 'Ratio',
+    name: 'FinGrow',
     icon: '/images/fin_grow.svg', // svg string icon
     description: 'Payment OS for Contributor Economy',
     recommendedInjectedWallets: [

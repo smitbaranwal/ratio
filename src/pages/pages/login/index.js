@@ -46,16 +46,14 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const Index = () => {
   
 
-  const {connect, setSelectedSafe, account, connecting} = useContext(WalletContext);
+  const {connect, setSelectedSafe,account,connecting} = useContext(WalletContext);
   // ** Hook
   const theme = useTheme()
   const router = useRouter()
- 
+
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
-
-  const [userAccount, setUserAccount] = React.useState();
 
   const ImgStyled = styled('img')(({ theme }) => ({
     width: 175,
@@ -76,7 +74,6 @@ const Index = () => {
   const closeSafe = (selectedSafe) => {
     console.log('selected safe is ', selectedSafe)
     setSelectedSafe(selectedSafe)
-    setUserAccount(selectedSafe)
     // setDisconnect(disconnect)
     let path = `/reports/transactions`
     router.push(path)
@@ -97,7 +94,7 @@ const Index = () => {
   return (
     <>
       <Box className='content-center'>
-        <SafeDemo handleSafe={handleSafe} closeSafeDialog={closeSafe} userAccount={userAccount}/>
+        <SafeDemo handleSafe={handleSafe} closeSafeDialog={closeSafe} />
 
           <Card sx={{ zIndex: 1 }}>
             <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>

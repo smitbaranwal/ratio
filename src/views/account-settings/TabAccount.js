@@ -139,7 +139,7 @@ const TabAccount = () => {
                   </IconButton>
                 }
               >
-                <AlertTitle>Your account wallet is not confirmed. Please check with Ratio team!</AlertTitle>
+                <AlertTitle>Your account wallet is not confirmed. Please check with FinGrow team!</AlertTitle>
                 <Link href='/' onClick={e => e.preventDefault()}>
                   Resend Confirmation
                 </Link>
