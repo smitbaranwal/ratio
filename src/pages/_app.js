@@ -22,6 +22,8 @@ import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsCo
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
 
+import { Analytics } from '@vercel/analytics/react'
+
 // ** React Perfect Scrollbar Style
 import 'react-perfect-scrollbar/dist/css/styles.css'
 
@@ -63,7 +65,8 @@ const App = props => {
   const getLayout = Component.getLayout ?? (page => <UserLayout>{page}</UserLayout>)
 
   return ( 
-    <CacheProvider value={emotionCache}>
+    <>
+      <CacheProvider value={emotionCache}>
       <Head>
         <title>Financial Growth</title>
         <meta
@@ -86,6 +89,8 @@ const App = props => {
         </SettingsConsumer>
       </SettingsProvider>
     </CacheProvider>
+    <Analytics />
+    </>
   )
 }
 
