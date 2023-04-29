@@ -12,8 +12,10 @@ import TableBody from '@mui/material/TableBody'
 import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import TableContainer from '@mui/material/TableContainer'
+import TablePagination from '@mui/material/TablePagination'
 import { CardHeader, Grid } from '@mui/material'
 import Card from '@mui/material/Card'
+import { Link, Tooltip } from '@mui/material'
 // ** Icons Imports
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
@@ -22,7 +24,7 @@ import { styled } from '@mui/material/styles'
 
 import getTransactions from 'src/@core/utils/queries/getTransactions'
 import BackdropLoader from 'src/@core/layouts/components/shared-components/BackdropLoader'
-import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline } from 'mdi-material-ui'
+import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline, ArrowDownThin, ArrowUpThin, Launch } from 'mdi-material-ui'
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import moment from 'moment'
@@ -59,12 +61,26 @@ const Row = props => {
 
   // ** State
   const [collapse, setCollapse] = useState(false)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
 
   const userAccountIcon = <Account />
 
   useEffect(() => {
     setCollapse(false)
   }, [open])
+
+
+  function isFloat(x) { return !!(x % 1); }
 
   return (
     <Fragment>
@@ -78,7 +94,8 @@ const Row = props => {
           {row.name}
         </TableCell>
         <TableCell align='right'>
-          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt}</div>
+          {/* <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt}</div> */}
+          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt > 0 ? row.totalTokenAmt : row.totalTokenAmt*-1}</div>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -89,11 +106,13 @@ const Row = props => {
                 History
               </Typography>
               {!open ? (
+                <>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 700 }} aria-label='customized table'>
                     <TableHead>
                       <TableRow>
-                        <StyledTableCell>Date (UTC)</StyledTableCell>
+                        <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
+                        <StyledTableCell align='center'>Hash</StyledTableCell>
                         <StyledTableCell align='center'>From</StyledTableCell>
                         <StyledTableCell align='center'>To</StyledTableCell>
                         <StyledTableCell align='center'>Token Amount/ <br/> Fiat </StyledTableCell>
@@ -103,15 +122,33 @@ const Row = props => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {row.transactions.map((item, index) => (
+                    {row.transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
+                      // {.map((item, index) => (
                         <StyledTableRow key={index}>
                           <StyledTableCell scope='row'>
-                            <div style={{ display: 'inline-block', width: '150px', content: '' }}>
+                            <div style={{ display: 'inline-block', width: '100px', content: '', textAlign: "left" }}>
                               <span style={{ verticalAlign: 'super' }}> {item.Category} </span>
                             </div>
                             <br />
-                            {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('DD/MM/YYYY hh:mm a')}
+                            {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('ll')}
                           </StyledTableCell>
+                          <StyledTableCell scope='row'>
+                    <div style={{ display: 'inline-block', width: '100px', content: '', textAlign: "center" }}>
+                   
+                                    <Tooltip title={item.TransactionHash}>
+                                     <Link href={`https://etherscan.io/tx/${item.TransactionHash}`} target='_blank' >
+                                    {item.TransactionHash.length > 5
+                                        ? `${item.TransactionHash.substring(
+                                            0,
+                                            5
+                                          )}...`
+                                        : (
+                                          <span style={{textAlign: "center"}}>{
+                                           item.TransactionHash} </span>)} <Launch/>
+                                      </Link>
+                                      </Tooltip>
+                    </div>
+                  </StyledTableCell>
                           <StyledTableCell size='small' align='right'>
                             <div style={{ width: '180px' }}>
                               {/* {item.FromAddress.length > 3 ? userAccountIcon : ''} */}
@@ -132,19 +169,41 @@ const Row = props => {
                               </span>
                             </div>
                           </StyledTableCell>
-                          <StyledTableCell align='left'>
-                            <div>
-                              <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/>
-                              ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'})
-                              </div>
+                          <StyledTableCell align='center'>
+                              {/* <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/> */}
+                              {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
+                              <div style={{ width: '180px' }}>
+                      <span style={{ verticalAlign: 'super', textAlign: "center" }}>
+                      {item.TokenAmount === "--" ?(
+                        ''
+                      ) : isFloat(item.TokenAmount) == true ? (
+                        item.USDAmount != "--" ? 
+                       (
+                        <Typography>
+
+                        {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
+                        </Typography>) : (
+                          <Typography>
+                           {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
+                          </Typography>
+                        )
+                      ):
+                      <Typography>{item.TokenAmount} BANK (${item.USDAmount})</Typography> 
+                    
+                      }
+                                           
+                      
+                      </span>
+                    </div>
                           </StyledTableCell>
                           {/* <StyledTableCell align='right'>
-                            <div style={{ width: '150px' }}>${item.FiatValue}</div>
+                            <div style={{ width: '100px' }}>${item.FiatValue}</div>
                           </StyledTableCell> */}
                           {/* <StyledTableCell align='right'>
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
                           </StyledTableCell> */}
                           <StyledTableCell align='right'>
+                            
                             <div style={{ color: item.TransactionStatus === 'Success' ? 'green' : 'red' }}>
                               {item.TransactionStatus}
                             </div>
@@ -154,6 +213,16 @@ const Row = props => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+  <TablePagination
+  rowsPerPageOptions={[10, 25, 100]}
+  component='div'
+  count={row.transactions.length}
+  rowsPerPage={rowsPerPage}
+  page={page}
+  onPageChange={handleChangePage}
+  onRowsPerPageChange={handleChangeRowsPerPage}
+/>
+</>
               ) : (
                 ''
               )}
@@ -167,7 +236,7 @@ const Row = props => {
 
 const operationTransactionKey = 'Cash Flow From Operation'
 const investmentTransactionKey = 'Cash Flow From Investment'
-const financeTransactionKey = 'Cash Flow from Financing Activity'
+const financeTransactionKey = 'Cash Flow from Financial Activities'
 
 const TableCollapsible = props => {
   const { setSpreadsheetData, setTransactionsData } = props
@@ -176,6 +245,8 @@ const TableCollapsible = props => {
   const [transactionTypeList, setTransactionTypeList] = useState([])
   // const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
+
+
 
   const getFiatValues = function(data) {
     // data.
@@ -305,8 +376,8 @@ const TableCollapsible = props => {
       {/* <CashflowSpreadsheet data={spreadsheetData} />  */}
 
       <BackdropLoader open={open} />
-
-      {transactionTypeList.map(doa => (
+     
+       {transactionTypeList.map(doa => (
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>
             <Card>
@@ -316,11 +387,12 @@ const TableCollapsible = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell width={'50px'} />
-                      <TableCell align='left'>Departments</TableCell>
+                      <TableCell align='left'>Categories</TableCell>
                       <TableCell align='right'>Total Flow</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
+            
                     {doa.categories.map(row => (
                       <Row key={row.name} row={row} open={open} />
                     ))}
@@ -332,7 +404,7 @@ const TableCollapsible = props => {
                       <TableCell align='right'>
                         <b>
                           <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                            ${doa.trxTypeTotalTokenAmt}
+                          ${doa.trxTypeTotalTokenAmt > 0 ? doa.trxTypeTotalTokenAmt : doa.trxTypeTotalTokenAmt*-1}
                           </div>
                         </b>
                       </TableCell>
@@ -340,6 +412,7 @@ const TableCollapsible = props => {
                   </TableBody>
                 </Table>
               </TableContainer>
+            
             </Card>
           </Grid>
         </>

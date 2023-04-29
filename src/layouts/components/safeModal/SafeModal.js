@@ -170,7 +170,7 @@ const noSafeImage =  "/images/no_account.jpg"
 
   return (
     <Dialog onClose={handleClose} open={open} sx={{maxWidth: "150rem"}} className='no-safe'>
-      {safes.length > 0 ? (
+      {safes?.length > 0 ? (
       <Grid container spacing={1}>
       <Grid item lg={5} md={5} xs={12} style={{borderRight: "1px solid #ccc" }}>
       <CardContent sx={{ padding: theme => `${theme.spacing(6, 4, 3)} !important`, }}>

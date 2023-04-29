@@ -6,12 +6,14 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
+import TablePagination from '@mui/material/TablePagination'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import { useEffect, useState } from 'react'
 import getTransactions from 'src/@core/utils/queries/getTransactions'
 import moment from 'moment'
-import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline } from 'mdi-material-ui'
+import { Account, Launch, ArrowDownThin, ArrowUpThin} from 'mdi-material-ui'
 import BackdropLoader from 'src/@core/layouts/components/shared-components/BackdropLoader'
+import { Link, Tooltip, Typography } from '@mui/material'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -45,6 +47,17 @@ const tagStyle = {
 const TableCustomized = () => {
   const [transactions, setTransactions] = useState([])
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = event => {
+    setRowsPerPage(+event.target.value)
+    setPage(0)
+  }
 
   useEffect(() => {
     setOpen(true)
@@ -57,6 +70,9 @@ const TableCustomized = () => {
     
   // }
 
+  function isFloat(x) { return !!(x % 1); }
+
+
   return (
     <>
       <BackdropLoader open={open} />
@@ -65,6 +81,7 @@ const TableCustomized = () => {
             <TableHead>
               <TableRow>
                 <StyledTableCell>Date (UTC)</StyledTableCell>
+                <StyledTableCell align='center'>Hash</StyledTableCell>
                 <StyledTableCell align='center'>From</StyledTableCell>
                 <StyledTableCell align='center'>To</StyledTableCell>
                 <StyledTableCell align='center'>Amount</StyledTableCell>
@@ -76,15 +93,15 @@ const TableCustomized = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {transactions.map((row, index) => (
+              {transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
                 
                 <StyledTableRow key={index}>
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '150px', content: '' }}>
                       {row.Type === 'Outgoing' ? (
-                        <ArrowUpBoldCircleOutline style={{ color: '#f44336' }} />
+                        <ArrowUpThin style={{ color: '#f44336' }} />
                       ) : row.Type === 'Incoming' ? (
-                        <ArrowDownBoldCircleOutline style={{ color: '#4caf50' }} />
+                        <ArrowDownThin style={{ color: '#4caf50' }} />
                       ) : (
                         ''
                       )}
@@ -92,7 +109,27 @@ const TableCustomized = () => {
                     </div>
                     <br />
                     {/* {moment(row.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('DD/MM/YYYY hh:mm a')} */}
-                    {moment(row.Executedat, 'DD-MM-YYYY').format('DD/MM/YYYY')}
+                    {moment(row.Executedat, 'DD-MM-YYYY').format('ll')}
+                  </StyledTableCell>
+                  <StyledTableCell scope='row'>
+                    <div style={{ display: 'inline-block', width: '150px', content: '', textAlign: "center" }}>
+                    <span
+                                    variant="button"
+                                    color="white"
+                                    lineheight="1"
+                                  >
+                                    <Tooltip title={row.TransactionHash}>
+                                     <Link href={`https://etherscan.io/tx/${row.TransactionHash}`} target='_blank'>
+                                    {row.TransactionHash.length > 5
+                                        ? `${row.TransactionHash.substring(
+                                            0,
+                                            5
+                                          )}...`
+                                        : ( row.TransactionHash)}
+                                      </Link>
+                                      </Tooltip>
+                                  </span>
+                    </div>
                   </StyledTableCell>
                   <StyledTableCell size='small' align='right'>
                     <div style={{ width: '180px' }}>
@@ -115,7 +152,31 @@ const TableCustomized = () => {
                     </div>
                   </StyledTableCell>
                   <StyledTableCell align='center'>
-                    <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div>
+                    {console.log("row", row)}
+                    {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
+                    <div style={{ width: '180px' }}>
+                      <span style={{ verticalAlign: 'super' }}>
+                      {row.TokenAmount == "--" ?(
+                        ''
+                      ) : isFloat(row.TokenAmount) == true ? (
+                        row.USDAmount != "--" ? 
+                       (
+                        <Typography>
+
+                        {parseFloat(row.TokenAmount).toFixed(3)} BANK (${row.USDAmount})
+                        </Typography>) : (
+                          <Typography>
+                           {parseFloat(row.TokenAmount).toFixed(3)} BANK (${row.USDAmount})
+                          </Typography>
+                        )
+                      ):
+                      <Typography>{row.TokenAmount} BANK (${row.USDAmount})</Typography> 
+                    
+                      }
+                                           
+                      
+                      </span>
+                    </div>
                   </StyledTableCell>
                   {/* <StyledTableCell align='right'>
                     <div style={{ width: '150px' }}>{row.Transactionfees}</div>
@@ -132,12 +193,21 @@ const TableCustomized = () => {
                     }
                   </StyledTableCell>
 
-                  <StyledTableCell align='left'>{row.Description}</StyledTableCell>
+                  <StyledTableCell align='center'>{row.Description}</StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component='div'
+        count={transactions.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </>
   )
 }
