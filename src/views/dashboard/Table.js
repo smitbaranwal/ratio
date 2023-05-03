@@ -9,7 +9,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import Typography from '@mui/material/Typography'
 import TableContainer from '@mui/material/TableContainer'
-import { ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline } from 'mdi-material-ui'
+import { ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline, ArrowDownThin, ArrowUpThin } from 'mdi-material-ui'
 
 const rows = [
   {
@@ -169,9 +169,9 @@ const DashboardTable = () => {
                 <TableCell>${row.marketValue}</TableCell>
                 <TableCell>${row.unrealizedReturn}
                 { Math.floor(Math.random()*2) != 1  ?
-                   <ArrowUpBoldCircleOutline style={{ color: '#4caf50' }} />
+                   <ArrowUpThin style={{ color: '#4caf50' }} />
                     : 
-                     <ArrowDownBoldCircleOutline style={{ color: '#f44336' }} /> //red
+                     <ArrowDownThin style={{ color: '#f44336' }} /> //red
                 }
                 </TableCell>
                 <TableCell>{row.transactions}</TableCell>
