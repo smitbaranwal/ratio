@@ -112,7 +112,7 @@ const TableCustomized = () => {
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                 <StyledTableCell align='right'>Status</StyledTableCell> */}
              
-              <StyledTableCell align='center'>Description</StyledTableCell>
+              <StyledTableCell sx={{position: "sticky", right: "0", zIndex: "100"}} align='center'>Description</StyledTableCell>
               <StyledTableCell sx={{position: "sticky", right: "0", zIndex: "100"}} align='center'>Tag</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -125,7 +125,7 @@ const TableCustomized = () => {
                   
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '100px', content: '' }}>
-                      {moment(row.Executedat, 'DD-MM-YYYY').format('ll')}
+                      {moment(row.Executedat, 'DD-MM-YYYY').format('L')}
                     </div>
 
                     {/* {moment(row.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('DD/MM/YYYY hh:mm a')} */}
@@ -220,7 +220,7 @@ const TableCustomized = () => {
                   </StyledTableCell> */}
                   
 
-                  <StyledTableCell align='center'>
+                  <StyledTableCell align='center' sx={{position: "sticky", right: "0", zIndex: "100", backgroundColor: "#fff"}}>
                     <div style={{ width: '180px' }}>
                       <LongText content={row.Description} limit={10} />
                     </div>

@@ -127,13 +127,11 @@ const Row = props => {
                           <StyledTableCell align='center'>Hash</StyledTableCell>
                           <StyledTableCell align='center'>From</StyledTableCell>
                           <StyledTableCell align='center'>To</StyledTableCell>
-                          <StyledTableCell align='center'>
-                            Token Amount/ <br /> Fiat{' '}
-                          </StyledTableCell>
+                          <StyledTableCell align='center'>Amount</StyledTableCell>
                           {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
                           {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
 
-                          <StyledTableCell align='center'>Description</StyledTableCell>
+                          <StyledTableCell align='center' sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}>Description</StyledTableCell>
 
                           {/* <StyledTableCell sx={{position: "sticky", left: "0", zIndex: "100"}} align='center'>Tag</StyledTableCell> */}
                           <StyledTableCell align='center' sx={{ position: 'sticky', right: '0', zIndex: '100' }}>
@@ -149,7 +147,7 @@ const Row = props => {
                             <StyledTableRow key={index}>
                               <StyledTableCell scope='row'>
                                 <div style={{ display: 'inline-block', width: '100px', content: '' }}>
-                                  {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('ll')}
+                                  {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('L')}
                                 </div>
                               </StyledTableCell>
                               <StyledTableCell scope='row'>
@@ -166,40 +164,41 @@ const Row = props => {
                                 >
                                   <span variant='button' color='white' lineheight='1'>
                                     <Tooltip title={item.TransactionHash}>
+                                      <>
                                       <Link href={`https://etherscan.io/tx/${item.TransactionHash}`} target='_blank'>
                                         <span style={{ fontSize: '0.8rem' }}>
                                           <Launch />
                                         </span>
-
+                                        </Link>
                                         <span style={{ verticalAlign: 'super' }}>
                                           {item.TransactionHash.length > 3
-                                            ? item.TransactionHash.substring(0, 8) +
+                                            ? item.TransactionHash.substring(0, 4) +
                                               '...' +
-                                              item.TransactionHash.substring(36, 42)
+                                              item.TransactionHash.substring(38, 42)
                                             : '--'}
                                         </span>
-                                      </Link>
+                                        </>
                                     </Tooltip>
                                   </span>
                                 </div>
                               </StyledTableCell>
 
-                              <StyledTableCell size='small' align='right'>
-                                <div style={{ width: '180px' }}>
+                              <StyledTableCell size='small' align='center'>
+                                <div style={{ width: '160' }}>
                                   {item.FromAddress.length > 3 ? userAccountIcon : ''}
                                   <span style={{ verticalAlign: 'super' }}>
                                     {item.FromAddress?.length > 3
-                                      ? item.FromAddress.substring(0, 8) + '...' + item.FromAddress.substring(36, 42)
+                                      ? item.FromAddress.substring(0, 4) + '...' + item.FromAddress.substring(38, 42)
                                       : '--'}
                                   </span>
                                 </div>
                               </StyledTableCell>
-                              <StyledTableCell align='right'>
-                                <div style={{ width: '180px' }}>
+                              <StyledTableCell align='center'>
+                                <div style={{ width: '160' }}>
                                   {item.FromAddress?.length > 3 ? userAccountIcon : ''}
                                   <span style={{ verticalAlign: 'super' }}>
                                     {item.ToAddress?.length > 3
-                                      ? item?.ToAddress.substring(0, 8) + '...' + item.ToAddress.substring(36, 42)
+                                      ? item?.ToAddress.substring(0, 4) + '...' + item.ToAddress.substring(38, 42)
                                       : '--'}
                                   </span>
                                 </div>
@@ -207,7 +206,7 @@ const Row = props => {
                               <StyledTableCell align='center'>
                                 {/* <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/> */}
                                 {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
-                                <div style={{ width: '180px' }}>
+                                <div style={{ width: '160' }}>
                                   <span style={{ verticalAlign: 'super', textAlign: 'center' }}>
                                     {item.TokenAmount === '--' ? (
                                       ''
@@ -236,7 +235,10 @@ const Row = props => {
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
                           </StyledTableCell> */}
 
-                              <StyledTableCell align='center'>
+                              <StyledTableCell 
+                              align='center'
+                              sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                              >
                                 <div style={{ width: '180px' }}>
                                   <LongText content={item.Description} limit={10} />
                                 </div>
@@ -246,8 +248,8 @@ const Row = props => {
                                 sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
                               >
                                 <div style={{ width: '80px' }}>
-                                  {/* {item.Tag && item.Tag !== '--' ? <span style={tagStyle}>{item.Tag}</span> : ''} */}
-                                  <LongText content={item.Description} limit={10} />
+                                  {item.Tag && item.Tag !== '--' ? <span >{item.Tag}</span> : ''}
+                                  {/* <LongText content={item.Description} limit={10} /> */}
                                 </div>
                               </StyledTableCell>
                             </StyledTableRow>
