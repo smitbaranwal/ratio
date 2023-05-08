@@ -31,9 +31,14 @@ const getTransactions = (setTransactions, setOpen) => {
       result.rows.forEach(element => {
         rows.push(createDataRow(element, result.headers))
       })
-      setTransactions(rows)
+         setTransactions(rows)  
+         
+      // if(rows.map((value)=> value.TokenAmount == "--" || value.TokenAmount == 0 )){
+      //   console.log("hi")
+      // } else {
+      //   console.log("rows",{rows})
+      // } 
       setOpen(false)
-      console.log({ rows })
     })
     .catch(error => console.log('error', error))
 }

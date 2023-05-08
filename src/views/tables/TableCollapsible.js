@@ -24,7 +24,14 @@ import { styled } from '@mui/material/styles'
 
 import getTransactions from 'src/@core/utils/queries/getTransactions'
 import BackdropLoader from 'src/@core/layouts/components/shared-components/BackdropLoader'
-import { Account, ArrowDownBoldCircleOutline, ArrowUpBoldCircleOutline, ArrowDownThin, ArrowUpThin, Launch } from 'mdi-material-ui'
+import {
+  Account,
+  ArrowDownBoldCircleOutline,
+  ArrowUpBoldCircleOutline,
+  ArrowDownThin,
+  ArrowUpThin,
+  Launch
+} from 'mdi-material-ui'
 
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
 import moment from 'moment'
@@ -32,6 +39,7 @@ import XLSX from 'sheetjs-style'
 import Cashflow from 'src/pages/reports/cashflow'
 import CashflowSpreadsheet from '../reports/Cashflow'
 import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
+import LongText from 'src/layouts/components/subComponent/longContent'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -62,7 +70,7 @@ const Row = props => {
   // ** State
   const [collapse, setCollapse] = useState(false)
   const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [rowsPerPage, setRowsPerPage] = useState(15)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -79,8 +87,9 @@ const Row = props => {
     setCollapse(false)
   }, [open])
 
-
-  function isFloat(x) { return !!(x % 1); }
+  function isFloat(x) {
+    return !!(x % 1)
+  }
 
   return (
     <Fragment>
@@ -95,7 +104,9 @@ const Row = props => {
         </TableCell>
         <TableCell align='right'>
           {/* <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt}</div> */}
-          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt > 0 ? row.totalTokenAmt : row.totalTokenAmt*-1}</div>
+          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>
+            {row.totalTokenAmt > 0 ? row.totalTokenAmt : row.totalTokenAmt * -1}
+          </div>
         </TableCell>
       </TableRow>
       <TableRow>
@@ -107,122 +118,155 @@ const Row = props => {
               </Typography>
               {!open ? (
                 <>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 700 }} aria-label='customized table'>
-                    <TableHead>
-                      <TableRow>
-                        <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
-                        <StyledTableCell align='center'>Hash</StyledTableCell>
-                        <StyledTableCell align='center'>From</StyledTableCell>
-                        <StyledTableCell align='center'>To</StyledTableCell>
-                        <StyledTableCell align='center'>Token Amount/ <br/> Fiat </StyledTableCell>
-                        {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
-                        {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
-                        <StyledTableCell align='right'>Status</StyledTableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                    {row.transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((item, index) => (
-                      // {.map((item, index) => (
-                        <StyledTableRow key={index}>
-                          <StyledTableCell scope='row'>
-                            <div style={{ display: 'inline-block', width: '100px', content: '', textAlign: "left" }}>
-                              <span style={{ verticalAlign: 'super' }}> {item.Category} </span>
-                            </div>
-                            <br />
-                            {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('ll')}
-                          </StyledTableCell>
-                          <StyledTableCell scope='row'>
-                    <div style={{ display: 'inline-block', width: '100px', content: '', textAlign: "center" }}>
-                   
-                                    <Tooltip title={item.TransactionHash}>
-                                     <Link href={`https://etherscan.io/tx/${item.TransactionHash}`} target='_blank' >
-                                    {item.TransactionHash.length > 5
-                                        ? `${item.TransactionHash.substring(
-                                            0,
-                                            5
-                                          )}...`
-                                        : (
-                                          <span style={{textAlign: "center"}}>{
-                                           item.TransactionHash} </span>)} <Launch/>
-                                      </Link>
-                                      </Tooltip>
-                    </div>
-                  </StyledTableCell>
-                          <StyledTableCell size='small' align='right'>
-                            <div style={{ width: '180px' }}>
-                              {/* {item.FromAddress.length > 3 ? userAccountIcon : ''} */}
-                              <span style={{ verticalAlign: 'super' }}>
-                                {item.FromAddress?.length > 3
-                                  ? item.FromAddress.substring(0, 8) + '...' + item.FromAddress.substring(36, 42)
-                                  : '--'}
-                              </span>
-                            </div>
-                          </StyledTableCell>
-                          <StyledTableCell align='right'>
-                            <div style={{ width: '180px' }}>
-                              {item.FromAddress?.length > 3 ? userAccountIcon : ''}
-                              <span style={{ verticalAlign: 'super' }}>
-                                {item.ToAddress?.length > 3
-                                  ? item?.ToAddress.substring(0, 8) + '...' + item.ToAddress.substring(36, 42)
-                                  : '--'}
-                              </span>
-                            </div>
-                          </StyledTableCell>
-                          <StyledTableCell align='center'>
-                              {/* <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/> */}
-                              {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
-                              <div style={{ width: '180px' }}>
-                      <span style={{ verticalAlign: 'super', textAlign: "center" }}>
-                      {item.TokenAmount === "--" ?(
-                        ''
-                      ) : isFloat(item.TokenAmount) == true ? (
-                        item.USDAmount != "--" ? 
-                       (
-                        <Typography>
+                  <TableContainer component={Paper}>
+                    <Table sx={{ minWidth: 900 }} aria-label='customized table'>
+                      <TableHead>
+                        <TableRow>
+                          <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
+                          <StyledTableCell align='left'>Category</StyledTableCell>
+                          <StyledTableCell align='center'>Hash</StyledTableCell>
+                          <StyledTableCell align='center'>From</StyledTableCell>
+                          <StyledTableCell align='center'>To</StyledTableCell>
+                          <StyledTableCell align='center'>Amount</StyledTableCell>
+                          {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
+                          {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
 
-                        {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
-                        </Typography>) : (
-                          <Typography>
-                           {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
-                          </Typography>
-                        )
-                      ):
-                      <Typography>{item.TokenAmount} BANK (${item.USDAmount})</Typography> 
-                    
-                      }
-                                           
-                      
-                      </span>
-                    </div>
+                          <StyledTableCell align='center' sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}>Description</StyledTableCell>
+
+                          {/* <StyledTableCell sx={{position: "sticky", left: "0", zIndex: "100"}} align='center'>Tag</StyledTableCell> */}
+                          <StyledTableCell align='center' sx={{ position: 'sticky', right: '0', zIndex: '100' }}>
+                            Tag
                           </StyledTableCell>
-                          {/* <StyledTableCell align='right'>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {row.transactions
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((item, index) => (
+                            // {.map((item, index) => (
+                            <StyledTableRow key={index}>
+                              <StyledTableCell scope='row'>
+                                <div style={{ display: 'inline-block', width: '100px', content: '' }}>
+                                  {moment(item.Executedat, 'DD-MM-YYYY hh:mm:ss T').format('L')}
+                                </div>
+                              </StyledTableCell>
+                              <StyledTableCell scope='row'>
+                                <div
+                                  style={{ display: 'inline-block', width: '100px', content: '', textAlign: 'left' }}
+                                >
+                                  <span style={{ verticalAlign: 'super' }}> {item.Category} </span>
+                                </div>
+                              </StyledTableCell>
+
+                              <StyledTableCell scope='row'>
+                                <div
+                                  style={{ display: 'inline-block', width: '160px', content: '', textAlign: 'center' }}
+                                >
+                                  <span variant='button' color='white' lineheight='1'>
+                                    <Tooltip title={item.TransactionHash}>
+                                      <>
+                                      <Link href={`https://etherscan.io/tx/${item.TransactionHash}`} target='_blank'>
+                                        <span style={{ fontSize: '0.8rem' }}>
+                                          <Launch />
+                                        </span>
+                                        </Link>
+                                        <span style={{ verticalAlign: 'super' }}>
+                                          {item.TransactionHash.length > 3
+                                            ? item.TransactionHash.substring(0, 4) +
+                                              '...' +
+                                              item.TransactionHash.substring(38, 42)
+                                            : '--'}
+                                        </span>
+                                        </>
+                                    </Tooltip>
+                                  </span>
+                                </div>
+                              </StyledTableCell>
+
+                              <StyledTableCell size='small' align='center'>
+                                <div style={{ width: '160' }}>
+                                  {item.FromAddress.length > 3 ? userAccountIcon : ''}
+                                  <span style={{ verticalAlign: 'super' }}>
+                                    {item.FromAddress?.length > 3
+                                      ? item.FromAddress.substring(0, 4) + '...' + item.FromAddress.substring(38, 42)
+                                      : '--'}
+                                  </span>
+                                </div>
+                              </StyledTableCell>
+                              <StyledTableCell align='center'>
+                                <div style={{ width: '160' }}>
+                                  {item.FromAddress?.length > 3 ? userAccountIcon : ''}
+                                  <span style={{ verticalAlign: 'super' }}>
+                                    {item.ToAddress?.length > 3
+                                      ? item?.ToAddress.substring(0, 4) + '...' + item.ToAddress.substring(38, 42)
+                                      : '--'}
+                                  </span>
+                                </div>
+                              </StyledTableCell>
+                              <StyledTableCell align='center'>
+                                {/* <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/> */}
+                                {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
+                                <div style={{ width: '160' }}>
+                                  <span style={{ verticalAlign: 'super', textAlign: 'center' }}>
+                                    {item.TokenAmount === '--' ? (
+                                      ''
+                                    ) : isFloat(item.TokenAmount) == true ? (
+                                      item.USDAmount != '--' ? (
+                                        <Typography>
+                                          {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
+                                        </Typography>
+                                      ) : (
+                                        <Typography>
+                                          {parseFloat(item.TokenAmount).toFixed(3)} BANK (${item.USDAmount})
+                                        </Typography>
+                                      )
+                                    ) : (
+                                      <Typography>
+                                        {item.TokenAmount} BANK (${item.USDAmount})
+                                      </Typography>
+                                    )}
+                                  </span>
+                                </div>
+                              </StyledTableCell>
+                              {/* <StyledTableCell align='right'>
                             <div style={{ width: '100px' }}>${item.FiatValue}</div>
                           </StyledTableCell> */}
-                          {/* <StyledTableCell align='right'>
+                              {/* <StyledTableCell align='right'>
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
                           </StyledTableCell> */}
-                          <StyledTableCell align='right'>
-                            
-                            <div style={{ color: item.TransactionStatus === 'Success' ? 'green' : 'red' }}>
-                              {item.TransactionStatus}
-                            </div>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-  <TablePagination
-  rowsPerPageOptions={[10, 25, 100]}
-  component='div'
-  count={row.transactions.length}
-  rowsPerPage={rowsPerPage}
-  page={page}
-  onPageChange={handleChangePage}
-  onRowsPerPageChange={handleChangeRowsPerPage}
-/>
-</>
+
+                              <StyledTableCell 
+                              align='center'
+                              sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                              >
+                                <div style={{ width: '180px' }}>
+                                  <LongText content={item.Description} limit={10} />
+                                </div>
+                              </StyledTableCell>
+                              <StyledTableCell
+                                align='center'
+                                sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                              >
+                                <div style={{ width: '80px' }}>
+                                  {item.Tag && item.Tag !== '--' ? <span >{item.Tag}</span> : ''}
+                                  {/* <LongText content={item.Description} limit={10} /> */}
+                                </div>
+                              </StyledTableCell>
+                            </StyledTableRow>
+                          ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <TablePagination
+                    rowsPerPageOptions={[15, 30, 100]}
+                    component='div'
+                    count={row.transactions.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </>
               ) : (
                 ''
               )}
@@ -246,9 +290,7 @@ const TableCollapsible = props => {
   // const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
 
-
-
-  const getFiatValues = function(data) {
+  const getFiatValues = function (data) {
     // data.
     getFiatCurrency(updateTrx, data)
     // updateTrx()
@@ -319,7 +361,7 @@ const TableCollapsible = props => {
     setTransactionsData(daoList)
     setSpreadsheetData(excelData)
   }
-  
+
   const financialCategory = ['Token Release', 'Compensation']
 
   const operationCategory = [
@@ -376,8 +418,8 @@ const TableCollapsible = props => {
       {/* <CashflowSpreadsheet data={spreadsheetData} />  */}
 
       <BackdropLoader open={open} />
-     
-       {transactionTypeList.map(doa => (
+
+      {transactionTypeList.map(doa => (
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>
             <Card>
@@ -392,7 +434,6 @@ const TableCollapsible = props => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-            
                     {doa.categories.map(row => (
                       <Row key={row.name} row={row} open={open} />
                     ))}
@@ -404,7 +445,7 @@ const TableCollapsible = props => {
                       <TableCell align='right'>
                         <b>
                           <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                          ${doa.trxTypeTotalTokenAmt > 0 ? doa.trxTypeTotalTokenAmt : doa.trxTypeTotalTokenAmt*-1}
+                            ${doa.trxTypeTotalTokenAmt > 0 ? doa.trxTypeTotalTokenAmt : doa.trxTypeTotalTokenAmt * -1}
                           </div>
                         </b>
                       </TableCell>
@@ -412,7 +453,6 @@ const TableCollapsible = props => {
                   </TableBody>
                 </Table>
               </TableContainer>
-            
             </Card>
           </Grid>
         </>
