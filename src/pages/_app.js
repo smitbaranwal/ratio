@@ -68,7 +68,7 @@ const App = props => {
     <>
       <CacheProvider value={emotionCache}>
       <Head>
-        <title>Financial Growth</title>
+        <title>ratio.money</title>
         <meta
           name='description'
           content={`Transactions can be categorized using a small tagging methodology and can be considered as metadata of any transaction.`}
