@@ -103,10 +103,21 @@ const Row = props => {
           {row.name}
         </TableCell>
         <TableCell align='right'>
-          {/* <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>{row.totalTokenAmt}</div> */}
-          <div style={{ color: row.totalTokenAmt > 0 ? 'green' : 'red' }}>
-            {row.totalTokenAmt > 0 ? row.totalTokenAmt : row.totalTokenAmt * -1}
-          </div>
+          {row.totalTokenAmt > 0 ? (
+            <span style={{ color: 'green' }}>{row.totalTokenAmt}</span>
+          ) : (
+            <span style={{ color: 'red' }}>{Math.abs(row.totalTokenAmt)}</span>
+          )}{' '}
+          | &nbsp;
+          {row.totalUSDAmtPre < 0 ? (
+            <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtPre.toFixed(2))}</span>
+          ) : (
+            <span style={{ color: 'green' }}>
+              {row.totalUSDAmtPre != '--' ? '$' + row.totalUSDAmtPre.toFixed(3) : '$0.00'}
+            </span>
+          )}
+          {/* <NumberFormat value={2456981} displayType={'text'} thousandSeparator={true} prefix={'$'} /> */}
+          {/* <div style={{ color: row.totalTokenAmt < 0 ? 'red' : 'green' }}>{row.totalTokenAmt}</div> */}
         </TableCell>
       </TableRow>
       <TableRow>
@@ -311,7 +322,7 @@ const TableCollapsible = props => {
       }
       if (insertInTransactionType !== '') {
         if (!daoObject[insertInTransactionType] || !daoObject[insertInTransactionType].categories) {
-          daoObject[insertInTransactionType] = { trxTypeTotalTokenAmt: 0, categories: [] }
+          daoObject[insertInTransactionType] = { trxTypeTotalTokenAmt: 0, trxTypeTotalUSDAmtPre: 0, categories: [] }
         }
         let availableCatIndex = daoObject[insertInTransactionType].categories.findIndex(c => c.name == trx.Category)
         if (availableCatIndex < 0) {
@@ -323,19 +334,27 @@ const TableCollapsible = props => {
 
           if (trx.Type == 'Outgoing') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = 0 - trx.TokenAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = 0 - trx.USDAmount
             categoryData.totalTokenAmt = 0 - trx.TokenAmount
+            categoryData.totalUSDAmtPre = 0 - trx.USDAmount
           } else if (trx.Type == 'Incoming') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = trx.TokenAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = trx.USDAmount
             categoryData.totalTokenAmt = trx.TokenAmount
+            categoryData.totalUSDAmtPre = trx.USDAmount
           }
           daoObject[insertInTransactionType].categories.push(categoryData)
         } else {
           if (trx.Type == 'Outgoing') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt -= trx.TokenAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
             daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt -= trx.TokenAmount
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre -= trx.USDAmount
           } else if (trx.Type == 'Incoming') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt += trx.TokenAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
             daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt += trx.TokenAmount
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre += trx.USDAmount
           }
           daoObject[insertInTransactionType].categories[availableCatIndex].transactions.push(trx)
         }
@@ -350,6 +369,7 @@ const TableCollapsible = props => {
       daoList.push({
         name: key,
         trxTypeTotalTokenAmt: daoObject[key].trxTypeTotalTokenAmt,
+        trxTypeTotalUSDAmtPre: daoObject[key].trxTypeTotalUSDAmtPre,
         categories: daoObject[key].categories
       })
       console.log('categories data', daoObject[key].categories)
@@ -444,8 +464,13 @@ const TableCollapsible = props => {
                       </TableCell>
                       <TableCell align='right'>
                         <b>
-                          <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                            ${doa.trxTypeTotalTokenAmt > 0 ? doa.trxTypeTotalTokenAmt : doa.trxTypeTotalTokenAmt * -1}
+                          {/* <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
+                            ${doa.trxTypeTotalTokenAmt}
+                          </div> */}
+                          <div style={{ color: doa.trxTypeTotalUSDAmtPre > 0 ? 'green' : 'red' }}>
+                            {!isNaN(doa.trxTypeTotalUSDAmtPre)
+                              ? Number(doa.trxTypeTotalUSDAmtPre).toFixed(2)
+                              : doa.trxTypeTotalUSDAmtPre}
                           </div>
                         </b>
                       </TableCell>
