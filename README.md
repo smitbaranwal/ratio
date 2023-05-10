@@ -1,17 +1,17 @@
-# FinGrow
+# Ratio
 Integrating the tool on payment gateways lets you identify the nature of the transaction at the time of the transaction &amp; generate these reports with the click integrated tool.
 # Demo™
 TBF
-# FinGrow™
+# Ratio™
 
 [![Release](https://img.shields.io/github/v/release/smitbaranwal/Fin-Grow_React_App)](https://github.com/fingrow/fingrow/releases)
 ![Coinbase](https://img.shields.io/bundlephobia/min/coinbase?style=plastic)
 [![NPM](https://img.shields.io/npm/v/coinbase?style=plastic)](https://www.npmjs.com/package/@web3-onboard/coinbase)
 [![Material UI](https://img.shields.io/npm/v/material?style=plastic)](https://www.npmjs.com/package/@mui/material)
 
-FinGrow is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., FinGrow has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance standards.
+Ratio is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., Ratio has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance standards.
 
-* [Operators] FinGrow provides real-time P&L across their accounts, enabling them to achieve world-class financial planning.
+* [Operators] Ratio provides real-time P&L across their accounts, enabling them to achieve world-class financial planning.
 * [Accountants] Accountants can benefit from powerful integrations across crypto platforms and accounting software, which can help them unlock new client segments. 
 * [Auditors] Auditors can easily verify and reconcile transactions across all wallets, exchanges, banks, and custodians in one place.
 
@@ -23,19 +23,19 @@ FinGrow is an advanced online accounting and analytical software that is specifi
 
 ## Framework
 
-FinGrow uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
+Ratio uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
 
 ## Frontend 
-FinGrow uses [React](https://react.dev/) and some of its libraries includes [Material](https://www.npmjs.com/package/@mui/material), [web3-onboard](https://www.npmjs.com/package/web3-onboard), [recharts](https://www.npmjs.com/package/recharts), etc.
+Ratio uses [React](https://react.dev/) and some of its libraries includes [Material](https://www.npmjs.com/package/@mui/material), [web3-onboard](https://www.npmjs.com/package/web3-onboard), [recharts](https://www.npmjs.com/package/recharts), etc.
 Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. With built-in modules for more than 35 unique hardware and software wallets, Web3-Onboard saves you time and headaches.
 
-[FinGrow App](https://fin-grow.vercel.app)
+[Ratio App](https://fin-grow.vercel.app)
 
 ## Backend
-FinGrow uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api)
+Ratio uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api)
 
 ## PRD link
-[Notion Documentation](https://salty-lung-b66.notion.site/FinGrow-18afbc011f4c4e9a99caa23de753c393)
+[Notion Documentation](https://salty-lung-b66.notion.site/Ratio-18afbc011f4c4e9a99caa23de753c393)
 
 ## UX Wireframes
 ![image](https://user-images.githubusercontent.com/15996942/226088154-511d0c3a-a865-4af7-96f7-ab6a44423db0.png)
@@ -72,7 +72,7 @@ yarn dev
 ```
 ## Login
 
-To begin using FinGrow and authorize with Metamask as a blockchain wallet, follow these steps:
+To begin using Ratio and authorize with Metamask as a blockchain wallet, follow these steps:
 
 1. Install the Metamask extension on Google Chrome using [MetaMask](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en-GB).
 
@@ -82,9 +82,9 @@ To begin using FinGrow and authorize with Metamask as a blockchain wallet, follo
 
 4. Pin the Metamask extension from the list of extensions, so that it will always be visible on Chrome tabs.
 
-5. To connect to the FinGrow app, go to [Local Environment](http://localhost:3000/pages/login) or [Production Environment](https://fin-grow.vercel.app/pages/login) and click "Connect Wallet".
+5. To connect to the Ratio app, go to [Local Environment](http://localhost:3000/pages/login) or [Production Environment](https://fin-grow.vercel.app/pages/login) and click "Connect Wallet".
 
-6. Select "Metamask" from the list of wallets and authorize the FinGrow app to access your public key accounts.
+6. Select "Metamask" from the list of wallets and authorize the Ratio app to access your public key accounts.
 
 7. Click "Next" and then "Connect". Select one safe address which pops up after authorizing using the "Connect" button.
 
