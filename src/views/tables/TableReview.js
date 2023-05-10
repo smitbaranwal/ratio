@@ -8,13 +8,16 @@ import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import TablePagination from '@mui/material/TablePagination'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 import getTransactions from 'src/@core/utils/queries/getTransactions'
 import moment from 'moment'
 import { Account, Launch, ArrowDownThin, ArrowUpThin } from 'mdi-material-ui'
 import BackdropLoader from 'src/@core/layouts/components/shared-components/BackdropLoader'
-import { Link, Tooltip, Typography } from '@mui/material'
+import { CardContent, Grid, Link, TextField, Tooltip, Typography } from '@mui/material'
 import LongText from 'src/layouts/components/subComponent/longContent'
+// import { DatePicker } from '@mui/lab'
+
+import DatePicker from 'react-datepicker'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -32,18 +35,17 @@ const StickyTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
     left: 0,
-    position: "sticky",
+    position: 'sticky',
     zIndex: theme.zIndex.appBar + 2
   },
   body: {
-    backgroundColor: "#ddd",
-    minWidth: "50px",
+    backgroundColor: '#ddd',
+    minWidth: '50px',
     left: 0,
-    position: "sticky",
+    position: 'sticky',
     zIndex: theme.zIndex.appBar + 1
   }
-}));
-
+}))
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -63,11 +65,17 @@ const tagStyle = {
   boxShadow: '2px 2px #d3a166'
 }
 
+const CustomInput = forwardRef((props, ref) => {
+  return <TextField fullWidth {...props} inputRef={ref} label='Filter by Transaction Date' autoComplete='off' />
+})
+
 const TableCustomized = () => {
   const [transactions, setTransactions] = useState([])
+  const [transactionsBU, setTransactionsBU] = useState([])
   const [open, setOpen] = useState(false)
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
+  const [date, setDate] = useState(null)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -93,15 +101,43 @@ const TableCustomized = () => {
     return !!(x % 1)
   }
 
+  function setDateFilter(date) {
+    setDate(date)
+    if (!transactionsBU.length) {
+       setTransactionsBU(transactions)
+    }
+    console.log('date', date)
+
+    var filteredTransactions = transactionsBU.filter(function (item) {
+      return moment(item.Executedat, 'DD-MM-YYYY').format('L') === moment(date).format('L')
+    }
+    )
+    console.log('filteredTransactions', filteredTransactions)
+    setTransactions(filteredTransactions)
+  }
+
   return (
     <>
       <BackdropLoader open={open} />
       <TableContainer component={Paper}>
+        <CardContent>
+          <Grid container spacing={5}>
+            <Grid item xs={12} sm={6}>
+              <DatePicker
+                selected={date}
+                showYearDropdown
+                showMonthDropdown
+                placeholderText='MM-DD-YYYY'
+                customInput={<CustomInput />}
+                id='form-layouts-separator-date'
+                onChange={date => setDateFilter(date)}
+              />
+            </Grid>
+          </Grid>
+        </CardContent>
         <Table sx={{ minWidth: 900 }} aria-label='customized table'>
           <TableHead>
             <TableRow>
-            
-          
               <StyledTableCell>Date (UTC)</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
               <StyledTableCell align='center'>Hash</StyledTableCell>
@@ -111,9 +147,13 @@ const TableCustomized = () => {
               {/* <StyledTableCell align='center'>Fee</StyledTableCell>
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                 <StyledTableCell align='right'>Status</StyledTableCell> */}
-             
-              <StyledTableCell sx={{position: "sticky", right: "0", zIndex: "100"}} align='center'>Description</StyledTableCell>
-              <StyledTableCell sx={{position: "sticky", right: "0", zIndex: "100"}} align='center'>Tag</StyledTableCell>
+
+              <StyledTableCell sx={{ position: 'sticky', right: '0', zIndex: '100' }} align='center'>
+                Description
+              </StyledTableCell>
+              <StyledTableCell sx={{ position: 'sticky', right: '0', zIndex: '100' }} align='center'>
+                Tag
+              </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -122,7 +162,6 @@ const TableCustomized = () => {
             {transactions.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) =>
               row.TokenAmount != '--' ? (
                 <StyledTableRow key={index}>
-                  
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '100px', content: '' }}>
                       {moment(row.Executedat, 'DD-MM-YYYY').format('L')}
@@ -150,17 +189,17 @@ const TableCustomized = () => {
                       <span variant='button' color='white' lineheight='1'>
                         <Tooltip title={row.TransactionHash}>
                           <>
-                          <Link href={`https://etherscan.io/tx/${row.TransactionHash}`} target='_blank'>
-                            <span style={{ fontSize: '0.8rem' }}>
-                              <Launch sx={{color: "#607de6"}}/>
-                            </span>
+                            <Link href={`https://etherscan.io/tx/${row.TransactionHash}`} target='_blank'>
+                              <span style={{ fontSize: '0.8rem' }}>
+                                <Launch sx={{ color: '#607de6' }} />
+                              </span>
                             </Link>
                             <span style={{ verticalAlign: 'super' }}>
                               {row.TransactionHash.length > 3
                                 ? row.TransactionHash.substring(0, 4) + '...' + row.TransactionHash.substring(38, 42)
                                 : '--'}
                             </span>
-                            </>
+                          </>
                         </Tooltip>
                       </span>
                     </div>
@@ -218,16 +257,21 @@ const TableCustomized = () => {
                   {/* <StyledTableCell align='right'>
                   <div style={{ color: row.TransactionStatus === 'Success' ? 'green' : 'red' }}>{row.TransactionStatus}</div>
                   </StyledTableCell> */}
-                  
 
-                  <StyledTableCell align='center' sx={{position: "sticky", right: "0", zIndex: "100", backgroundColor: "#fff"}}>
+                  <StyledTableCell
+                    align='center'
+                    sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                  >
                     <div style={{ width: '180px' }}>
                       <LongText content={row.Description} limit={10} />
                     </div>
                   </StyledTableCell>
-                  <StyledTableCell align='center' sx={{position: "sticky", right: "0", zIndex: "100", backgroundColor: "#fff"}}>
-                  <div style={{ display: 'inline-block', width: '150px', content: '' }}>
-                    {row.Tag && row.Tag !== '--' ?  <span style={{ verticalAlign: 'super' }}>{row.Tag}</span> : ''}
+                  <StyledTableCell
+                    align='center'
+                    sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                  >
+                    <div style={{ display: 'inline-block', width: '150px', content: '' }}>
+                      {row.Tag && row.Tag !== '--' ? <span style={{ verticalAlign: 'super' }}>{row.Tag}</span> : ''}
                     </div>
                     {/* <div style={{ display: 'inline-block', width: '150px', content: '' }}>
                       {row.Type === 'Outgoing' ? (
