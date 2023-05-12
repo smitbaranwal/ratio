@@ -16,8 +16,9 @@ import BackdropLoader from 'src/@core/layouts/components/shared-components/Backd
 import { CardContent, Grid, Link, TextField, Tooltip, Typography } from '@mui/material'
 import LongText from 'src/layouts/components/subComponent/longContent'
 // import { DatePicker } from '@mui/lab'
-
+import dayjs from 'dayjs';
 import DatePicker from 'react-datepicker'
+import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -102,6 +103,13 @@ const TableCustomized = () => {
   }
 
   function setDateFilter(date) {
+    
+    console.log('date', dayjs(date[0]).format('L'))
+    let startdate = dayjs(date[0]).format('L')
+    let enddate = dayjs(date[0]).format('L')
+    if (date[1]) {
+      enddate = dayjs(date[1]).add(1, 'days').format('L')
+    }
     setDate(date)
     if (!transactionsBU.length) {
        setTransactionsBU(transactions)
@@ -109,7 +117,7 @@ const TableCustomized = () => {
     console.log('date', date)
 
     var filteredTransactions = transactionsBU.filter(function (item) {
-      return moment(item.Executedat, 'DD-MM-YYYY').format('L') === moment(date).format('L')
+      return moment(item.Executedat, 'DD-MM-YYYY').format('L') >= moment(startdate).format('L') && moment(item.Executedat, 'DD-MM-YYYY').format('L') <= moment(enddate).format('L')
     }
     )
     console.log('filteredTransactions', filteredTransactions)
@@ -123,7 +131,8 @@ const TableCustomized = () => {
         <CardContent>
           <Grid container spacing={5}>
             <Grid item xs={12} sm={6}>
-              <DatePicker
+              <BasicDateRangePicker updateDate={setDateFilter}></BasicDateRangePicker>
+              {/* <DatePicker
                 selected={date}
                 showYearDropdown
                 showMonthDropdown
@@ -131,7 +140,7 @@ const TableCustomized = () => {
                 customInput={<CustomInput />}
                 id='form-layouts-separator-date'
                 onChange={date => setDateFilter(date)}
-              />
+              /> */}
             </Grid>
           </Grid>
         </CardContent>
