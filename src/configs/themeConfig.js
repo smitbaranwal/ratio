@@ -7,7 +7,7 @@ const themeConfig = {
   routingLoader: true /* true | false */,
   // ** Navigation (Menu) Configs
   menuTextTruncate: true /* true | false */,
-  navigationSize: 750 /* Number in PX(Pixels) /*! Note: This is for Vertical navigation menu only */,
+  navigationSize: 75 /* Number in PX(Pixels) /*! Note: This is for Vertical navigation menu only */,
   // ** Other Configs
   responsiveFontSizes: true /* true | false */,
   disableRipple: false /* true | false */
