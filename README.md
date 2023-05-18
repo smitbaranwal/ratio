@@ -1,39 +1,25 @@
-# Ratio
+<!-- # Ratio
 Integrating the tool on payment gateways lets you identify the nature of the transaction at the time of the transaction &amp; generate these reports with the click integrated tool.
-# Demo™
-TBF
-# Ratio™
+ -->
 
+# Ratio™
 [![Release](https://img.shields.io/github/v/release/smitbaranwal/Fin-Grow_React_App)](https://github.com/fingrow/fingrow/releases)
 ![Coinbase](https://img.shields.io/bundlephobia/min/coinbase?style=plastic)
 [![NPM](https://img.shields.io/npm/v/coinbase?style=plastic)](https://www.npmjs.com/package/@web3-onboard/coinbase)
 [![Material UI](https://img.shields.io/npm/v/material?style=plastic)](https://www.npmjs.com/package/@mui/material)
 
-Ratio is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., Ratio has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance standards.
+Integrating the tool on payment gateways lets you identify the nature of the transaction at the time of the transaction &amp; generate these reports with the click integrated tool. Ratio is an advanced online accounting and analytical software that is specifically designed to support the growth of businesses operating in the web3 ecosystem. In partnership with Parcel Inc., Ratio has introduced new features to automate NFT accounting for businesses, making it easier to report primary and secondary income, categorize transactions automatically, and maintain robust documentation of capital gains and losses in compliance standards.
 
 * [Operators] Ratio provides real-time P&L across their accounts, enabling them to achieve world-class financial planning.
 * [Accountants] Accountants can benefit from powerful integrations across crypto platforms and accounting software, which can help them unlock new client segments. 
 * [Auditors] Auditors can easily verify and reconcile transactions across all wallets, exchanges, banks, and custodians in one place.
 
-## Requirements
 
-* Node 12.0 or higher
-* Database MongoDB
-* Web Server (NodeJS)
 
-## Framework
 
-Ratio uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps.
-
-## Frontend 
-Ratio uses [React](https://react.dev/) and some of its libraries includes [Material](https://www.npmjs.com/package/@mui/material), [web3-onboard](https://www.npmjs.com/package/web3-onboard), [recharts](https://www.npmjs.com/package/recharts), etc.
-Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. With built-in modules for more than 35 unique hardware and software wallets, Web3-Onboard saves you time and headaches.
-
-[Ratio App](https://fin-grow.vercel.app)
-
-## Backend
-Ratio uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api)
-
+<!-- ## Backend
+Ratio uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/en/about), As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. [source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master/src/pages/api) -->
+<!-- 
 ## PRD link
 [Notion Documentation](https://salty-lung-b66.notion.site/Ratio-18afbc011f4c4e9a99caa23de753c393)
 
@@ -46,8 +32,8 @@ Ratio uses [MongoDB](https://www.mongodb.com/) and [NodeJS](https://nodejs.org/e
 ## HLD
 
 <img width="929" alt="image" src="https://user-images.githubusercontent.com/15996942/226088095-1a264575-ce4d-4b54-9983-f2bed9ab9c89.png">
-
-[miro link](https://miro.com/welcomeonboard/YW9tTWdQaWZRbU9seXByOWRyckJjWEVDcnYwR1N1S25kMlZFemhUSVRMSDFEcXZyZ2NubVVnenUya2M3VE56dHwzNDU4NzY0NTQ4ODU5NDgyMDczfDI=?share_link_id=416606536523)
+ -->
+<!-- [miro link](https://miro.com/welcomeonboard/YW9tTWdQaWZRbU9seXByOWRyckJjWEVDcnYwR1N1S25kMlZFemhUSVRMSDFEcXZyZ2NubVVnenUya2M3VE56dHwzNDU4NzY0NTQ4ODU5NDgyMDczfDI=?share_link_id=416606536523) -->
 
 
 ## Installation ⚒️
@@ -93,6 +79,21 @@ To begin using Ratio and authorize with Metamask as a blockchain wallet, follow 
 Detailed process of registering and logging in with the screenshots [Login Process](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/Login_Process.pdf)
 
 
+## Source Code 
+Ratio uses [React](https://react.dev/) and some of its libraries includes [Material](https://www.npmjs.com/package/@mui/material), [web3-onboard](https://www.npmjs.com/package/web3-onboard), [recharts](https://www.npmjs.com/package/recharts), etc.
+Web3-Onboard is the quickest and easiest way to add multi-wallet and multi-chain support to your project. With built-in modules for more than 35 unique hardware and software wallets, Web3-Onboard saves you time and headaches.
+[source code](https://github.com/smitbaranwal/Fin-Grow_React_App/tree/master)
+<!-- 
+## Requirements
+
+* Node 12.0 or higher
+* Database MongoDB
+* Web Server (NodeJS)
+
+## Framework
+
+Ratio uses [Next.js](https://nextjs.org/), the best existing React framework, as the foundation framework and [Packages](https://github.com/smitbaranwal/Fin-Grow_React_App/blob/master/package.json) for Apps. -->
+<!-- 
 ## Contribution
 
 To ensure that your contributions are accepted when submitting code to Fingrow, please adhere to the following guidelines:
@@ -105,7 +106,7 @@ To ensure that your contributions are accepted when submitting code to Fingrow, 
 
 ## Changelog
 
-To view recent changes, click [Releases](../../releases).
+To view recent changes, click [Releases](../../releases). -->
 
 # Authors
  + Smit Baranwal
