@@ -42,8 +42,7 @@ const heading = {
   verticalAlign: 'middle'
 }
 
-const subHeading = {...heading, fontSize: '10pt', backgroundColor: '#f2f2f2'}
-
+const subHeading = { ...heading, fontSize: '10pt', backgroundColor: '#f2f2f2' }
 
 const boldCenterCategory = {
   fontWeight: 'bold',
@@ -69,47 +68,77 @@ const CashflowSpreadsheet = props => {
   console.log('categorized data from cashflowspreadsheet', categorisedData)
   let currentIndex = 3
 
-const [onloaded, setOnloaded] = useState(false)
+  const [onloaded, setOnloaded] = useState(false)
 
   function onCreated() {
     // debugger
     console.log('on created spreadsheet', spreadsheet.sheets[spreadsheet.activeSheetIndex])
-    
+
     spreadsheet.cellFormat({ fontWeight: 'bold' }, 'B1:B9')
     categorisedData.forEach(category => {
       // insert category header name
       rowsModel.push({
         index: currentIndex,
-        cells: [ { value: category.name, colSpan: 4, style: boldCenterCategory, height: 35 }]
+        cells: [{ value: category.name, colSpan: 4, style: boldCenterCategory, height: 35 }]
       })
       currentIndex++
 
       // insert category components
       category.categories.forEach(cat => {
-        rowsModel.push({ index: currentIndex, cells: [{value: '', height: 25}, {value: cat.name, height: 25 },
-        {value: cat.totalTokenAmt, height: 25, style: {
-          color: cat.totalTokenAmt < -1 ? '#ff0000' : '#000000'
-        }}] })
+        rowsModel.push({
+          index: currentIndex,
+          cells: [
+            { value: '', height: 25 },
+            { value: cat.name, height: 25 },
+            {
+              value: cat.totalUSDAmtPre < 0 ? (
+                Math.abs(cat.totalTokenAmt) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
+              ) : (
+                
+                  cat.totalUSDAmtPre != '--' ? Math.abs(cat.totalTokenAmt) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt) + ' | $0.00'
+                
+              ),
+              height: 25,
+              style: {
+                color: cat.totalTokenAmt < -1 ? '#ff0000' : '#000000'
+              }
+            }
+          ]
+        })
         currentIndex++
       })
 
       // insert category total
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
-      rowsModel.push({ index: currentIndex, cells: [{value: '', height: 25}, {value: 'Total', height: 25, style:{fontWeight: 'bold'} },
-      {value: total, height: 25, style:{fontWeight: 'bold', color: total < -1 ? '#ff0000' : '#000000'}}] })
+      let totalUsd = category.categories.reduce((acc, cat) => acc + cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0, 0)
+      let istotalnegative = total < -1
+      rowsModel.push({
+        index: currentIndex,
+        cells: [
+          { value: '', height: 25 },
+          { value: 'Total', height: 25, style: { fontWeight: 'bold' } },
+          { value: Math.abs(total) + ' | $' + Math.abs(totalUsd).toFixed(3), height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } }
+        ]
+      })
       currentIndex++
 
       // insert blank row for category separation
-      rowsModel.push({index: currentIndex, cells: [{value: '', colSpan: 4}]})
+      rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
       currentIndex++
     })
 
     // insert blank row for netflow separation
-    rowsModel.push({index: currentIndex, cells: [{value: '', colSpan: 4}]})
+    rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
-    let total =  categorisedData.reduce((acc, cat) => acc + cat.trxTypeTotalTokenAmt, 0)
-      rowsModel.push({ index: currentIndex, cells: [{value: '', height: 25}, {value: 'Net CashFlow', height: 25, style:{fontWeight: 'bold'} },
-      {value: total, height: 25, style:{fontWeight: 'bold', color: total < -1 ? '#ff0000' : '#000000'}}] })
+    let total = categorisedData.reduce((acc, cat) => acc + cat.trxTypeTotalTokenAmt, 0)
+    rowsModel.push({
+      index: currentIndex,
+      cells: [
+        { value: '', height: 25 },
+        { value: 'Net CashFlow', height: 25, style: { fontWeight: 'bold' } },
+        { value: total, height: 25, style: { fontWeight: 'bold', color: total < -1 ? '#ff0000' : '#000000' } }
+      ]
+    })
     spreadsheet.insertRow(rowsModel)
     // spreadsheet.numberFormat('_($#,##0.00_);_($* (#,##0.00);_($"-"??_);_(@_)', 'C5:C15')
     spreadsheet.numberFormat('[Red][<0]$#,##0.0000;[Black][>=0]$#,##0.0000', 'C5:C15')
@@ -123,7 +152,7 @@ const [onloaded, setOnloaded] = useState(false)
       }, index * timeouttime)
     })
     setTimeout(() => {
-      spreadsheet.moveSheet(1, [spreadsheet.sheets.length-1])
+      spreadsheet.moveSheet(1, [spreadsheet.sheets.length - 1])
     }, spreadsheet.sheets.length - 1 * timeouttime)
     setTimeout(() => {
       spreadsheet.moveSheet(0, [0])
@@ -133,14 +162,14 @@ const [onloaded, setOnloaded] = useState(false)
 
   function beforeCellRender(args) {
     if (spreadsheet.sheets[spreadsheet.activeSheetIndex].name === 'Order Details' && !spreadsheet.isOpen) {
-        if (args.cell && args.cell.value) {
-            //Applying cell formatting before rendering the particular cell.
-            if (+args.cell.value < 0) {
-                spreadsheet.cellFormat({ color: '#ff5b5b' }, args.address)
-            }
+      if (args.cell && args.cell.value) {
+        //Applying cell formatting before rendering the particular cell.
+        if (+args.cell.value < 0) {
+          spreadsheet.cellFormat({ color: '#ff5b5b' }, args.address)
         }
+      }
     }
-}
+  }
 
   const rowsModel = []
 
@@ -150,16 +179,20 @@ const [onloaded, setOnloaded] = useState(false)
 
   const saveClicked = () => {
     // spreadsheet.save()
-    spreadsheet.save({ url: 'https://services.syncfusion.com/react/production/api/spreadsheet/save',
-    fileName: 'CashflowSpreadsheet',
-    saveType: 'Xlsx' })
+    spreadsheet.save({
+      url: 'https://services.syncfusion.com/react/production/api/spreadsheet/save',
+      fileName: 'CashflowSpreadsheet',
+      saveType: 'Xlsx'
+    })
   }
 
   return (
     <Fragment>
-       <BackdropLoader message={'Hold Tight... Arranging Sheets!'}  open={!onloaded} />
-       <div className="mui-fixed" role="presentation" style={downloadButtonStyle}>
-       <Button onClick={saveClicked} variant='contained'>Download</Button>
+      <BackdropLoader message={'Hold Tight... Arranging Sheets!'} open={!onloaded} />
+      <div className='mui-fixed' role='presentation' style={downloadButtonStyle}>
+        <Button onClick={saveClicked} variant='contained'>
+          Download
+        </Button>
         {/* <button className="MuiButtonBase-root MuiFab-root MuiFab-circular MuiFab-sizeSmall MuiFab-primary css-pue6qa" tabIndex="0" type="button" aria-label="scroll back to top">
           <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ArrowUpIcon"><
             path d="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z"></path>
@@ -167,70 +200,75 @@ const [onloaded, setOnloaded] = useState(false)
           <span className="MuiTouchRipple-root"></span>
         </button> */}
       </div>
-       
+
       {data.length ? (
         <div>
-        <SpreadsheetComponent
-          created={onCreated.bind(this)}
-          beforeCellRender={beforeCellRender.bind(this)}
-          allowSave={true}
-          saveUrl='https://services.syncfusion.com/react/production/api/spreadsheet/save'
-          ref={ssObj => {
-            console.log('ssObj', ssObj)
-            spreadsheet = ssObj
-          }}
-          showFormulaBar={false}
-          showRibbon={false}
-        >
-          <SheetsDirective>
-            <SheetDirective
-              key={'Cashflow Sheet'}
-              name={'Cashflow Sheet'}
-              rowCount={40}
-              colCount={30}
-              showGridLines={false}
-            >
-              <RowsDirective>
-                {/* heading starts */}
-                <RowDirective height={55}>
-                  <CellsDirective>
+          <SpreadsheetComponent
+            created={onCreated.bind(this)}
+            beforeCellRender={beforeCellRender.bind(this)}
+            allowSave={true}
+            saveUrl='https://services.syncfusion.com/react/production/api/spreadsheet/save'
+            ref={ssObj => {
+              console.log('ssObj', ssObj)
+              spreadsheet = ssObj
+            }}
+            showFormulaBar={false}
+            showRibbon={false}
+          >
+            <SheetsDirective>
+              <SheetDirective
+                key={'Cashflow Sheet'}
+                name={'Cashflow Sheet'}
+                rowCount={40}
+                colCount={30}
+                showGridLines={false}
+              >
+                <RowsDirective>
+                  {/* heading starts */}
+                  <RowDirective height={55}>
+                    {/* <CellsDirective>
                     <CellDirective index={0} value='BANKLESS ANNUAL REPORT-I' colSpan={4} style={heading}></CellDirective>
-                  </CellsDirective>
-                </RowDirective>
-                <RowDirective height={40}>
-                  <CellsDirective>
-                    <CellDirective index={0} value='CASH FLOW STATEMENT' colSpan={4} style={subHeading}></CellDirective>
-                  </CellsDirective>
-                </RowDirective>
-                {/* heading ends */}
-                {/* category starts */}
-                
-                {/* row space between multiple categories */}
-                <RowDirective height={35}>
-                  <CellsDirective>
-                    <CellDirective colSpan={5}></CellDirective>
-                  </CellsDirective>
-                </RowDirective>
-                {/* category ends */}
-              </RowsDirective>
-              <ColumnsDirective>
-                <ColumnDirective index={1} width={190}></ColumnDirective>
-                <ColumnDirective index={2} width={260}></ColumnDirective>
-                <ColumnDirective index={3} width={100}></ColumnDirective>
-                <ColumnDirective width={350}></ColumnDirective>
-              </ColumnsDirective>
-              <RangesDirective></RangesDirective>
-            </SheetDirective>
-            {data.map(category => (
-              <SheetDirective key={category.name} name={category.name}>
-                <RangesDirective>
-                  <RangeDirective dataSource={category.transactions}></RangeDirective>
-                </RangesDirective>
+                  </CellsDirective> */}
+                  </RowDirective>
+                  <RowDirective height={40}>
+                    <CellsDirective>
+                      <CellDirective
+                        index={0}
+                        value='CASH FLOW STATEMENT'
+                        colSpan={4}
+                        style={subHeading}
+                      ></CellDirective>
+                    </CellsDirective>
+                  </RowDirective>
+                  {/* heading ends */}
+                  {/* category starts */}
+
+                  {/* row space between multiple categories */}
+                  <RowDirective height={35}>
+                    <CellsDirective>
+                      <CellDirective colSpan={5}></CellDirective>
+                    </CellsDirective>
+                  </RowDirective>
+                  {/* category ends */}
+                </RowsDirective>
+                <ColumnsDirective>
+                  <ColumnDirective index={1} width={190}></ColumnDirective>
+                  <ColumnDirective index={2} width={260}></ColumnDirective>
+                  <ColumnDirective index={3} width={100}></ColumnDirective>
+                  <ColumnDirective width={350}></ColumnDirective>
+                </ColumnsDirective>
+                <RangesDirective></RangesDirective>
               </SheetDirective>
-            ))}
-          </SheetsDirective>
-        </SpreadsheetComponent>
-      </div>
+              {data.map(category => (
+                <SheetDirective key={category.name} name={category.name}>
+                  <RangesDirective>
+                    <RangeDirective dataSource={category.transactions}></RangeDirective>
+                  </RangesDirective>
+                </SheetDirective>
+              ))}
+            </SheetsDirective>
+          </SpreadsheetComponent>
+        </div>
       ) : (
         'No data'
       )}
