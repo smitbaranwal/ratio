@@ -92,10 +92,10 @@ const CashflowSpreadsheet = props => {
             { value: cat.name, height: 25 },
             {
               value: cat.totalUSDAmtPre < 0 ? (
-                Math.abs(cat.totalTokenAmt) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
+                Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
               ) : (
                 
-                  cat.totalUSDAmtPre != '--' ? Math.abs(cat.totalTokenAmt) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt) + ' | $0.00'
+                  cat.totalUSDAmtPre != '--' ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
                 
               ),
               height: 25,
@@ -110,14 +110,14 @@ const CashflowSpreadsheet = props => {
 
       // insert category total
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
-      let totalUsd = category.categories.reduce((acc, cat) => acc + cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0, 0)
+      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0), 0)
       let istotalnegative = total < -1
       rowsModel.push({
         index: currentIndex,
         cells: [
           { value: '', height: 25 },
           { value: 'Total', height: 25, style: { fontWeight: 'bold' } },
-          { value: Math.abs(total) + ' | $' + Math.abs(totalUsd).toFixed(3), height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } }
+          { value: Math.abs(total.toFixed(0)) + ' | $' + Math.abs(totalUsd).toFixed(3), height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } }
         ]
       })
       currentIndex++
@@ -131,12 +131,13 @@ const CashflowSpreadsheet = props => {
     rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
     let total = categorisedData.reduce((acc, cat) => acc + cat.trxTypeTotalTokenAmt, 0)
+    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? cat.trxTypeTotalUSDAmtPre : 0), 0)
     rowsModel.push({
       index: currentIndex,
       cells: [
         { value: '', height: 25 },
         { value: 'Net CashFlow', height: 25, style: { fontWeight: 'bold' } },
-        { value: total, height: 25, style: { fontWeight: 'bold', color: total < -1 ? '#ff0000' : '#000000' } }
+        { value: total.toFixed(0) + ' | $' + Math.abs(totalUsd.toFixed(2)), height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } }
       ]
     })
     spreadsheet.insertRow(rowsModel)
