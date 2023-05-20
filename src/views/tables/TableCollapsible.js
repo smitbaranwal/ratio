@@ -464,13 +464,15 @@ const TableCollapsible = props => {
                       </TableCell>
                       <TableCell align='right'>
                         <b>
-                          {/* <div style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                            ${doa.trxTypeTotalTokenAmt}
-                          </div> */}
-                          <div style={{ color: doa.trxTypeTotalUSDAmtPre > 0 ? 'green' : 'red' }}>
+                          <div>
+                          <span style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
+                            {Math.abs(doa.trxTypeTotalTokenAmt)}
+                          </span> | &nbsp;
+                          <span style={{ color: doa.trxTypeTotalUSDAmtPre > 0 ? 'green' : 'red' }}>
                             {!isNaN(doa.trxTypeTotalUSDAmtPre)
-                              ? Number(doa.trxTypeTotalUSDAmtPre).toFixed(2)
+                              ? '$' + Math.abs(Number(doa.trxTypeTotalUSDAmtPre).toFixed(2))
                               : doa.trxTypeTotalUSDAmtPre}
+                          </span>
                           </div>
                         </b>
                       </TableCell>
