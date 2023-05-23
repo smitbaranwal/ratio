@@ -29,6 +29,7 @@ import { getUserID } from 'src/assets/localData';
 import getSafesAddress from 'src/@core/utils/queries/getSafes';
 import { useContext } from 'react';
 import WalletContext from 'src/@core/context/walletContext';
+import getSafesOwners from 'src/@core/utils/queries/getSafeOwners';
 
 
 
@@ -287,11 +288,12 @@ SafeDialog.propTypes = {
 };
 
 export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, props) {
-const {account} = useContext(WalletContext);
+const {account, setSafeContributors} = useContext(WalletContext)
+// 0x4f285257849B840ADc1e293F735cb1F31e5cF026
 const userAccountNumber = getUserID()
 const [safesAddress, setSafeAddress] = React.useState([])
-  const [open, setOpen] = React.useState(false);
-  const [selectedValue, setSelectedValue] = React.useState('');
+const [open, setOpen] = React.useState(false);
+const [selectedValue, setSelectedValue] = React.useState('');
   // const [loginAccount, setLoginAccount] = React.useState({account})
 
   React.useEffect(() => {
@@ -300,14 +302,20 @@ const [safesAddress, setSafeAddress] = React.useState([])
 
   }, [handleSafe])
 
-  console.log("account", {account})  
+  console.log("account 11", {account})  
   
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpen = async () => {
+    setOpen(true)
     console.log("account", {account})  
     // getSafesAddress({account}, setSafeAddress) 
-    getSafesAddress(userAccountNumber, setSafeAddress)  
-  };
+    getSafesAddress(userAccountNumber, setSafeAddress)
+    const result = await getSafesOwners('0x4f285257849B840ADc1e293F735cb1F31e5cF026', getSafeContributorList)
+  }
+
+  const getSafeContributorList = (data) => {
+    console.log('form get getSafeContributorList ', data.contributors)
+    setSafeContributors(data.contributors)
+  }
 
 
   

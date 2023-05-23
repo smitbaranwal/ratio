@@ -8,7 +8,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableRow from '@mui/material/TableRow'
 import TablePagination from '@mui/material/TablePagination'
 import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import { forwardRef, useEffect, useState } from 'react'
+import { forwardRef, useContext, useEffect, useState } from 'react'
 import getTransactions from 'src/@core/utils/queries/getTransactions'
 import moment from 'moment'
 import { Account, Launch, ArrowDownThin, ArrowUpThin } from 'mdi-material-ui'
@@ -19,6 +19,7 @@ import LongText from 'src/layouts/components/subComponent/longContent'
 import dayjs from 'dayjs';
 import DatePicker from 'react-datepicker'
 import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
+import WalletContext from 'src/@core/context/walletContext'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -77,10 +78,13 @@ const TableCustomized = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [date, setDate] = useState(null)
+  const {safeContributors} = useContext(WalletContext);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
   }
+
+  console.log('safeContributors from review table', safeContributors)
 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(+event.target.value)
@@ -122,6 +126,18 @@ const TableCustomized = () => {
     )
     console.log('filteredTransactions', filteredTransactions)
     setTransactions(filteredTransactions)
+  }
+
+  const getNamedAddress = (address) => {
+    const ind = safeContributors.findIndex(c => c.address == address)
+    // if (address == '0xcF8422021b408B32983B525778CE45420715f094') {
+    //   return 'Nikhil'
+    // }
+    if (ind > -1) {
+      return safeContributors[ind].name
+    }
+  
+    return address.substring(0, 4) + '...' + address.substring(38, 42)
   }
 
   return (
@@ -218,7 +234,7 @@ const TableCustomized = () => {
                       {row.FromAddress.length > 3 ? userAccountIcon : ''}
                       <span style={{ verticalAlign: 'super' }}>
                         {row.FromAddress.length > 3
-                          ? row.FromAddress.substring(0, 4) + '...' + row.FromAddress.substring(38, 42)
+                          ? getNamedAddress(row.FromAddress)
                           : '--'}
                       </span>
                     </div>
@@ -228,7 +244,7 @@ const TableCustomized = () => {
                       {row.FromAddress.length > 3 ? userAccountIcon : ''}
                       <span style={{ verticalAlign: 'super' }}>
                         {row.ToAddress.length > 3
-                          ? row.ToAddress.substring(0, 4) + '...' + row.ToAddress.substring(38, 42)
+                          ? getNamedAddress(row.ToAddress)
                           : '--'}
                       </span>
                     </div>
