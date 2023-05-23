@@ -14,12 +14,13 @@ export const WalletContextProvider = ({ children }) => {
   const [account, setAccount] = useState(null)
   const [selectedSafe, setSelectedSafe] = useState(null)
   const [{ wallet, connecting }, connect, disconnect] = useConnectWallet()
+  const [safeContributors, setSafeContributors] = useState([]) 
   //  use of setWeb3Onboard ?
   const [, setWeb3Onboard] = useState(null)    
   const [provider, setProvider] = useState(null)
   const router = useRouter();
   
-  console.log({wallet,account,selectedSafe,connecting},'from walletContext')
+  console.log({wallet,account,selectedSafe,connecting, safeContributors},'from walletContext')
   
 
 
@@ -64,6 +65,8 @@ export const WalletContextProvider = ({ children }) => {
         account,
         selectedSafe,
         setSelectedSafe,
+        safeContributors,
+        setSafeContributors,
         wallet,
         connect,
         handleDisconnect,
