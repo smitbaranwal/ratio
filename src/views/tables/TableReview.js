@@ -98,6 +98,10 @@ const TableCustomized = () => {
 
   const userAccountIcon = <Account />
 
+  const outTransaction = <ArrowUpThin style={{ color: '#f44336' }} />
+
+  const inTransaction  = <ArrowDownThin style={{ color: '#4caf50' }} />
+
   // const handleClose = () => {
 
   // }
@@ -166,14 +170,14 @@ const TableCustomized = () => {
               <StyledTableCell>Date (UTC)</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
               <StyledTableCell align='center'>Hash</StyledTableCell>
-              <StyledTableCell align='center'>From</StyledTableCell>
-              <StyledTableCell align='center'>To</StyledTableCell>
+              <StyledTableCell align='center'>From | To</StyledTableCell>
+              {/* <StyledTableCell align='center'>To</StyledTableCell> */}
               <StyledTableCell align='center'>Amount</StyledTableCell>
               {/* <StyledTableCell align='center'>Fee</StyledTableCell>
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                 <StyledTableCell align='right'>Status</StyledTableCell> */}
 
-              <StyledTableCell sx={{ position: 'sticky', right: '0', zIndex: '100' }} align='center'>
+              <StyledTableCell sx={{  right: '0', width: '300' }} align='center'>
                 Description
               </StyledTableCell>
               <StyledTableCell sx={{ position: 'sticky', right: '0', zIndex: '100' }} align='center'>
@@ -197,13 +201,13 @@ const TableCustomized = () => {
 
                   <StyledTableCell scope='row'>
                     <div style={{ display: 'inline-block', width: '150px', content: '' }}>
-                      {row.Type === 'Outgoing' ? (
+                      {/* {row.Type === 'Outgoing' ? (
                         <ArrowUpThin style={{ color: '#f44336' }} />
                       ) : row.Type === 'Incoming' ? (
                         <ArrowDownThin style={{ color: '#4caf50' }} />
                       ) : (
                         ''
-                      )}
+                      )} */}
                       <span style={{ verticalAlign: 'super' }}> {row.Category} </span>
                     </div>
                     <br />
@@ -229,7 +233,25 @@ const TableCustomized = () => {
                       </span>
                     </div>
                   </StyledTableCell>
-                  <StyledTableCell size='small' align='center'>
+                  <StyledTableCell size='small' align='left'>
+                  <div style={{ width: '120px' }}>
+                  {row.Type === 'Outgoing' ? (
+                        outTransaction
+                      ) : row.Type === 'Incoming' ? (
+                        inTransaction
+                      ) : (
+                        ''
+                      )}
+                      {row.Type === 'Outgoing' ? (
+                       getNamedAddress(row.ToAddress)
+                      ) : row.Type === 'Incoming' ? (
+                        getNamedAddress(row.FromAddress)
+                      ) : (
+                        ''
+                      )}
+                      </div>
+                  </StyledTableCell>
+                  {/* <StyledTableCell size='small' align='center'>
                     <div style={{ width: '120px' }}>
                       {row.FromAddress.length > 3 ? userAccountIcon : ''}
                       <span style={{ verticalAlign: 'super' }}>
@@ -241,14 +263,14 @@ const TableCustomized = () => {
                   </StyledTableCell>
                   <StyledTableCell align='center'>
                     <div style={{ width: '120px' }}>
-                      {row.FromAddress.length > 3 ? userAccountIcon : ''}
+                      {row.ToAddress.length > 3 ? userAccountIcon : ''}
                       <span style={{ verticalAlign: 'super' }}>
                         {row.ToAddress.length > 3
                           ? getNamedAddress(row.ToAddress)
                           : '--'}
                       </span>
                     </div>
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                   <StyledTableCell align='center'>
                     {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
                     <div style={{ width: '200px' }}>
@@ -285,10 +307,10 @@ const TableCustomized = () => {
 
                   <StyledTableCell
                     align='center'
-                    sx={{ position: 'sticky', right: '0', zIndex: '100', backgroundColor: '#fff' }}
+                    sx={{ right: '0', zIndex: '100', width: '300px' }}
                   >
-                    <div style={{ width: '180px' }}>
-                      <LongText content={row.Description} limit={10} />
+                    <div style={{ width: '300px' }}>
+                      <LongText content={row.Description} limit={100} />
                     </div>
                   </StyledTableCell>
                   <StyledTableCell
