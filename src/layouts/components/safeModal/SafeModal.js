@@ -309,7 +309,8 @@ const [selectedValue, setSelectedValue] = React.useState('');
     console.log("account", {account})  
     // getSafesAddress({account}, setSafeAddress) 
     getSafesAddress(userAccountNumber, setSafeAddress)
-    const result = await getSafesOwners('0x4f285257849B840ADc1e293F735cb1F31e5cF026', getSafeContributorList)
+    // const result = await 
+    await getSafesOwners('0x4f285257849B840ADc1e293F735cb1F31e5cF026', getSafeContributorList)
   }
 
   const getSafeContributorList = (data) => {

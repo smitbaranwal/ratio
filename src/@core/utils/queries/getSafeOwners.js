@@ -25,6 +25,7 @@ const getSafesOwners =  (safeAddress, callback) => {
         .then(result => {
             console.log(result)
             result = JSON.parse(result)
+            result.contributors.push({address: result.safeAddress, name: result.safeName})
             callback(result)
 
             // return result
