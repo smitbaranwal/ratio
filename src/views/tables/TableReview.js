@@ -78,7 +78,7 @@ const TableCustomized = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [date, setDate] = useState(null)
-  const {safeContributors} = useContext(WalletContext);
+  const {safeContributors} = useContext(WalletContext)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -280,16 +280,16 @@ const TableCustomized = () => {
                         ) : isFloat(row.TokenAmount) == true ? (
                           row.USDAmount != '--' ? (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} BANK (${row.USDAmount})
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.USDAmount})
                             </Typography>
                           ) : (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} BANK (${row.USDAmount})
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.USDAmount})
                             </Typography>
                           )
                         ) : (
                           <Typography>
-                            {row.TokenAmount} BANK (${row.USDAmount})
+                            {row.TokenAmount} {row.TokenSymbol} (${row.USDAmount})
                           </Typography>
                         )}
                       </span>
