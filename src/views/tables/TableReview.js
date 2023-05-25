@@ -16,7 +16,7 @@ import BackdropLoader from 'src/@core/layouts/components/shared-components/Backd
 import { CardContent, Grid, Link, TextField, Tooltip, Typography } from '@mui/material'
 import LongText from 'src/layouts/components/subComponent/longContent'
 // import { DatePicker } from '@mui/lab'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import DatePicker from 'react-datepicker'
 import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
 import WalletContext from 'src/@core/context/walletContext'
@@ -78,7 +78,7 @@ const TableCustomized = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [date, setDate] = useState(null)
-  const {safeContributors} = useContext(WalletContext)
+  const { safeContributors } = useContext(WalletContext)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -100,7 +100,7 @@ const TableCustomized = () => {
 
   const outTransaction = <ArrowUpThin style={{ color: '#f44336' }} />
 
-  const inTransaction  = <ArrowDownThin style={{ color: '#4caf50' }} />
+  const inTransaction = <ArrowDownThin style={{ color: '#4caf50' }} />
 
   // const handleClose = () => {
 
@@ -111,7 +111,6 @@ const TableCustomized = () => {
   }
 
   function setDateFilter(date) {
-    
     console.log('date', dayjs(date[0]).format('L'))
     let startdate = dayjs(date[0]).format('L')
     let enddate = dayjs(date[0]).format('L')
@@ -120,19 +119,21 @@ const TableCustomized = () => {
     }
     setDate(date)
     if (!transactionsBU.length) {
-       setTransactionsBU(transactions)
+      setTransactionsBU(transactions)
     }
     console.log('date', date)
 
     var filteredTransactions = transactionsBU.filter(function (item) {
-      return moment(item.Executedat, 'DD-MM-YYYY').format('L') >= moment(startdate).format('L') && moment(item.Executedat, 'DD-MM-YYYY').format('L') <= moment(enddate).format('L')
-    }
-    )
+      return (
+        moment(item.Executedat, 'DD-MM-YYYY').format('L') >= moment(startdate).format('L') &&
+        moment(item.Executedat, 'DD-MM-YYYY').format('L') <= moment(enddate).format('L')
+      )
+    })
     console.log('filteredTransactions', filteredTransactions)
     setTransactions(filteredTransactions)
   }
 
-  const getNamedAddress = (address) => {
+  const getNamedAddress = address => {
     const ind = safeContributors.findIndex(c => c.address == address)
     // if (address == '0xcF8422021b408B32983B525778CE45420715f094') {
     //   return 'Nikhil'
@@ -140,7 +141,7 @@ const TableCustomized = () => {
     if (ind > -1) {
       return safeContributors[ind].name
     }
-  
+
     return address.substring(0, 4) + '...' + address.substring(38, 42)
   }
 
@@ -170,14 +171,18 @@ const TableCustomized = () => {
               <StyledTableCell>Date (UTC)</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
               <StyledTableCell align='center'>Hash</StyledTableCell>
-              <StyledTableCell align='center'>From | To</StyledTableCell>
+              <StyledTableCell align='left'>
+                <ArrowDownThin style={{ color: '#4caf50' }} />
+                From | <ArrowUpThin style={{ color: '#f44336' }} />
+                T0
+              </StyledTableCell>
               {/* <StyledTableCell align='center'>To</StyledTableCell> */}
               <StyledTableCell align='center'>Amount</StyledTableCell>
               {/* <StyledTableCell align='center'>Fee</StyledTableCell>
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                 <StyledTableCell align='right'>Status</StyledTableCell> */}
 
-              <StyledTableCell sx={{  right: '0', width: '300' }} align='center'>
+              <StyledTableCell sx={{ right: '0', width: '300' }} align='center'>
                 Description
               </StyledTableCell>
               <StyledTableCell sx={{ position: 'sticky', right: '0', zIndex: '100' }} align='center'>
@@ -234,22 +239,14 @@ const TableCustomized = () => {
                     </div>
                   </StyledTableCell>
                   <StyledTableCell size='small' align='left'>
-                  <div style={{ width: '120px' }}>
-                  {row.Type === 'Outgoing' ? (
-                        outTransaction
-                      ) : row.Type === 'Incoming' ? (
-                        inTransaction
-                      ) : (
-                        ''
-                      )}
-                      {row.Type === 'Outgoing' ? (
-                       getNamedAddress(row.ToAddress)
-                      ) : row.Type === 'Incoming' ? (
-                        getNamedAddress(row.FromAddress)
-                      ) : (
-                        ''
-                      )}
-                      </div>
+                    <div style={{ width: '120px' }}>
+                      {row.Type === 'Outgoing' ? outTransaction : row.Type === 'Incoming' ? inTransaction : ''}
+                      {row.Type === 'Outgoing'
+                        ? getNamedAddress(row.ToAddress)
+                        : row.Type === 'Incoming'
+                        ? getNamedAddress(row.FromAddress)
+                        : ''}
+                    </div>
                   </StyledTableCell>
                   {/* <StyledTableCell size='small' align='center'>
                     <div style={{ width: '120px' }}>
@@ -305,10 +302,7 @@ const TableCustomized = () => {
                   <div style={{ color: row.TransactionStatus === 'Success' ? 'green' : 'red' }}>{row.TransactionStatus}</div>
                   </StyledTableCell> */}
 
-                  <StyledTableCell
-                    align='center'
-                    sx={{ right: '0', zIndex: '100', width: '300px' }}
-                  >
+                  <StyledTableCell align='center' sx={{ right: '0', zIndex: '100', width: '300px' }}>
                     <div style={{ width: '300px' }}>
                       <LongText content={row.Description} limit={100} />
                     </div>

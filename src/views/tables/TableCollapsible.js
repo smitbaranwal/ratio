@@ -73,11 +73,11 @@ const Row = props => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
 
-  const {safeContributors} = useContext(WalletContext);
+  const { safeContributors } = useContext(WalletContext)
 
   const outTransaction = <ArrowUpThin style={{ color: '#f44336' }} />
 
-  const inTransaction  = <ArrowDownThin style={{ color: '#4caf50' }} />
+  const inTransaction = <ArrowDownThin style={{ color: '#4caf50' }} />
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -98,7 +98,7 @@ const Row = props => {
     return !!(x % 1)
   }
 
-  const getNamedAddress = (address) => {
+  const getNamedAddress = address => {
     const ind = safeContributors.findIndex(c => c.address == address)
     // if (address == '0xcF8422021b408B32983B525778CE45420715f094') {
     //   return 'Nikhil'
@@ -122,7 +122,7 @@ const Row = props => {
           {row.name}
         </TableCell>
         <TableCell align='right'>
-        {row.totalTokenAmt > 0 ? (
+          {row.totalTokenAmt > 0 ? (
             <span style={{ color: 'green' }}>{row.TokenSummary}</span>
           ) : (
             <span style={{ color: 'red' }}>{row.TokenSummary}</span>
@@ -160,16 +160,17 @@ const Row = props => {
                           <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
                           <StyledTableCell align='left'>Category</StyledTableCell>
                           <StyledTableCell align='center'>Hash</StyledTableCell>
-                          <StyledTableCell align='center'>From | T0</StyledTableCell>
+                          <StyledTableCell align='left'>
+                            <ArrowDownThin style={{ color: '#4caf50' }} />
+                            From | <ArrowUpThin style={{ color: '#f44336' }} />
+                            T0
+                          </StyledTableCell>
                           {/* <StyledTableCell align='center'>To</StyledTableCell> */}
                           <StyledTableCell align='center'>Amount</StyledTableCell>
                           {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
                           {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
 
-                          <StyledTableCell
-                            align='center'
-                            sx={{ right: '0', width: '300' }}
-                          >
+                          <StyledTableCell align='center' sx={{ right: '0', width: '300' }}>
                             Description
                           </StyledTableCell>
 
@@ -266,11 +267,13 @@ const Row = props => {
                                     ) : isFloat(item.TokenAmount) == true ? (
                                       item.USDAmount != '--' ? (
                                         <Typography>
-                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} (${item.USDAmount})
+                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
+                                          {item.USDAmount})
                                         </Typography>
                                       ) : (
                                         <Typography>
-                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} (${item.USDAmount})
+                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
+                                          {item.USDAmount})
                                         </Typography>
                                       )
                                     ) : (
@@ -288,10 +291,7 @@ const Row = props => {
                             <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
                           </StyledTableCell> */}
 
-                              <StyledTableCell
-                                align='center'
-                                sx={{ right: '0', width:'300' }}
-                              >
+                              <StyledTableCell align='center' sx={{ right: '0', width: '300' }}>
                                 <div style={{ width: '180px' }}>
                                   <LongText content={item.Description} limit={200} />
                                 </div>
@@ -422,26 +422,37 @@ const TableCollapsible = props => {
 
     //calculate category token summary
     daoList.forEach(dao => {
+      const totalTokenSummary = {}
+      let totalText = ''
       dao.categories.forEach(category => {
-
         const tokenSummary = {}
         let text = ''
         category.transactions.forEach(trx => {
           if (trx.TokenSymbol) {
             if (tokenSummary[trx.TokenSymbol]) {
-              tokenSummary[trx.TokenSymbol] += trx.TokenAmount
+              tokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
             } else {
-              tokenSummary[trx.TokenSymbol] = trx.TokenAmount
+              tokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+            }
+            if (totalTokenSummary[trx.TokenSymbol]) {
+              totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+            } else {
+              totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
             }
           }
         })
         Object.keys(tokenSummary).forEach(key => {
-          text += (' ' + tokenSummary[key] + ' ' + key + ',')
+          text += ' ' + tokenSummary[key] + ' ' + key + ','
         })
         text = text.slice(0, text.length - 1)
         category.TokenSummary = text
         console.log('token summary for ' + category.name + ' ' + text)
       })
+      Object.keys(totalTokenSummary).forEach(key => {
+        totalText += ' ' + totalTokenSummary[key] + ' ' + key + ','
+      })
+      totalText = totalText.slice(0, totalText.length - 1)
+      dao.TotalTokenSummary = totalText
     })
 
     setTransactionTypeList(daoList)
@@ -533,7 +544,8 @@ const TableCollapsible = props => {
                         <b>
                           <div>
                             <span style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                              {Math.abs(doa.trxTypeTotalTokenAmt)}
+                              {/* {Math.abs(doa.trxTypeTotalTokenAmt)} */}
+                              {doa.TotalTokenSummary}
                             </span>{' '}
                             | &nbsp;
                             <span style={{ color: doa.trxTypeTotalUSDAmtPre > 0 ? 'green' : 'red' }}>
