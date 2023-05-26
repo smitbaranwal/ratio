@@ -1,5 +1,9 @@
 const getSafesAddress = (userAccountNumber, setSafeAddress) => {
     console.log("userAccountNumber", userAccountNumber)
+    if (!userAccountNumber) {
+      // for fake pesto login
+      userAccountNumber = '0x0a08e7C1b23df18413e27aA9DdD2e4376f49caF3'
+    }
     // var myHeaders = new Headers()
     const safes = []
     // no need of header in this API

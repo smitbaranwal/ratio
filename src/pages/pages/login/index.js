@@ -71,6 +71,10 @@ const Index = () => {
       handleSafe.current();
     }
   }, [account, connecting])
+
+  const fakeLogin = () => {
+    handleSafe.current()
+  }
   
 
   const closeSafe = (selectedSafe) => {
@@ -111,7 +115,7 @@ const Index = () => {
                 <Typography variant='body2'>Please link your wallet and start the adventure</Typography>
               </Box>
               <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-                <Button
+              {/* <Button
                   fullWidth
                   size='large'
                   variant='contained'
@@ -119,6 +123,15 @@ const Index = () => {
                   onClick={async () => await connect()}
                 >
                   Connect Wallet
+                </Button> */}
+                <Button
+                  fullWidth
+                  size='large'
+                  variant='contained'
+                  sx={{ marginBottom: 7 }}
+                  onClick={ () => fakeLogin()}
+                >
+                  Pesto Connect Wallet
                 </Button>
               </form>
             </CardContent>
