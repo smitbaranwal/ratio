@@ -160,7 +160,7 @@ const Row = props => {
                           <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
                           <StyledTableCell align='left'>Category</StyledTableCell>
                           <StyledTableCell align='center'>Hash</StyledTableCell>
-                          <StyledTableCell align='left'>
+                          <StyledTableCell align='left' style={{display: "flex", alignItems: "center"}}>
                             <ArrowDownThin style={{ color: '#4caf50' }} />
                             From | <ArrowUpThin style={{ color: '#f44336' }} />
                             T0
@@ -224,7 +224,7 @@ const Row = props => {
                                 </div>
                               </StyledTableCell>
                               <StyledTableCell size='small' align='left'>
-                                <div style={{ width: '120px' }}>
+                                <div style={{ width: '120px', display: "flex", alignItems: "center"}}>
                                   {item.Type === 'Outgoing'
                                     ? outTransaction
                                     : item.Type === 'Incoming'
@@ -350,6 +350,7 @@ const TableCollapsible = props => {
   }
 
   const updateTrx = function (data) {
+    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaa", data)
     data.forEach(trx => {
       let insertInTransactionType = ''
       if (operationCategory.findIndex(c => c == trx.Category) > -1) {
@@ -419,7 +420,6 @@ const TableCollapsible = props => {
     })
     console.log('new daoList from table collapsible', daoList)
     // console.log('new spreadsheetData from table collapsible', spreadsheetData)
-
     //calculate category token summary
     daoList.forEach(dao => {
       const totalTokenSummary = {}

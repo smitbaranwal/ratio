@@ -24,8 +24,7 @@ import WalletContext from 'src/@core/context/walletContext'
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.palette.common.white,
-    backgroundColor: '#b892fe'
-    // innerWidth: '50px'
+    backgroundColor: '#b892fe',
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14
@@ -167,11 +166,11 @@ const TableCustomized = () => {
         </CardContent>
         <Table sx={{ minWidth: 900 }} aria-label='customized table'>
           <TableHead>
-            <TableRow>
+            <TableRow >
               <StyledTableCell>Date (UTC)</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
               <StyledTableCell align='center'>Hash</StyledTableCell>
-              <StyledTableCell align='left'>
+              <StyledTableCell align='left' sx={{display: "flex", alignItems: "center"}}>
                 <ArrowDownThin style={{ color: '#4caf50' }} />
                 From | <ArrowUpThin style={{ color: '#f44336' }} />
                 T0
@@ -239,7 +238,7 @@ const TableCustomized = () => {
                     </div>
                   </StyledTableCell>
                   <StyledTableCell size='small' align='left'>
-                    <div style={{ width: '120px' }}>
+                    <div style={{ width: '120px', display: "flex", alignItems: "center" }}>
                       {row.Type === 'Outgoing' ? outTransaction : row.Type === 'Incoming' ? inTransaction : ''}
                       {row.Type === 'Outgoing'
                         ? getNamedAddress(row.ToAddress)

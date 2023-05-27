@@ -82,7 +82,6 @@ const CashflowSpreadsheet = props => {
         cells: [{ value: category.name, colSpan: 4, style: boldCenterCategory, height: 35 }]
       })
       currentIndex++
-
       // insert category components
       category.categories.forEach(cat => {
         rowsModel.push({
@@ -90,6 +89,9 @@ const CashflowSpreadsheet = props => {
           cells: [
             { value: '', height: 25 },
             { value: cat.name, height: 25 },
+            {value: cat.TokenSummary,  style: {
+              color: cat.TokenSummary < -1 ? '#ff0000' : '#000000'
+            }},
             {
               value: cat.totalUSDAmtPre < 0 ? (
                 Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
@@ -103,20 +105,22 @@ const CashflowSpreadsheet = props => {
                 color: cat.totalTokenAmt < -1 ? '#ff0000' : '#000000'
               }
             }
+           
           ]
         })
         currentIndex++
       })
-
       // insert category total
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
       let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0), 0)
+      let TotalTokenSummary = category.TotalTokenSummary
       let istotalnegative = total < -1
       rowsModel.push({
         index: currentIndex,
         cells: [
           { value: '', height: 25 },
           { value: 'Total', height: 25, style: { fontWeight: 'bold' } },
+          { value: TotalTokenSummary, height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } },
           { value: Math.abs(total.toFixed(0)) + ' | $' + Math.abs(totalUsd).toFixed(3), height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } }
         ]
       })
@@ -130,13 +134,16 @@ const CashflowSpreadsheet = props => {
     // insert blank row for netflow separation
     rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
+    console.log("categorisedData", categorisedData)
     let total = categorisedData.reduce((acc, cat) => acc + cat.trxTypeTotalTokenAmt, 0)
     let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? cat.trxTypeTotalUSDAmtPre : 0), 0)
+    // let totalTokenSummary = categorisedData.TotalTokenSummary
     rowsModel.push({
       index: currentIndex,
       cells: [
         { value: '', height: 25 },
         { value: 'Net CashFlow', height: 25, style: { fontWeight: 'bold' } },
+        // { value: totalTokenSummary, height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } },
         { value: total.toFixed(0) + ' | $' + Math.abs(totalUsd.toFixed(2)), height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } }
       ]
     })
@@ -186,6 +193,57 @@ const CashflowSpreadsheet = props => {
       saveType: 'Xlsx'
     })
   }
+
+
+
+
+
+  // data.forEach(dao => {
+  //   const totalTokenSummary = {}
+  //   let totalText = ''
+    data.forEach(category => {
+      const tokenSummary = {}
+      let text = ''
+      category.transactions.forEach(trx => {
+        if (trx.TokenSymbol) {
+          if (tokenSummary[trx.TokenSymbol]) {
+            tokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+          } else {
+            tokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+          }
+          // if (totalTokenSummary[trx.TokenSymbol]) {
+          //   totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+          // } else {
+          //   totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+          // }
+        }
+      })
+      Object.keys(tokenSummary).forEach(key => {
+        text += ' ' + tokenSummary[key] + ' ' + key + ','
+      })
+      text = text.slice(0, text.length - 1)
+      category.TokenSummary = text
+      console.log('token summary for ' + category.name + ' ' + text)
+    })
+  //   Object.keys(totalTokenSummary).forEach(key => {
+  //     totalText += ' ' + totalTokenSummary[key] + ' ' + key + ','
+  //   })
+  //   totalText = totalText.slice(0, totalText.length - 1)
+  //   dao.TotalTokenSummary = totalText
+  // })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <Fragment>
@@ -260,6 +318,16 @@ const CashflowSpreadsheet = props => {
                 </ColumnsDirective>
                 <RangesDirective></RangesDirective>
               </SheetDirective>
+
+
+              {/* {row.totalTokenAmt > 0 ? (
+            <span style={{ color: 'green' }}>{row.TokenSummary}</span>
+          ) : (
+            <span style={{ color: 'red' }}>{row.TokenSummary}</span>
+          )}{' '} */}
+
+
+              {console.log("dataaaaaaaaaaaaa", data)}
               {data.map(category => (
                 <SheetDirective key={category.name} name={category.name}>
                   <RangesDirective>
