@@ -176,7 +176,7 @@ const TableCustomized = () => {
                 T0
               </StyledTableCell>
               {/* <StyledTableCell align='center'>To</StyledTableCell> */}
-              <StyledTableCell align='center'>Amount</StyledTableCell>
+              <StyledTableCell align='left'>Amount</StyledTableCell>
               {/* <StyledTableCell align='center'>Fee</StyledTableCell>
                 <StyledTableCell align='right'>Gain/Loss</StyledTableCell>
                 <StyledTableCell align='right'>Status</StyledTableCell> */}
@@ -267,7 +267,7 @@ const TableCustomized = () => {
                       </span>
                     </div>
                   </StyledTableCell> */}
-                  <StyledTableCell align='center'>
+                  <StyledTableCell align='left'>
                     {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
                     <div style={{ width: '200px' }}>
                       <span style={{ verticalAlign: 'super' }}>
