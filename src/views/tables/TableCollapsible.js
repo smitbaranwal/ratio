@@ -166,7 +166,7 @@ const Row = props => {
                             T0
                           </StyledTableCell>
                           {/* <StyledTableCell align='center'>To</StyledTableCell> */}
-                          <StyledTableCell align='center'>Amount</StyledTableCell>
+                          <StyledTableCell align='left'>Amount</StyledTableCell>
                           {/* <StyledTableCell align='center'>Fiat</StyledTableCell> */}
                           {/* <StyledTableCell align='right'>Gain/Loss</StyledTableCell> */}
 
@@ -257,7 +257,7 @@ const Row = props => {
                                   </span>
                                 </div>
                               </StyledTableCell> */}
-                              <StyledTableCell align='center'>
+                              <StyledTableCell align='left'>
                                 {/* <span title={'Per token value is calculated with latest ' + item.FiatPrice + ' USD'}>({item.FiatValue !== '--' ? '$ ' + item.FiatValue : '--'})</span> <br/> */}
                                 {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
                                 <div style={{ width: '160' }}>
