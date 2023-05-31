@@ -214,7 +214,7 @@ const noSafeImage =  "/images/no_account.jpg"
       <List sx={{ pt: 0, width:"fit-content"}}>
         {
         safes.map((safe) => (
-          <ListItem disableGutters key={safe} sx={{border: "1px solid #ccc",
+          <ListItem disableGutters key={safe.safeAddress} sx={{border: "1px solid #ccc",
             borderRadius: "1rem",
             padding: "0rem", margin: "1.2rem 0.8rem",
             
@@ -230,12 +230,20 @@ const noSafeImage =  "/images/no_account.jpg"
             }
           }}
             >
-            <ListItemButton onClick={() => handleListItemClick(safe)} key={safe}>
+            <ListItemButton onClick={() => handleListItemClick(safe.safeAddress)} key={safe.safeAddress}>
               <ListItemAvatar>
                 <Avatar src='/images/safe_icon.png' sx={{ bgcolor: blue[100], color: blue[600] }}>
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary={safe} />
+              {/* <ListItemText primary={safe.safeAddress} /> */}
+              <div>
+              <ListItemText primary={safe.safeAddress} />
+              {/* <br></br> */}
+              <ListItemText primary={safe.safeName} />
+              </div>
+              <div>
+             
+              </div>
             </ListItemButton>
           </ListItem>
         ))}
@@ -304,13 +312,19 @@ const [selectedValue, setSelectedValue] = React.useState('');
 
   console.log("account 11", {account})  
   
-  const handleClickOpen = async () => {
+  const handleClickOpen =  () => {
     setOpen(true)
     console.log("account", {account})  
     // getSafesAddress({account}, setSafeAddress) 
-    getSafesAddress(userAccountNumber, setSafeAddress)
+
+    getSafesAddress(userAccountNumber, getAllSafes)
     // const result = await 
-    await getSafesOwners('0x4f285257849B840ADc1e293F735cb1F31e5cF026', getSafeContributorList)
+    
+  }
+
+  const getAllSafes = (data) => {
+    console.log('get all safes', data)
+    setSafeAddress(data)
   }
 
   const getSafeContributorList = (data) => {
@@ -320,10 +334,11 @@ const [selectedValue, setSelectedValue] = React.useState('');
 
 
   
-  const handleClose = (value) => {
+  const handleClose = async (value) => {
     setOpen(false);
     setSelectedValue(value);
     closeSafeDialog(value);
+    await getSafesOwners(value, getSafeContributorList)
   };
 
   return (
