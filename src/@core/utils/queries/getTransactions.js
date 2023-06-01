@@ -21,7 +21,7 @@ const getTransactions = (setTransactions, setOpen) => {
   // 0xA1631E16BEFd10CEDc5eD01253d6668319134C12
   // 0xcF8422021b408B32983B525778CE45420715f094
   fetch(
-    'https://integrations-api.parcel.money/api/v1/transaction/0x4f285257849B840ADc1e293F735cb1F31e5cF026/export?downloadType=json',
+    'https://integrations-api.parcel.money/api/v1/transactionsForSafe/0x4f285257849B840ADc1e293F735cb1F31e5cF026/export?downloadType=json',
     requestOptions
   )
     .then(response => response.text())
