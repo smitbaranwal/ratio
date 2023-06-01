@@ -13,9 +13,11 @@ import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import TableContainer from '@mui/material/TableContainer'
 import TablePagination from '@mui/material/TablePagination'
-import { CardHeader, Grid } from '@mui/material'
+import { CardContent, CardHeader, Grid } from '@mui/material'
 import Card from '@mui/material/Card'
 import { Link, Tooltip } from '@mui/material'
+import dayjs from 'dayjs'
+
 // ** Icons Imports
 import ChevronUp from 'mdi-material-ui/ChevronUp'
 import ChevronDown from 'mdi-material-ui/ChevronDown'
@@ -41,6 +43,7 @@ import CashflowSpreadsheet from '../reports/Cashflow'
 import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
 import LongText from 'src/layouts/components/subComponent/longContent'
 import WalletContext from 'src/@core/context/walletContext'
+import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -72,6 +75,9 @@ const Row = props => {
   const [collapse, setCollapse] = useState(false)
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(15)
+  const [transactionsBU, setTransactionsBU] = useState([])
+  const [componentToken, setComponentToken] = useState(0)
+
 
   const { safeContributors } = useContext(WalletContext)
 
@@ -110,6 +116,36 @@ const Row = props => {
     return address.substring(0, 4) + '...' + address.substring(38, 42)
   }
 
+  function setDateFilter(date) {
+    console.log('date', dayjs(date[0]).format('L'))
+    let startdate = dayjs(date[0]).format('L')
+    let enddate = dayjs(date[0]).format('L')
+    if (date[1]) {
+      enddate = dayjs(date[1]).add(1, 'days').format('L')
+    }
+    if (!enddate) {
+      return
+    }
+    // setDate(date)
+    if (!transactionsBU.length) {
+      setTransactionsBU(row.transactions)
+    }
+    console.log('date', date)
+
+    var filteredTransactions = transactionsBU.filter(function (item) {
+      return (
+        moment(item.Executedat, 'DD-MM-YYYY').format('L') >= moment(startdate).format('L') &&
+        moment(item.Executedat, 'DD-MM-YYYY').format('L') <= moment(enddate).format('L')
+      )
+    })
+    console.log('filteredTransactions', filteredTransactions)
+    row.transactions = filteredTransactions
+    setTimeout(() => {
+    setComponentToken(componentToken++)
+    }, 0);
+    // setTransactions(filteredTransactions)
+  }
+
   return (
     <Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -144,7 +180,7 @@ const Row = props => {
           {/* <div style={{ color: row.totalTokenAmt < 0 ? 'red' : 'green' }}>{row.totalTokenAmt}</div> */}
         </TableCell>
       </TableRow>
-      <TableRow>
+      <TableRow> 
         <TableCell colSpan={6} sx={{ py: '0 !important' }}>
           <Collapse in={collapse} timeout='auto' unmountOnExit>
             <Box sx={{ m: 2 }}>
@@ -154,7 +190,15 @@ const Row = props => {
               {!open ? (
                 <>
                   <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 900 }} aria-label='customized table'>
+                    <Table component={Paper} sx={{ minWidth: 900 }} aria-label='customized table'>
+                    <CardContent>
+              <BasicDateRangePicker updateDate={setDateFilter}></BasicDateRangePicker>
+
+          <Grid container spacing={5}>
+            <Grid item xs={12} sm={12} md={12} lg={6}>
+            </Grid>
+          </Grid>
+        </CardContent>
                       <TableHead>
                         <TableRow>
                           <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
