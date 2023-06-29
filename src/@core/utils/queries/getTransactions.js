@@ -53,7 +53,8 @@ const createDataRow = (row, header) => {
     rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198';
   } else if (rowData.TokenSymbol == 'ETH') {
     // case of ETH
-    rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198';
+       rowData.Token = '0x0000000000000000000000000000000000000000';
+    // rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198';
     // rowData.Token = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
   }
 
