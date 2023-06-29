@@ -20,6 +20,7 @@ import dayjs from 'dayjs'
 import DatePicker from 'react-datepicker'
 import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
 import WalletContext from 'src/@core/context/walletContext'
+import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -90,9 +91,14 @@ const TableCustomized = () => {
     setPage(0)
   }
 
+  const setTrxWithFiatValue = (data) => {
+    getFiatCurrency(setTransactions, data)
+  }
+
   useEffect(() => {
     setOpen(true)
-    getTransactions(setTransactions, setOpen)
+    // getTransactions(setTransactions, setOpen)
+    getTransactions(setTrxWithFiatValue, setOpen)
   }, [])
 
   const userAccountIcon = <Account />
@@ -141,7 +147,7 @@ const TableCustomized = () => {
       return safeContributors[ind].name
     }
 
-    return address.substring(0, 4) + '...' + address.substring(38, 42)
+    return address ? (address.substring(0, 4) + '...' + address.substring(38, 42)) : '--'
   }
 
   return (
@@ -276,16 +282,16 @@ const TableCustomized = () => {
                         ) : isFloat(row.TokenAmount) == true ? (
                           row.USDAmount != '--' ? (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.USDAmount})
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
                             </Typography>
                           ) : (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.USDAmount})
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
                             </Typography>
                           )
                         ) : (
                           <Typography>
-                            {row.TokenAmount} {row.TokenSymbol} (${row.USDAmount})
+                            {row.TokenAmount} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
                           </Typography>
                         )}
                       </span>

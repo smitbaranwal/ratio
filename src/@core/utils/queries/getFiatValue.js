@@ -1,11 +1,15 @@
 const getFiatCurrency = (callback, data) => {
   const addressArray = []
   const addressFiats = {}
+  debugger
   data.forEach(trx => {
-    if (trx.Token && addressArray.findIndex(ad => ad == trx.Token) < 0) {
+    if (trx.Token && addressArray.findIndex(ad => ad == trx.Token) < 0 && trx.Token != '--') {
       addressArray.push(trx.Token)
     }
   })
+
+  // addressArray.push('0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198')
+  // addressArray.push('0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198')
 
   var requestOptions = {
     method: 'GET',
@@ -26,12 +30,14 @@ const getFiatCurrency = (callback, data) => {
     addressArray.forEach((add, index) => {
       addressFiats[add] = results[index]
     })
+    console.log(results)
     data.forEach(trx => {
       if (addressFiats[trx.Token]) {
-        trx['FiatValue'] = addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount
+        trx['FiatValue'] = parseFloat(addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount).toFixed(4)
         trx['FiatPrice'] = addressFiats[trx.Token]['fiatPrice']
       }
     })
+    debugger
     callback(data)
   })
 }
