@@ -277,23 +277,28 @@ const TableCustomized = () => {
                     {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
                     <div style={{ width: '200px' }}>
                       <span style={{ verticalAlign: 'super' }}>
+                      
                         {row.TokenAmount == '--' ? (
                           ''
                         ) : isFloat(row.TokenAmount) == true ? (
                           row.USDAmount != '--' ? (
-                            <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
+                            <Typography> 
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}>(${row.FiatValue ? row.FiatValue : row.USDAmount})</span>
                             </Typography>
                           ) : (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}> (${row.FiatValue ? row.FiatValue : row.USDAmount}) </span>
                             </Typography>
                           )
                         ) : (
                           <Typography>
-                            {row.TokenAmount} {row.TokenSymbol} (${row.FiatValue ? row.FiatValue : row.USDAmount})
+                            {row.TokenAmount} {row.TokenSymbol} 
+                            <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}> (${row.FiatValue ? row.FiatValue : row.USDAmount}) </span>
                           </Typography>
                         )}
+                        
                       </span>
                     </div>
                   </StyledTableCell>
