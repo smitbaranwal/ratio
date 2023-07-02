@@ -21,6 +21,7 @@ import DatePicker from 'react-datepicker'
 import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
 import WalletContext from 'src/@core/context/walletContext'
 import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
+import ToggleSwitch from 'src/@core/layouts/components/shared-components/ToggleSwitch'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -79,6 +80,7 @@ const TableCustomized = () => {
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [date, setDate] = useState(null)
   const { safeContributors } = useContext(WalletContext)
+  const [realTime, setRealTime] = useState(true);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -150,6 +152,11 @@ const TableCustomized = () => {
     return address ? (address.substring(0, 4) + '...' + address.substring(38, 42)) : '--'
   }
 
+  const updateSwitch = (value) => {
+    console.log('switch value is', value)
+    setRealTime(value)
+  }
+
   return (
     <>
       <BackdropLoader open={open} />
@@ -167,6 +174,10 @@ const TableCustomized = () => {
                 id='form-layouts-separator-date'
                 onChange={date => setDateFilter(date)}
               /> */}
+            </Grid>
+            <Grid item xs={0} sm={3}></Grid>
+            <Grid item xs={12} sm={3}>
+            <ToggleSwitch value={true} updateSwitch={updateSwitch}></ToggleSwitch>
             </Grid>
           </Grid>
         </CardContent>
@@ -284,18 +295,30 @@ const TableCustomized = () => {
                           row.USDAmount != '--' ? (
                             <Typography> 
                               {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}>(${row.FiatValue ? row.FiatValue : row.USDAmount})</span>
+                              {realTime ? 
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.FiatValue})</span>
+                              :
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
+                            }
                             </Typography>
                           ) : (
                             <Typography>
                               {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}> (${row.FiatValue ? row.FiatValue : row.USDAmount}) </span>
+                              {realTime ? 
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}> (${row.FiatValue}) </span>
+                              :
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
+                            }
                             </Typography>
                           )
                         ) : (
                           <Typography>
                             {row.TokenAmount} {row.TokenSymbol} 
-                            <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + row.USDAmount}> (${row.FiatValue ? row.FiatValue : row.USDAmount}) </span>
+                            {realTime ? 
+                            <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}> (${row.FiatValue}) </span>
+                            :
+                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
+                            }
                           </Typography>
                         )}
                         
