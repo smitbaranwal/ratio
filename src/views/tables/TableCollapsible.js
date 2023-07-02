@@ -71,6 +71,7 @@ const Row = props => {
   // ** Props
   const { row, open } = props
 
+
   // ** State
   const [collapse, setCollapse] = useState(false)
   const [page, setPage] = useState(0)
@@ -113,7 +114,7 @@ const Row = props => {
       return safeContributors[ind].name
     }
 
-    return address.substring(0, 4) + '...' + address.substring(38, 42)
+    return address && address.length ? (address.substring(0, 4) + '...' + address.substring(38, 42)) : '--'
   }
 
   function setDateFilter(date) {
@@ -306,24 +307,38 @@ const Row = props => {
                                 {/* ({item.TokenAmount !== '--' ? item.TokenAmount + ' ' + item.TokenSymbol : '--'}) */}
                                 <div style={{ width: '160' }}>
                                   <span style={{ verticalAlign: 'super', textAlign: 'center' }}>
+                                    {/* {item.FiatValue} */}
                                     {item.TokenAmount === '--' ? (
                                       ''
                                     ) : isFloat(item.TokenAmount) == true ? (
                                       item.USDAmount != '--' ? (
-                                        <Typography>
-                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
-                                          {item.USDAmount})
-                                        </Typography>
+                                        // <Typography>
+                                        //   {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
+                                        //   {item.USDAmount})
+                                        // </Typography>
+
+                                        <Typography> 
+                                        {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} 
+                                        <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}>(${item.FiatValue ? item.FiatValue : item.USDAmount})</span>
+                                      </Typography>
                                       ) : (
+                                        // <Typography>
+                                        //   {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
+                                        //   {item.USDAmount})
+                                        // </Typography>
                                         <Typography>
-                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
-                                          {item.USDAmount})
-                                        </Typography>
+                                        {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} 
+                                        <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}> (${item.FiatValue ? item.FiatValue : item.USDAmount}) </span>
+                                      </Typography>
                                       )
                                     ) : (
+                                      // <Typography>
+                                      //   {item.TokenAmount} {item.TokenSymbol} (${item.USDAmount})
+                                      // </Typography>
                                       <Typography>
-                                        {item.TokenAmount} {item.TokenSymbol} (${item.USDAmount})
-                                      </Typography>
+                                      {item.TokenAmount} {item.TokenSymbol} 
+                                      <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}> (${item.FiatValue ? item.FiatValue : item.USDAmount}) </span>
+                                    </Typography>
                                     )}
                                   </span>
                                 </div>
