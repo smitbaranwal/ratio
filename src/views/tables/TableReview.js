@@ -26,7 +26,7 @@ import ToggleSwitch from 'src/@core/layouts/components/shared-components/ToggleS
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     color: theme.palette.common.white,
-    backgroundColor: '#b892fe',
+    backgroundColor: '#b892fe'
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14
@@ -80,7 +80,7 @@ const TableCustomized = () => {
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [date, setDate] = useState(null)
   const { safeContributors } = useContext(WalletContext)
-  const [realTime, setRealTime] = useState(true);
+  const [realTime, setRealTime] = useState(true)
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -93,7 +93,7 @@ const TableCustomized = () => {
     setPage(0)
   }
 
-  const setTrxWithFiatValue = (data) => {
+  const setTrxWithFiatValue = data => {
     getFiatCurrency(setTransactions, data)
   }
 
@@ -149,10 +149,10 @@ const TableCustomized = () => {
       return safeContributors[ind].name
     }
 
-    return address ? (address.substring(0, 4) + '...' + address.substring(38, 42)) : '--'
+    return address ? address.substring(0, 4) + '...' + address.substring(38, 42) : '--'
   }
 
-  const updateSwitch = (value) => {
+  const updateSwitch = value => {
     console.log('switch value is', value)
     setRealTime(value)
   }
@@ -177,17 +177,17 @@ const TableCustomized = () => {
             </Grid>
             <Grid item xs={0} sm={3}></Grid>
             <Grid item xs={12} sm={3}>
-            <ToggleSwitch value={true} updateSwitch={updateSwitch}></ToggleSwitch>
+              <ToggleSwitch value={true} updateSwitch={updateSwitch}></ToggleSwitch>
             </Grid>
           </Grid>
         </CardContent>
         <Table sx={{ minWidth: 900 }} aria-label='customized table'>
           <TableHead>
-            <TableRow >
+            <TableRow>
               <StyledTableCell>Date (UTC)</StyledTableCell>
               <StyledTableCell>Category</StyledTableCell>
               <StyledTableCell align='center'>Hash</StyledTableCell>
-              <StyledTableCell align='left' sx={{display: "flex", alignItems: "center"}}>
+              <StyledTableCell align='left' sx={{ display: 'flex', alignItems: 'center' }}>
                 <ArrowDownThin style={{ color: '#4caf50' }} />
                 From | <ArrowUpThin style={{ color: '#f44336' }} />
                 T0
@@ -255,7 +255,7 @@ const TableCustomized = () => {
                     </div>
                   </StyledTableCell>
                   <StyledTableCell size='small' align='left'>
-                    <div style={{ width: '120px', display: "flex", alignItems: "center" }}>
+                    <div style={{ width: '120px', display: 'flex', alignItems: 'center' }}>
                       {row.Type === 'Outgoing' ? outTransaction : row.Type === 'Incoming' ? inTransaction : ''}
                       {row.Type === 'Outgoing'
                         ? getNamedAddress(row.ToAddress)
@@ -288,40 +288,52 @@ const TableCustomized = () => {
                     {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
                     <div style={{ width: '200px' }}>
                       <span style={{ verticalAlign: 'super' }}>
-                      
                         {row.TokenAmount == '--' ? (
                           ''
                         ) : isFloat(row.TokenAmount) == true ? (
                           row.USDAmount != '--' ? (
-                            <Typography> 
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
-                              {realTime ? 
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.FiatValue})</span>
-                              :
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
-                            }
+                            <Typography>
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol}
+                              {realTime ? (
+                                <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                  (${row.FiatValue})
+                                </span>
+                              ) : (
+                                <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                  (${row.USDAmount})
+                                </span>
+                              )}
                             </Typography>
                           ) : (
                             <Typography>
-                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol} 
-                              {realTime ? 
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}> (${row.FiatValue}) </span>
-                              :
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
-                            }
+                              {parseFloat(row.TokenAmount).toFixed(3)} {row.TokenSymbol}
+                              {realTime ? (
+                                <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                  {' '}
+                                  (${row.FiatValue}){' '}
+                                </span>
+                              ) : (
+                                <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                  (${row.USDAmount})
+                                </span>
+                              )}
                             </Typography>
                           )
                         ) : (
                           <Typography>
-                            {row.TokenAmount} {row.TokenSymbol} 
-                            {realTime ? 
-                            <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}> (${row.FiatValue}) </span>
-                            :
-                              <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}}>(${row.USDAmount})</span>
-                            }
+                            {row.TokenAmount} {row.TokenSymbol}
+                            {realTime ? (
+                              <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                {' '}
+                                (${row.FiatValue}){' '}
+                              </span>
+                            ) : (
+                              <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                (${row.USDAmount})
+                              </span>
+                            )}
                           </Typography>
                         )}
-                        
                       </span>
                     </div>
                   </StyledTableCell>

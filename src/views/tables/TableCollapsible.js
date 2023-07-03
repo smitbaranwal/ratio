@@ -44,6 +44,7 @@ import getFiatCurrency from 'src/@core/utils/queries/getFiatValue'
 import LongText from 'src/layouts/components/subComponent/longContent'
 import WalletContext from 'src/@core/context/walletContext'
 import BasicDateRangePicker from 'src/@core/layouts/components/shared-components/BasicDateRangePicker'
+import ToggleSwitch from 'src/@core/layouts/components/shared-components/ToggleSwitch'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -69,8 +70,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Row = props => {
   // ** Props
-  const { row, open } = props
-
+  const { row, open, realTimeToggle = true } = props
 
   // ** State
   const [collapse, setCollapse] = useState(false)
@@ -78,7 +78,6 @@ const Row = props => {
   const [rowsPerPage, setRowsPerPage] = useState(15)
   const [transactionsBU, setTransactionsBU] = useState([])
   const [componentToken, setComponentToken] = useState(0)
-
 
   const { safeContributors } = useContext(WalletContext)
 
@@ -114,7 +113,7 @@ const Row = props => {
       return safeContributors[ind].name
     }
 
-    return address && address.length ? (address.substring(0, 4) + '...' + address.substring(38, 42)) : '--'
+    return address && address.length ? address.substring(0, 4) + '...' + address.substring(38, 42) : '--'
   }
 
   function setDateFilter(date) {
@@ -142,8 +141,8 @@ const Row = props => {
     console.log('filteredTransactions', filteredTransactions)
     row.transactions = filteredTransactions
     setTimeout(() => {
-    setComponentToken(componentToken++)
-    }, 0);
+      setComponentToken(componentToken++)
+    }, 0)
     // setTransactions(filteredTransactions)
   }
 
@@ -171,17 +170,27 @@ const Row = props => {
           )}{' '} */}
           | &nbsp;
           {row.totalUSDAmtPre < 0 ? (
-            <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtPre.toFixed(2))}</span>
+            realTimeToggle ? (
+              <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtCurr.toFixed(2))} </span>
+            ) : (
+              <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtPre.toFixed(2))}</span>
+            )
           ) : (
             <span style={{ color: 'green' }}>
-              {row.totalUSDAmtPre != '--' ? '$' + row.totalUSDAmtPre.toFixed(3) : '$0.00'}
+              {realTimeToggle
+                ? row.totalUSDAmtCurr != '--'
+                  ? '$' + row.totalUSDAmtCurr
+                  : '$0.00'
+                : row.totalUSDAmtPre != '--'
+                ? '$' + row.totalUSDAmtPre.toFixed(3)
+                : '$0.00'}
             </span>
           )}
           {/* <NumberFormat value={2456981} displayType={'text'} thousandSeparator={true} prefix={'$'} /> */}
           {/* <div style={{ color: row.totalTokenAmt < 0 ? 'red' : 'green' }}>{row.totalTokenAmt}</div> */}
         </TableCell>
       </TableRow>
-      <TableRow> 
+      <TableRow>
         <TableCell colSpan={6} sx={{ py: '0 !important' }}>
           <Collapse in={collapse} timeout='auto' unmountOnExit>
             <Box sx={{ m: 2 }}>
@@ -192,20 +201,19 @@ const Row = props => {
                 <>
                   <TableContainer component={Paper}>
                     <Table component={Paper} sx={{ minWidth: 900 }} aria-label='customized table'>
-                    <CardContent>
-              <BasicDateRangePicker updateDate={setDateFilter}></BasicDateRangePicker>
+                      <CardContent>
+                        <BasicDateRangePicker updateDate={setDateFilter}></BasicDateRangePicker>
 
-          <Grid container spacing={5}>
-            <Grid item xs={12} sm={12} md={12} lg={6}>
-            </Grid>
-          </Grid>
-        </CardContent>
+                        <Grid container spacing={5}>
+                          <Grid item xs={12} sm={12} md={12} lg={6}></Grid>
+                        </Grid>
+                      </CardContent>
                       <TableHead>
                         <TableRow>
                           <StyledTableCell align='left'>Date (UTC)</StyledTableCell>
                           <StyledTableCell align='left'>Category</StyledTableCell>
                           <StyledTableCell align='center'>Hash</StyledTableCell>
-                          <StyledTableCell align='left' style={{display: "flex", alignItems: "center"}}>
+                          <StyledTableCell align='left' style={{ display: 'flex', alignItems: 'center' }}>
                             <ArrowDownThin style={{ color: '#4caf50' }} />
                             From | <ArrowUpThin style={{ color: '#f44336' }} />
                             T0
@@ -269,7 +277,7 @@ const Row = props => {
                                 </div>
                               </StyledTableCell>
                               <StyledTableCell size='small' align='left'>
-                                <div style={{ width: '120px', display: "flex", alignItems: "center"}}>
+                                <div style={{ width: '120px', display: 'flex', alignItems: 'center' }}>
                                   {item.Type === 'Outgoing'
                                     ? outTransaction
                                     : item.Type === 'Incoming'
@@ -317,28 +325,52 @@ const Row = props => {
                                         //   {item.USDAmount})
                                         // </Typography>
 
-                                        <Typography> 
-                                        {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} 
-                                        <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}>(${item.FiatValue ? item.FiatValue : item.USDAmount})</span>
-                                      </Typography>
+                                        <Typography>
+                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol}
+                                          {realTimeToggle ? (
+                                            <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                              (${item.FiatValue})
+                                            </span>
+                                          ) : (
+                                            <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                              (${item.USDAmount})
+                                            </span>
+                                          )}
+                                        </Typography>
                                       ) : (
                                         // <Typography>
                                         //   {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
                                         //   {item.USDAmount})
                                         // </Typography>
                                         <Typography>
-                                        {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} 
-                                        <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}> (${item.FiatValue ? item.FiatValue : item.USDAmount}) </span>
-                                      </Typography>
+                                          {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol}
+                                          {realTimeToggle ? (
+                                            <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                              (${item.FiatValue})
+                                            </span>
+                                          ) : (
+                                            <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                              (${item.USDAmount})
+                                            </span>
+                                          )}
+                                        </Typography>
                                       )
                                     ) : (
                                       // <Typography>
                                       //   {item.TokenAmount} {item.TokenSymbol} (${item.USDAmount})
                                       // </Typography>
                                       <Typography>
-                                      {item.TokenAmount} {item.TokenSymbol} 
-                                      <span style={{color: 'darkred', fontStyle: 'italic', fontSize: '14px'}} title={'Historical value is $' + item.USDAmount}> (${item.FiatValue ? item.FiatValue : item.USDAmount}) </span>
-                                    </Typography>
+                                        {item.TokenAmount} {item.TokenSymbol}
+                                        {realTimeToggle ? (
+                                          <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                            (${item.FiatValue})
+                                          </span>
+                                        ) : (
+                                          <span style={{ color: 'darkred', fontStyle: 'italic', fontSize: '14px' }}>
+                                            (${item.USDAmount})
+                                          </span>
+                                        )}
+                                      </Typography>
                                     )}
                                   </span>
                                 </div>
@@ -401,6 +433,7 @@ const TableCollapsible = props => {
   const [transactionTypeList, setTransactionTypeList] = useState([])
   // const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
+  const [toggle, setToggle] = useState(false)
 
   const getFiatValues = function (data) {
     // data.
@@ -409,7 +442,7 @@ const TableCollapsible = props => {
   }
 
   const updateTrx = function (data) {
-    console.log("dataaaaaaaaaaaaaaaaaaaaaaaaaaaa", data)
+    console.log('dataaaaaaaaaaaaaaaaaaaaaaaaaaaa', data)
     data.forEach(trx => {
       let insertInTransactionType = ''
       if (operationCategory.findIndex(c => c == trx.Category) > -1) {
@@ -437,26 +470,34 @@ const TableCollapsible = props => {
           if (trx.Type == 'Outgoing') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = 0 - trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = 0 - trx.USDAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = 0 - trx.FiatValue
             categoryData.totalTokenAmt = 0 - trx.TokenAmount
             categoryData.totalUSDAmtPre = 0 - trx.USDAmount
+            categoryData.totalUSDAmtCurr = 0 - trx.FiatValue
           } else if (trx.Type == 'Incoming') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = trx.USDAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = trx.FiatValue
             categoryData.totalTokenAmt = trx.TokenAmount
             categoryData.totalUSDAmtPre = trx.USDAmount
+            categoryData.totalUSDAmtCurr = trx.FiatValue
           }
           daoObject[insertInTransactionType].categories.push(categoryData)
         } else {
           if (trx.Type == 'Outgoing') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt -= trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr -= trx.FiatValue
             daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt -= trx.TokenAmount
             daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre -= trx.USDAmount
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr -= trx.FiatValue
           } else if (trx.Type == 'Incoming') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt += trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr -= trx.FiatValue
             daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt += trx.TokenAmount
             daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre += trx.USDAmount
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr += trx.FiatValue
           }
           daoObject[insertInTransactionType].categories[availableCatIndex].transactions.push(trx)
         }
@@ -470,8 +511,10 @@ const TableCollapsible = props => {
     Object.keys(daoObject).forEach(key => {
       daoList.push({
         name: key,
+        realTime: true,
         trxTypeTotalTokenAmt: daoObject[key].trxTypeTotalTokenAmt,
         trxTypeTotalUSDAmtPre: daoObject[key].trxTypeTotalUSDAmtPre,
+        trxTypeTotalUSDAmtCurr: daoObject[key].trxTypeTotalUSDAmtCurr,
         categories: daoObject[key].categories
       })
       console.log('categories data', daoObject[key].categories)
@@ -489,14 +532,14 @@ const TableCollapsible = props => {
         category.transactions.forEach(trx => {
           if (trx.TokenSymbol) {
             if (tokenSummary[trx.TokenSymbol]) {
-              tokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+              tokenSummary[trx.TokenSymbol] += +trx.TokenAmount.toFixed(2)
             } else {
-              tokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+              tokenSummary[trx.TokenSymbol] = +trx.TokenAmount.toFixed(2)
             }
             if (totalTokenSummary[trx.TokenSymbol]) {
-              totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+              totalTokenSummary[trx.TokenSymbol] += +trx.TokenAmount.toFixed(2)
             } else {
-              totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+              totalTokenSummary[trx.TokenSymbol] = +trx.TokenAmount.toFixed(2)
             }
           }
         })
@@ -568,6 +611,13 @@ const TableCollapsible = props => {
     XLSX.writeFile(workbook, 'test_gen1' + '.xlsx')
   }
 
+  const updateSwitch = (dao, value) => {
+    console.log('switch old value is', dao.realTime)
+    let daoList = transactionTypeList
+    daoList.find(d => d.name === dao.name).realTime = value
+    setToggle(!toggle)
+  }
+
   return (
     <Fragment>
       {/* <button onClick={convertToExcel}>Download Excel</button> */}
@@ -580,7 +630,22 @@ const TableCollapsible = props => {
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>
             <Card>
-              <CardHeader title={doa.name} titleTypographyProps={{ variant: 'h6' }} />
+              <Grid container>
+                <Grid item xs={0} sm={6}>
+                  {' '}
+                  <CardHeader title={doa.name} titleTypographyProps={{ variant: 'h6' }} />
+                </Grid>
+                <Grid item xs={0} sm={4}></Grid>
+                <Grid item xs={12} sm={2} sx={{ marginTop: '10px' }}>
+                  <ToggleSwitch
+                    value={true}
+                    updateSwitch={value => {
+                      updateSwitch(doa, value)
+                    }}
+                  ></ToggleSwitch>
+                </Grid>
+              </Grid>
+
               <TableContainer component={Paper}>
                 <Table aria-label='collapsible table'>
                   <TableHead>
@@ -592,7 +657,7 @@ const TableCollapsible = props => {
                   </TableHead>
                   <TableBody>
                     {doa.categories.map(row => (
-                      <Row key={row.name} row={row} open={open} />
+                      <Row key={row.name} row={row} realTimeToggle={doa.realTime} open={open} />
                     ))}
                     <TableRow>
                       <TableCell rowSpan={1} />
@@ -607,10 +672,23 @@ const TableCollapsible = props => {
                               {doa.TotalTokenSummary}
                             </span>{' '}
                             | &nbsp;
-                            <span style={{ color: doa.trxTypeTotalUSDAmtPre > 0 ? 'green' : 'red' }}>
+                            <span
+                              style={{
+                                color: doa.realTime
+                                  ? doa.trxTypeTotalUSDAmtCurr > 0
+                                    ? 'green'
+                                    : 'red'
+                                  : doa.trxTypeTotalUSDAmtPre > 0
+                                  ? 'green'
+                                  : 'red'
+                              }}
+                            >
                               {!isNaN(doa.trxTypeTotalUSDAmtPre)
-                                ? '$' + Math.abs(Number(doa.trxTypeTotalUSDAmtPre).toFixed(2))
-                                : doa.trxTypeTotalUSDAmtPre}
+                                ? '$' +
+                                  (doa.realTime
+                                    ? Math.abs(Number(doa.trxTypeTotalUSDAmtCurr).toFixed(2))
+                                    : Math.abs(Number(doa.trxTypeTotalUSDAmtPre).toFixed(2)))
+                                : '$' + (doa.realTime ? doa.trxTypeTotalUSDAmtCurr : doa.trxTypeTotalUSDAmtPre)}
                             </span>
                           </div>
                         </b>

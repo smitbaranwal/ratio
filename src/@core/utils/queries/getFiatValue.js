@@ -33,7 +33,12 @@ const getFiatCurrency = (callback, data) => {
     console.log(results)
     data.forEach(trx => {
       if (addressFiats[trx.Token]) {
-        trx['FiatValue'] = parseFloat(addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount).toFixed(4)
+        trx['FiatValue'] = parseFloat(addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount).toFixed(2)
+        // if (trx['FiatValue'] > 1) {
+        //   trx['FiatValue'].toFixed(4)
+        // } else {
+        //   trx['FiatValue'].toFixed(2)
+        // }
         trx['FiatPrice'] = addressFiats[trx.Token]['fiatPrice']
       }
     })
