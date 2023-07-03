@@ -7,8 +7,6 @@ const getTransactions = (setTransactions, setOpen) => {
   myHeaders.append('x-parcel-network', '1')
   myHeaders.append('Content-Type', 'application/json')
 
-  
-
   var raw = '{\n  "start_date": "01/01/2012",\n  "end_date": "01/01/2024",\n  "category": []\n}'
 
   var requestOptions = {
@@ -17,7 +15,7 @@ const getTransactions = (setTransactions, setOpen) => {
     body: raw,
     redirect: 'follow'
   }
-  
+
   // 0xA1631E16BEFd10CEDc5eD01253d6668319134C12
   // 0xcF8422021b408B32983B525778CE45420715f094
   fetch(
@@ -31,13 +29,13 @@ const getTransactions = (setTransactions, setOpen) => {
       result.rows.forEach(element => {
         rows.push(createDataRow(element, result.headers))
       })
-         setTransactions(rows)  
-         
+      setTransactions(rows)
+
       // if(rows.map((value)=> value.TokenAmount == "--" || value.TokenAmount == 0 )){
       //   console.log("hi")
       // } else {
       //   console.log("rows",{rows})
-      // } 
+      // }
       setOpen(false)
     })
     .catch(error => console.log('error', error))
@@ -50,10 +48,10 @@ const createDataRow = (row, header) => {
   })
   if (rowData.TokenSymbol == 'BANK') {
     // case of BANK
-    rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198';
+    rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198'
   } else if (rowData.TokenSymbol == 'ETH') {
     // case of ETH
-       rowData.Token = '0x0000000000000000000000000000000000000000';
+    rowData.Token = '0x0000000000000000000000000000000000000000'
     // rowData.Token = '0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198';
     // rowData.Token = '0x4ddc2d193948926d02f9b1fe9e1daa0718270ed5';
   }
