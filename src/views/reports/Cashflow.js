@@ -97,7 +97,7 @@ const CashflowSpreadsheet = props => {
                 Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
               ) : (
                 
-                  cat.totalUSDAmtPre != '--' ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
+                  !isNaN(cat.totalUSDAmtPre) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
                 
               ),
               height: 25,
@@ -143,6 +143,7 @@ const CashflowSpreadsheet = props => {
       cells: [
         { value: '', height: 25 },
         { value: 'Net CashFlow', height: 25, style: { fontWeight: 'bold' } },
+        { value: '', height: 25 },
         // { value: totalTokenSummary, height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } },
         { value: total.toFixed(0) + ' | $' + Math.abs(totalUsd.toFixed(2)), height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } }
       ]
