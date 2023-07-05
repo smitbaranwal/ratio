@@ -65,7 +65,7 @@ export default class CategoryWiseLoss extends PureComponent {
           borderRadius: '6px'
         }}
       >
-        <CardHeader title={'Category Incoming & Outgoing'} titleTypographyProps={{ variant: 'h6' }} />
+        <CardHeader title={'Category Outgoing'} titleTypographyProps={{ variant: 'h6' }} />
           <BarChart
             width={700}
             height={400}
