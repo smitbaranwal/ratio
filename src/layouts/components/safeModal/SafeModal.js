@@ -321,9 +321,11 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
   }
 
   const handleClose = async value => {
+    localStorage.setItem('safeAccount', value)
     setOpen(false)
     setSelectedValue(value)
     closeSafeDialog(value)
+
     await getSafesOwners(value, getSafeContributorList)
   }
 
