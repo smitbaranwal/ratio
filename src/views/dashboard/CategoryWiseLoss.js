@@ -1,3 +1,4 @@
+
 import { CardHeader } from '@mui/material';
 import React, { PureComponent } from 'react';
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
@@ -47,7 +48,7 @@ const data = [
   },
 ];
 
-export default class CategoryWiseProfitLoss extends PureComponent {
+export default class CategoryWiseLoss extends PureComponent {
 
     static demoUrl = 'https://codesandbox.io/s/simple-bar-chart-tpz8r';
   
@@ -65,7 +66,6 @@ export default class CategoryWiseProfitLoss extends PureComponent {
         }}
       >
         <CardHeader title={'Category Incoming & Outgoing'} titleTypographyProps={{ variant: 'h6' }} />
-        
           <BarChart
             width={700}
             height={400}
@@ -82,8 +82,8 @@ export default class CategoryWiseProfitLoss extends PureComponent {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="incoming" fill="#8884d8" />
-            {/* <Bar dataKey="outgoing" fill="#9e9e9e" /> */}
+            {/* <Bar dataKey="incoming" fill="#8884d8" /> */}
+            <Bar dataKey="outgoing" fill="#9e9e9e" />
             {/* <Bar dataKey="amt" fill="#82ca34" /> */}
           </BarChart>
           </div>

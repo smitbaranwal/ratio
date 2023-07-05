@@ -19,6 +19,9 @@ import DepositWithdraw from 'src/views/dashboard/DepositWithdraw'
 import SalesByCountries from 'src/views/dashboard/SalesByCountries'
 import AsofdateChart from 'src/views/dashboard/AsofdateChart'
 import CategoryWiseProfitLoss from 'src/views/dashboard/CategoryWiseProfitLoss'
+import ProjectWiseProfitLoss from 'src/views/dashboard/ProjectWiseProfitLoss'
+import CategoryWiseLoss from 'src/views/dashboard/CategoryWiseLoss'
+import { CardHeader } from '@mui/material'
 
 const Dashboard = () => {
   return (
@@ -30,11 +33,21 @@ const Dashboard = () => {
         <Grid item xs={12} md={12} lg={12}>
           {/* <SalesByCountries /> */}
           {/* <CategoryWiseProfitLoss /> */}
+{/* <CardHeader title={'Season Performance'} titleTypographyProps={{ variant: 'h6' }} /> */}
+
           <AsofdateChart />
         </Grid>
 
-        <Grid item xs={12} md={12} lg={12}>
+        <Grid item xs={6} md={6} lg={6}>
           <CategoryWiseProfitLoss />
+        </Grid>
+
+        <Grid item xs={6} md={6} lg={6}>
+          <CategoryWiseLoss />
+        </Grid>
+
+        <Grid item xs={12} md={12} lg={12}>
+          <ProjectWiseProfitLoss />
         </Grid>
        
         <Grid item xs={12}>

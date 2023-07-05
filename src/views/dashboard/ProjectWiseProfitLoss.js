@@ -4,50 +4,81 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 const data = [
   {
-    name: 'Salary',
-    outgoing: 4000,
-    incoming: 2400,
+    name: 'Consulting',
+    outgoing: 10000,
+    incoming: 9500,
     amt: 2400,
   },
   {
-    name: 'Grants',
-    incoming: 3000,
-    outgoing: 1398,
+    name: 'BountyBoard',
+    incoming: 6000,
+    outgoing: 7398,
     amt: 2210,
   },
   {
-    name: 'Bounty',
-    outgoing: 2000,
+    name: 'Academy',
+    outgoing: 11490,
+    incoming: 10000,
+    amt: 2100,
+  },
+  {
+    name: 'PodHatchery',
+    outgoing: 7653,
     incoming: 9800,
     amt: 2290,
   },
   {
-    name: 'Commission',
-    incoming: 2780,
+    name: 'Daoversity',
+    incoming: 4400,
     outgoing: 3908,
     amt: 2000,
   },
+  
   {
-    name: 'Coordinape',
-    incoming: 1890,
+    name: 'Content Gateway',
+    outgoing: 11490,
+    incoming: 10000,
+    amt: 2100,
+  },
+  {
+    name: 'Loans',
+    outgoing: 6700,
+    incoming: 9800,
+    amt: 2500,
+  },
+  {
+    name: 'CryptoSapiens',
+    outgoing: 11490,
+    incoming: 10000,
+    amt: 2100,
+  },
+  {
+    name: 'Fight Club',
+    incoming: 8900,
     outgoing: 4800,
     amt: 2181,
   },
   {
-    name: 'Token Swaps',
-    outgoing: 2390,
-    incoming: 3800,
-    amt: 2500,
+    name: 'First Quest',
+    outgoing: 11490,
+    incoming: 10000,
+    amt: 2100,
   },
+  // {
+  //   name: 'Academy',
+  //   outgoing: 11490,
+  //   incoming: 10000,
+  //   amt: 2100,
+  // },
   {
-    name: 'Token Release',
-    outgoing: 3490,
-    incoming: 4300,
+    name: 'Infosec',
+    outgoing: 11490,
+    incoming: 10000,
     amt: 2100,
   },
 ];
 
-export default class CategoryWiseProfitLoss extends PureComponent {
+export default class ProjectWiseProfitLoss extends PureComponent {
 
     static demoUrl = 'https://codesandbox.io/s/simple-bar-chart-tpz8r';
   
@@ -64,10 +95,9 @@ export default class CategoryWiseProfitLoss extends PureComponent {
           borderRadius: '6px'
         }}
       >
-        <CardHeader title={'Category Incoming & Outgoing'} titleTypographyProps={{ variant: 'h6' }} />
-        
+        <CardHeader title={'Project Incoming & Outgoing'} titleTypographyProps={{ variant: 'h6' }} />
           <BarChart
-            width={700}
+            width={1400}
             height={400}
             data={data}
             margin={{
@@ -82,8 +112,8 @@ export default class CategoryWiseProfitLoss extends PureComponent {
             <YAxis />
             <Tooltip />
             <Legend />
-            <Bar dataKey="incoming" fill="#8884d8" />
-            {/* <Bar dataKey="outgoing" fill="#9e9e9e" /> */}
+            <Bar dataKey="incoming" fill="#ffc658"  background={{ fill: '#eee' }}/>
+            <Bar dataKey="outgoing" fill="#8884d8"  background={{ fill: '#eee' }}/>
             {/* <Bar dataKey="amt" fill="#82ca34" /> */}
           </BarChart>
           </div>
