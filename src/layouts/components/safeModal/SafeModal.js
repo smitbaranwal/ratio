@@ -228,10 +228,10 @@ function SafeDialog(props) {
                         </ListItemAvatar>
                         {/* <ListItemText primary={safe.safeAddress} /> */}
                         <div>
-                          <ListItemText primary={safe.safeAddress} />
+                        <ListItemText primary={safe.safeName + (safe.isDelegate ? ' (Delegate)' : ' (Owner)')} />
+                          <ListItemText secondary={safe.safeAddress} />
 
                           {/* <br></br> */}
-                          <ListItemText secondary={safe.safeName + (safe.isDelegate ? ' (Delegate)' : ' (Owner)')} />
                         </div>
                         <div></div>
                       </ListItemButton>
