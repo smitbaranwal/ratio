@@ -40,14 +40,62 @@ const getFiatCurrency = (callback, data) => {
         .catch(error => console.log('There was a problem!', error))
     )
   ).then(results => {
-  
+  debugger
   addressArray.forEach((add, index) => {
       addressFiats[add] = results[index]
   })
+
+  let onehistory = {
+    id: "bankless-dao",
+    symbol: "bank",
+    name: "Bankless DAO",
+    image: {
+      thumb: "https://assets.coingecko.com/coins/images/15227/thumb/j4WEJrwU.png?1622615796",
+      small: "https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796"
+    },
+    market_data: {
+      current_price: {
+        usd: 0.023620571469385076
+      },
+      market_cap: {
+        usd: 38386.2007299591
+      }
+    },
+    community_data: {
+      facebook_likes: null,
+      twitter_followers: null,
+      reddit_average_posts_48h: 0,
+      reddit_average_comments_48h: 0,
+      reddit_subscribers: null,
+      reddit_accounts_active_48h: null
+    },
+    developer_data: {
+      forks: null,
+      stars: null,
+      subscribers: null,
+      total_issues: null,
+      closed_issues: null,
+      pull_requests_merged: null,
+      pull_request_contributors: null,
+      code_additions_deletions_4_weeks: {
+        additions: null,
+        deletions: null
+      },
+      commit_count_4_weeks: null
+    },
+    public_interest_stats: {
+      alexa_rank: null,
+      bing_matches: null
+    }
+  }
   results.forEach((historicaldata, index) => {
-    if (index > (addressArray.length - 1)) {
+    if (historicaldata && index > (addressArray.length - 1)) {
       historicalFiats[index - (addressArray.length)].usd = historicaldata.market_data.current_price.usd
       historicalFiats[index - (addressArray.length)].response = historicaldata
+      // onehistory = historicaldata
+    } else {
+      // historicalFiats[index - (addressArray.length)].usd = onehistory.market_data.current_price.usd
+      // historicalFiats[index - (addressArray.length)].response = onehistory
     }
   })
     console.log(results)
