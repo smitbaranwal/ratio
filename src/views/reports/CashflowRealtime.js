@@ -101,11 +101,11 @@ data.forEach(cat => {
               color: cat.TokenSummary < -1 ? '#ff0000' : '#000000'
             }},
             {
-              value: cat.totalUSDAmtPre < 0 ? (
-                Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
+              value: cat.totalUSDAmtCurr < 0 ? (
+                Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr.toFixed(2))
               ) : (
                 
-                  !isNaN(cat.totalUSDAmtPre) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre).toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
+                  !isNaN(cat.totalUSDAmtCurr) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr).toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
                 
               ),
               height: 25,
@@ -120,7 +120,9 @@ data.forEach(cat => {
       })
       // insert category total
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
-      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0), 0)
+      // debugger
+      //totalUSDAmtCurr //totalUSDAmtPre
+      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtCurr != '--' ? cat.totalUSDAmtCurr : 0), 0)
       let TotalTokenSummary = category.TotalTokenSummary
       let istotalnegative = total < -1
       rowsModel.push({
@@ -144,7 +146,7 @@ data.forEach(cat => {
     // insert net cashflow
     console.log("categorisedData", categorisedData)
     let total = categorisedData.reduce((acc, cat) => acc + Number(cat.trxTypeTotalTokenAmt), 0)
-    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? Number(cat.trxTypeTotalUSDAmtPre) : 0), 0)
+    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypetotalUSDAmtCurr != '--' ? Number(cat.trxTypetotalUSDAmtCurr) : 0), 0)
     // let totalTokenSummary = categorisedData.TotalTokenSummary
     rowsModel.push({
       index: currentIndex,

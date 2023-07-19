@@ -93,9 +93,11 @@ data.forEach(cat => {
   cat.transactions.forEach(trxn => {
     // debugger
     // trxn = Object.assign(objectOrder, trxn)
+    // trxn.TokenAmt = trxn.TokenAmount + ' ' + trxn.TokenSymbol
     delete trxn.FiatValue
     delete trxn.FiatPrice
     delete trxn.Token
+    // delete trxn.TokenSymbol
     delete trxn.Category
     delete trxn.Tag
     delete trxn.TransactionHash
@@ -148,7 +150,7 @@ data.forEach(cat => {
       })
       // insert category total
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
-      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtPre != '--' ? cat.totalUSDAmtPre : 0), 0)
+      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtPre != '--' && !isNaN(cat.totalUSDAmtPre) ? cat.totalUSDAmtPre : 0), 0)
       let TotalTokenSummary = category.TotalTokenSummary
       let istotalnegative = total < -1
       rowsModel.push({
