@@ -255,4 +255,8 @@ export const mappingTokens = [
     safeAddress: "0x998b56602B91fE56A9d8970192075cEA4c89D29a",
     token: "0x1ef4bb0c4827be631fc8c747621496079910ec953bae08f1834cf74458bb493d",
   },
+  {
+    safeAddress: "0x98365ac9aa8e60ABdB219809717A554B69AED653",
+    token: "0x112a7750311f7ac2944619f3c555dfd414f1410c581ce0db29812823c129ca8b",
+  }
 ]
