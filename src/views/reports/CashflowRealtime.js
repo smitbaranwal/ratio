@@ -67,13 +67,13 @@ const CashflowRealtimeSpreadsheet = props => {
   console.log('data from spreadsheet', dataAll)
   console.log('categorized data from CashflowRealtimeSpreadsheet', categorisedData)
   const data = JSON.parse(JSON.stringify(dataAll)) //[...dataAll]
-data.forEach(cat => {
-  cat.transactions.forEach(trxn => {
-    trxn.USDAmount = trxn.FiatValue
-    delete trxn.FiatValue
-    delete trxn.FiatPrice
+  data.forEach(cat => {
+    cat.transactions.forEach(trxn => {
+      trxn.USDAmount = trxn.FiatValue
+      delete trxn.FiatValue
+      delete trxn.FiatPrice
+    })
   })
-})
   let currentIndex = 3
 
   const [onloaded, setOnloaded] = useState(false)
@@ -97,23 +97,24 @@ data.forEach(cat => {
           cells: [
             { value: '', height: 25 },
             { value: cat.name, height: 25 },
-            {value: cat.TokenSummary,  style: {
-              color: cat.TokenSummary < -1 ? '#ff0000' : '#000000'
-            }},
             {
-              value: cat.totalUSDAmtCurr < 0 ? (
-                Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr.toFixed(2))
-              ) : (
-                
-                  !isNaN(cat.totalUSDAmtCurr) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr).toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
-                
-              ),
+              value: cat.TokenSummary,
+              style: {
+                color: cat.TokenSummary < -1 ? '#ff0000' : '#000000'
+              }
+            },
+            {
+              value:
+                cat.totalUSDAmtCurr < 0
+                  ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr.toFixed(2))
+                  : !isNaN(cat.totalUSDAmtCurr)
+                  ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtCurr).toFixed(3)
+                  : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00',
               height: 25,
               style: {
                 color: cat.totalTokenAmt < -1 ? '#ff0000' : '#000000'
               }
             }
-           
           ]
         })
         currentIndex++
@@ -122,7 +123,11 @@ data.forEach(cat => {
       let total = category.categories.reduce((acc, cat) => acc + cat.totalTokenAmt, 0)
       // debugger
       //totalUSDAmtCurr //totalUSDAmtPre
-      let totalUsd = category.categories.reduce((acc, cat) => acc + (cat.totalUSDAmtCurr != '--' ? cat.totalUSDAmtCurr : 0), 0)
+
+      let totalUsd = category.categories.reduce(
+        (acc, cat) => acc + (cat.totalUSDAmtCurr != '--' ? cat.totalUSDAmtCurr : 0),
+        0
+      )
       let TotalTokenSummary = category.TotalTokenSummary
       let istotalnegative = total < -1
       rowsModel.push({
@@ -130,8 +135,16 @@ data.forEach(cat => {
         cells: [
           { value: '', height: 25 },
           { value: 'Total', height: 25, style: { fontWeight: 'bold' } },
-          { value: TotalTokenSummary, height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } },
-          { value: Math.abs(total.toFixed(0)) + ' | $' + Math.abs(totalUsd).toFixed(3), height: 25, style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' } }
+          {
+            value: TotalTokenSummary,
+            height: 25,
+            style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' }
+          },
+          {
+            value: Math.abs(total.toFixed(0)) + ' | $' + Math.abs(totalUsd).toFixed(3),
+            height: 25,
+            style: { fontWeight: 'bold', color: istotalnegative ? '#ff0000' : '#000000' }
+          }
         ]
       })
       currentIndex++
@@ -144,9 +157,13 @@ data.forEach(cat => {
     // insert blank row for netflow separation
     rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
-    console.log("categorisedData", categorisedData)
+    console.log('categorisedData', categorisedData)
     let total = categorisedData.reduce((acc, cat) => acc + Number(cat.trxTypeTotalTokenAmt), 0)
-    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypetotalUSDAmtCurr != '--' ? Number(cat.trxTypetotalUSDAmtCurr) : 0), 0)
+    
+    let totalUsd = categorisedData.reduce(
+      (acc, cat) => acc + (cat.trxTypetotalUSDAmtCurr != '--' ? Number(cat.trxTypetotalUSDAmtCurr) : 0),
+      0
+    )
     // let totalTokenSummary = categorisedData.TotalTokenSummary
     rowsModel.push({
       index: currentIndex,
@@ -155,7 +172,11 @@ data.forEach(cat => {
         { value: 'Net CashFlow', height: 25, style: { fontWeight: 'bold' } },
         { value: '', height: 25 },
         // { value: totalTokenSummary, height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } },
-        { value: total.toFixed(0) + ' | $' + Math.abs(totalUsd.toFixed(2)), height: 25, style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' } }
+        {
+          value: total.toFixed(0) + ' | $' + Math.abs(totalUsd.toFixed(2)),
+          height: 25,
+          style: { fontWeight: 'bold', color: totalUsd < -1 ? '#ff0000' : '#000000' }
+        }
       ]
     })
     spreadsheet.insertRow(rowsModel)
@@ -205,56 +226,39 @@ data.forEach(cat => {
     })
   }
 
-
-
-
-
   // data.forEach(dao => {
   //   const totalTokenSummary = {}
   //   let totalText = ''
-    data.forEach(category => {
-      const tokenSummary = {}
-      let text = ''
-      category.transactions.forEach(trx => {
-        if (trx.TokenSymbol) {
-          if (tokenSummary[trx.TokenSymbol]) {
-            tokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
-          } else {
-            tokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
-          }
-          // if (totalTokenSummary[trx.TokenSymbol]) {
-          //   totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
-          // } else {
-          //   totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
-          // }
+  data.forEach(category => {
+    const tokenSummary = {}
+    let text = ''
+    category.transactions.forEach(trx => {
+      if (trx.TokenSymbol) {
+        if (tokenSummary[trx.TokenSymbol]) {
+          tokenSummary[trx.TokenSymbol] += +trx.TokenAmount.toFixed(2)
+        } else {
+          tokenSummary[trx.TokenSymbol] = +trx.TokenAmount.toFixed(2)
         }
-      })
-      Object.keys(tokenSummary).forEach(key => {
-        text += ' ' + tokenSummary[key] + ' ' + key + ','
-      })
-      text = text.slice(0, text.length - 1)
-      category.TokenSummary = text
-      console.log('token summary for ' + category.name + ' ' + text)
+        // if (totalTokenSummary[trx.TokenSymbol]) {
+        //   totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
+        // } else {
+        //   totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
+        // }
+      }
     })
+    Object.keys(tokenSummary).forEach(key => {
+      text += ' ' + tokenSummary[key] + ' ' + key + ','
+    })
+    text = text.slice(0, text.length - 1)
+    category.TokenSummary = text
+    console.log('token summary for ' + category.name + ' ' + text)
+  })
   //   Object.keys(totalTokenSummary).forEach(key => {
   //     totalText += ' ' + totalTokenSummary[key] + ' ' + key + ','
   //   })
   //   totalText = totalText.slice(0, totalText.length - 1)
   //   dao.TotalTokenSummary = totalText
   // })
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   return (
     <Fragment>
@@ -274,7 +278,7 @@ data.forEach(cat => {
       {data.length ? (
         <div>
           <SpreadsheetComponent
-          height={'550px'}
+            height={'550px'}
             created={onCreated.bind(this)}
             beforeCellRender={beforeCellRender.bind(this)}
             allowSave={true}
@@ -331,15 +335,13 @@ data.forEach(cat => {
                 <RangesDirective></RangesDirective>
               </SheetDirective>
 
-
               {/* {row.totalTokenAmt > 0 ? (
             <span style={{ color: 'green' }}>{row.TokenSummary}</span>
           ) : (
             <span style={{ color: 'red' }}>{row.TokenSummary}</span>
           )}{' '} */}
 
-
-              {console.log("dataaaaaaaaaaaaa", data)}
+              {console.log('dataaaaaaaaaaaaa', data)}
               {data.map(category => (
                 <SheetDirective key={category.name} name={category.name}>
                   <RangesDirective>
