@@ -1,3 +1,5 @@
+import { getUserID } from "src/assets/localData"
+
 const getSafesOwners =  (safeAddress, callback) => {
     var wallet =   getUserID()
     var headers = new Headers()
