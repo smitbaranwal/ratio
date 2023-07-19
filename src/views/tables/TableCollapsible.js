@@ -471,16 +471,16 @@ const TableCollapsible = props => {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = 0 - trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = 0 - trx.USDAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = 0 - trx.FiatValue
-            categoryData.totalTokenAmt = 0 - trx.TokenAmount
-            categoryData.totalUSDAmtPre = 0 - trx.USDAmount
-            categoryData.totalUSDAmtCurr = 0 - trx.FiatValue
+            categoryData.totalTokenAmt = 0 - Number(trx.TokenAmount)
+            categoryData.totalUSDAmtPre = 0 - Number(trx.USDAmount)
+            categoryData.totalUSDAmtCurr = 0 - Number(trx.FiatValue)
           } else if (trx.Type == 'Incoming') {
             daoObject[insertInTransactionType].trxTypeTotalTokenAmt = trx.TokenAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = trx.USDAmount
             daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = trx.FiatValue
-            categoryData.totalTokenAmt = trx.TokenAmount
-            categoryData.totalUSDAmtPre = trx.USDAmount
-            categoryData.totalUSDAmtCurr = trx.FiatValue
+            categoryData.totalTokenAmt = Number(trx.TokenAmount)
+            categoryData.totalUSDAmtPre = Number(trx.USDAmount)
+            categoryData.totalUSDAmtCurr = Number(trx.FiatValue)
           }
           daoObject[insertInTransactionType].categories.push(categoryData)
         } else {
@@ -529,6 +529,7 @@ const TableCollapsible = props => {
       dao.categories.forEach(category => {
         const tokenSummary = {}
         let text = ''
+        
         category.transactions.forEach(trx => {
           if (trx.TokenSymbol) {
             if (tokenSummary[trx.TokenSymbol]) {

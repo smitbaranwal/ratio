@@ -40,7 +40,6 @@ const getFiatCurrency = (callback, data) => {
         .catch(error => console.log('There was a problem!', error))
     )
   ).then(results => {
-  debugger
   addressArray.forEach((add, index) => {
       addressFiats[add] = results[index]
   })
