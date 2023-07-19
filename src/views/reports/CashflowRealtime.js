@@ -62,14 +62,14 @@ const downloadButtonStyle = {
 
 let spreadsheet
 
-const CashflowSpreadsheet = props => {
-  const { dataAll, categorisedDataAll } = props
+const CashflowRealtimeSpreadsheet = props => {
+  const { dataAll, categorisedData } = props
   console.log('data from spreadsheet', dataAll)
-  console.log('categorized data from cashflowspreadsheet', categorisedDataAll)
-  const categorisedData = JSON.parse(JSON.stringify(categorisedDataAll)) //[...categorisedData]
+  console.log('categorized data from CashflowRealtimeSpreadsheet', categorisedData)
   const data = JSON.parse(JSON.stringify(dataAll)) //[...dataAll]
 data.forEach(cat => {
   cat.transactions.forEach(trxn => {
+    trxn.USDAmount = trxn.FiatValue
     delete trxn.FiatValue
     delete trxn.FiatPrice
   })
@@ -198,7 +198,7 @@ data.forEach(cat => {
     // spreadsheet.save()
     spreadsheet.save({
       url: 'https://services.syncfusion.com/react/production/api/spreadsheet/save',
-      fileName: 'CashflowSpreadsheet',
+      fileName: 'CashflowRealtimeSpreadsheet',
       saveType: 'Xlsx'
     })
   }
@@ -354,4 +354,4 @@ data.forEach(cat => {
   )
 }
 
-export default CashflowSpreadsheet
+export default CashflowRealtimeSpreadsheet

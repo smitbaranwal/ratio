@@ -61,7 +61,7 @@ const getFiatCurrency = (callback, data) => {
         // }
         trx['FiatPrice'] = addressFiats[trx.Token]['fiatPrice']
       }
-      debugger
+      // debugger
       if (historicalFiats.findIndex(incTrx => incTrx.trxHash == trx.TransactionHash) > -1) {
         trx.USDAmount = parseFloat(trx.TokenAmount * (historicalFiats.find(incTrx => incTrx.trxHash == trx.TransactionHash).usd)).toFixed(2)
       }
