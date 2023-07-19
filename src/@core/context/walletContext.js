@@ -33,7 +33,8 @@ export const WalletContextProvider = ({ children }) => {
      
       setProvider(null)
     } else {
-      setAccount(`0x0a08e7C1b23df18413e27aA9DdD2e4376f49caF3`)
+      // setAccount(`0x0a08e7C1b23df18413e27aA9DdD2e4376f49caF3`)
+      setAccount(wallet.accounts[0].address)
       console.log({ wallet }, 'else case')
       const webProvider = new ethers.providers.Web3Provider(wallet.provider, 'any')
       setProvider(webProvider)
@@ -43,7 +44,8 @@ export const WalletContextProvider = ({ children }) => {
   
 
       // handleSafe.current()
-       setUserID(`0x0a08e7C1b23df18413e27aA9DdD2e4376f49caF3`)
+      //  setUserID(`0x0a08e7C1b23df18413e27aA9DdD2e4376f49caF3`)
+       setUserID(wallet.accounts[0].address)
     }
   }, [wallet?.accounts[0]?.address])
 
