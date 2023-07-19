@@ -55,7 +55,7 @@ const downloadButtonStyle = {
   'z-index': '11',
   position: 'fixed',
   right: '3.5rem',
-  bottom: '13.2rem',
+  top: '6.5rem',
   transform: 'none',
   transition: 'transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
 }
@@ -272,6 +272,7 @@ data.forEach(cat => {
       {data.length ? (
         <div>
           <SpreadsheetComponent
+          height={'550px'}
             created={onCreated.bind(this)}
             beforeCellRender={beforeCellRender.bind(this)}
             allowSave={true}
