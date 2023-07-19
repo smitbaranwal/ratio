@@ -55,7 +55,7 @@ const downloadButtonStyle = {
   'z-index': '11',
   position: 'fixed',
   right: '3.5rem',
-  bottom: '13.2rem',
+  top: '6.5rem',
   transform: 'none',
   transition: 'transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms'
 }
@@ -68,10 +68,38 @@ const CashflowSpreadsheet = props => {
   console.log('categorized data from cashflowspreadsheet', categorisedDataAll)
   const categorisedData = JSON.parse(JSON.stringify(categorisedDataAll)) //[...categorisedData]
   const data = JSON.parse(JSON.stringify(dataAll)) //[...dataAll]
+
+  const objectOrder = {
+    'Nonce': null,
+    'Category': null,
+    'Type': null,
+    'Executedat': null,
+    'FromAddress': null,
+    'ToAddress': null,
+    'RecipientName': null,
+    'USDAmount': null,
+    'TokenSymbol': null,
+    'TokenAmount': null,
+    'Description': null,
+    'Tag': null,
+    'Executedat': null,
+    'Comment': null,
+    'Transactionfees': null,
+    'TransactionStatus': null,
+    'TransactionHash': null
+  }
+
 data.forEach(cat => {
   cat.transactions.forEach(trxn => {
+    // debugger
+    // trxn = Object.assign(objectOrder, trxn)
     delete trxn.FiatValue
     delete trxn.FiatPrice
+    delete trxn.Token
+    delete trxn.Category
+    delete trxn.Tag
+    delete trxn.TransactionHash
+
   })
 })
   let currentIndex = 3
@@ -87,7 +115,7 @@ data.forEach(cat => {
       // insert category header name
       rowsModel.push({
         index: currentIndex,
-        cells: [{ value: category.name, colSpan: 4, style: boldCenterCategory, height: 35 }]
+        cells: [{ value: category.name, colSpan: 4, style: boldCenterCategory, height: 105 }]
       })
       currentIndex++
       // insert category components
@@ -161,10 +189,12 @@ data.forEach(cat => {
     spreadsheet.numberFormat('[Red][<0]$#,##0.0000;[Black][>=0]$#,##0.0000', 'C5:C15')
     const timeouttime = 300
     spreadsheet.sheets.forEach((sheet, index) => {
+      // sheet.cellFormat({ fontWeight: 'bold', textAlign: 'center' }, 'A1:G1')
       setTimeout(() => {
         if (index > 0 && index < spreadsheet.sheets.length - 1) {
           console.log('index of sheet if', index)
           spreadsheet.moveSheet(index, [index + 1])
+          // sheet.cellFormat({fontWeight: 'bold'}, 'A1:D1')
         }
       }, index * timeouttime)
     })
@@ -272,6 +302,7 @@ data.forEach(cat => {
       {data.length ? (
         <div>
           <SpreadsheetComponent
+            height={'550px'}
             created={onCreated.bind(this)}
             beforeCellRender={beforeCellRender.bind(this)}
             allowSave={true}
@@ -342,6 +373,25 @@ data.forEach(cat => {
                   <RangesDirective>
                     <RangeDirective dataSource={category.transactions}></RangeDirective>
                   </RangesDirective>
+                  <ColumnsDirective>
+                    <ColumnDirective width={60} textAlign="Left"></ColumnDirective>
+                    <ColumnDirective width={90}></ColumnDirective>
+                    <ColumnDirective width={120}></ColumnDirective>
+                    <ColumnDirective width={130}></ColumnDirective>
+                    <ColumnDirective width={120}></ColumnDirective>
+                    <ColumnDirective width={100}></ColumnDirective>
+                    <ColumnDirective width={120}></ColumnDirective>
+                    <ColumnDirective width={180}></ColumnDirective>
+                    <ColumnDirective width={180}></ColumnDirective>
+                    <ColumnDirective width={220}></ColumnDirective>
+                    <ColumnDirective width={290}></ColumnDirective>
+                    <ColumnDirective width={190}></ColumnDirective>
+                    <ColumnDirective width={210} ></ColumnDirective>
+                    <ColumnDirective width={210} ></ColumnDirective>
+                    <ColumnDirective width={190}></ColumnDirective>
+                    <ColumnDirective width={190}></ColumnDirective>
+                    <ColumnDirective width={190}></ColumnDirective>
+                  </ColumnsDirective>
                 </SheetDirective>
               ))}
             </SheetsDirective>

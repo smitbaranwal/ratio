@@ -2,6 +2,8 @@
 //     console.log("userAccountNumber", userAccountNumber)
 //     const safes = []
 
+import { mappingTokens } from "./getTransactions";
+
 
   
 //     var requestOptions = {
@@ -50,7 +52,10 @@ fetch("https://integrations-api.parcel.money/api/v1/safes/connectedSafes", reque
   .then(response => response.text())
   .then(result => {
     result = JSON.parse(result)
-    console.log('data safes', result)
+    console.log('data safes all', result)
+    const mappingSafes = mappingTokens
+    result.safes = result.safes.filter(safe => mappingSafes.findIndex(s => s.safeAddress == safe.safeAddress) > -1)
+    console.log('data safes filtered', result)
     setSafeAddress(result.safes)
   })
   .catch(error => {

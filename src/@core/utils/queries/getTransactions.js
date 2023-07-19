@@ -1,6 +1,6 @@
 const getTransactions = (setTransactions, setOpen) => {
   var myHeaders = new Headers()
-  debugger
+  // debugger
   const safeAddress = localStorage.getItem('safeAccount')
   const rows = []
   const mapping = mappingTokens.find(safeToken => safeToken.safeAddress === safeAddress)
@@ -33,6 +33,7 @@ const getTransactions = (setTransactions, setOpen) => {
       result.rows.forEach(element => {
         rows.push(createDataRow(element, result.headers))
       })
+      // rows = rows.filter(trx => trx.TokenAmount && trx.TokenAmount > 0)
       setTransactions(rows)
 
       // if(rows.map((value)=> value.TokenAmount == "--" || value.TokenAmount == 0 )){
@@ -65,7 +66,7 @@ const createDataRow = (row, header) => {
 
 export default getTransactions
 
-const mappingTokens = [
+export const mappingTokens = [
   {
     safeAddress: "0x8a3dAE25C39B114a0B86E4e7900cB3C29BD8F637",
     token: "0xc23c0474f83793230275a8051cfdd621446361ed1da1d2bcae29e892e7b8d76b",
@@ -254,4 +255,8 @@ const mappingTokens = [
     safeAddress: "0x998b56602B91fE56A9d8970192075cEA4c89D29a",
     token: "0x1ef4bb0c4827be631fc8c747621496079910ec953bae08f1834cf74458bb493d",
   },
+  {
+    safeAddress: "0x98365ac9aa8e60ABdB219809717A554B69AED653",
+    token: "0x112a7750311f7ac2944619f3c555dfd414f1410c581ce0db29812823c129ca8b",
+  }
 ]
