@@ -11,6 +11,7 @@ import TabContext from '@mui/lab/TabContext'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import CashflowSpreadsheet from 'src/views/reports/Cashflow'
+import CashflowRealtimeSpreadsheet from 'src/views/reports/CashflowRealtime'
 
 const Cashflow = () => {
   const imageStyle = {
@@ -34,7 +35,8 @@ const Cashflow = () => {
         <TabContext value={value}>
           <TabList onChange={handleChange} aria-label='Cashflow Statement'>
             <Tab value='1' label='Grid View' />
-            <Tab value='2' label='Report View' />
+            <Tab value='2' label='Report Historical View' />
+            <Tab value='3' label='Report RealTime View' />
             {/* <Tab value='3' label='Download' /> */}
           </TabList>
           <CardContent>
@@ -42,9 +44,12 @@ const Cashflow = () => {
               <TableCollapsible setSpreadsheetData={setSpreadsheetData} setTransactionsData={setTransactionsData} />
             </TabPanel>
             <TabPanel value='2' sx={{ p: 0 }}>
-              <CashflowSpreadsheet data={spreadsheetData} categorisedData={transactionsData} />
+              <CashflowSpreadsheet dataAll={spreadsheetData} categorisedDataAll={[...transactionsData]} />
             </TabPanel>
             <TabPanel value='3' sx={{ p: 0 }}>
+              <CashflowRealtimeSpreadsheet dataAll={spreadsheetData} categorisedData={transactionsData} />
+            </TabPanel>
+            <TabPanel value='4' sx={{ p: 0 }}>
               <Typography variant='h6' sx={{ marginBottom: 2 }}>
                 Cashflow Report
               </Typography>
