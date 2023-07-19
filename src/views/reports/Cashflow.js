@@ -97,7 +97,7 @@ const CashflowSpreadsheet = props => {
                 Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre.toFixed(2))
               ) : (
                 
-                  !isNaN(cat.totalUSDAmtPre) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + cat.totalUSDAmtPre.toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
+                  !isNaN(cat.totalUSDAmtPre) ? Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $' + Math.abs(cat.totalUSDAmtPre).toFixed(3) : Math.abs(cat.totalTokenAmt.toFixed(0)) + ' | $0.00'
                 
               ),
               height: 25,
@@ -135,8 +135,8 @@ const CashflowSpreadsheet = props => {
     rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
     console.log("categorisedData", categorisedData)
-    let total = categorisedData.reduce((acc, cat) => acc + cat.trxTypeTotalTokenAmt, 0)
-    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? cat.trxTypeTotalUSDAmtPre : 0), 0)
+    let total = categorisedData.reduce((acc, cat) => acc + Number(cat.trxTypeTotalTokenAmt), 0)
+    let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? Number(cat.trxTypeTotalUSDAmtPre) : 0), 0)
     // let totalTokenSummary = categorisedData.TotalTokenSummary
     rowsModel.push({
       index: currentIndex,
