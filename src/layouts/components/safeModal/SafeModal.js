@@ -30,6 +30,7 @@ import getSafesAddress from 'src/@core/utils/queries/getSafes'
 import { useContext } from 'react'
 import WalletContext from 'src/@core/context/walletContext'
 import getSafesOwners from 'src/@core/utils/queries/getSafeOwners'
+import BackdropLoader from 'src/@core/layouts/components/shared-components/BackdropLoader'
 
 // Dialog box style
 
@@ -99,6 +100,7 @@ function SafeDialog(props) {
   const [activeStep, setActiveStep] = React.useState(0)
   const [error, setError] = React.useState(false)
   const safes = props.safesAddress
+  const loadingSafes = props.loading
   console.log('obj', props.safesAddress)
 
   const handleClose = () => {
@@ -120,12 +122,12 @@ function SafeDialog(props) {
   React.useEffect(() => {
     let active = true
 
-    if (!loading) {
+    if (!loading && !loadingSafes) {
       return undefined
     }
 
-    ;(async () => {
-      await sleep(1e3) // For demo purposes.
+    (async () => {
+      // await sleep(5e3) // For demo purposes.
       if (active) {
         setOptions([...safes])
       }
@@ -134,7 +136,7 @@ function SafeDialog(props) {
     return () => {
       active = false
     }
-  }, [loading])
+  }, [loading, loadingSafes])
 
   React.useEffect(() => {
     if (!list) {
@@ -155,7 +157,7 @@ function SafeDialog(props) {
 
   return (
     <Dialog onClose={handleClose} open={open} sx={{ maxWidth: '150rem' }} className='no-safe'>
-      {safes?.length > 0 ? (
+      {!loadingSafes && safes?.length > 0 ? (
         <Grid container spacing={1}>
           <Grid item lg={5} md={5} xs={12} style={{ borderRight: '1px solid #ccc' }}>
             <CardContent sx={{ padding: theme => `${theme.spacing(6, 4, 3)} !important` }}>
@@ -242,7 +244,15 @@ function SafeDialog(props) {
             </Box>
           </Grid>
         </Grid>
-      ) : (
+      ) : loadingSafes ?
+      (<CardContent sx={{ padding: theme => `${theme.spacing(60, 4, 3)} !important` }}>
+      <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+        <CircularProgress color='inherit' />
+        &nbsp; Loading Safes!
+        </Box>
+      </CardContent>) :
+      (
         <CardContent sx={{ padding: theme => `${theme.spacing(6, 4, 3)} !important` }}>
           <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <ImgStyled src={'/images/fin_grow.svg'} alt='Profile Pic' />
@@ -275,7 +285,7 @@ function SafeDialog(props) {
             </Box>
           </Box>
         </CardContent>
-      )}
+      ) }
     </Dialog>
   )
 }
@@ -283,7 +293,8 @@ function SafeDialog(props) {
 SafeDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,
-  selectedValue: PropTypes.string.isRequired
+  selectedValue: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired
 }
 
 export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, props) {
@@ -291,6 +302,7 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
   // 0x4f285257849B840ADc1e293F735cb1F31e5cF026
   const userAccountNumber = getUserID()
   const [safesAddress, setSafeAddress] = React.useState([])
+  const [gettingSafesAddress, setGettingSafesAddress] = React.useState(true)
   const [open, setOpen] = React.useState(false)
   const [selectedValue, setSelectedValue] = React.useState('')
   // const [loginAccount, setLoginAccount] = React.useState({account})
@@ -313,6 +325,7 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
   const getAllSafes = data => {
     console.log('get all safes', data)
     setSafeAddress(data)
+    setGettingSafesAddress(false)
   }
 
   const getSafeContributorList = data => {
@@ -338,7 +351,7 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
       {/* <Button variant="outlined" onClick={handleClickOpen}>
         Open safe Dialog
       </Button> */}
-      <SafeDialog selectedValue={selectedValue} open={open} onClose={handleClose} safesAddress={safesAddress} />
+      <SafeDialog selectedValue={selectedValue} loading={gettingSafesAddress} open={open} onClose={handleClose} safesAddress={safesAddress} />
     </div>
   )
 }
