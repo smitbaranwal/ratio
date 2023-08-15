@@ -60,6 +60,7 @@ fetch("https://integrations-api.parcel.money/api/v1/safes/connectedSafes", reque
   })
   .catch(error => {
     console.log('error', error)
+    setSafeAddress([])
   })
 }
 
