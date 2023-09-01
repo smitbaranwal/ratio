@@ -99,6 +99,7 @@ data.forEach(cat => {
     delete trxn.Token
     // delete trxn.TokenSymbol
     delete trxn.Category
+    delete trxn.Category
     delete trxn.Tag
     delete trxn.TransactionHash
 
