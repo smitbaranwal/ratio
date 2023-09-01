@@ -1,3 +1,5 @@
+import { Client } from "@covalenthq/client-sdk";
+
 const getFiatCurrency = (callback, data) => {
   const addressArray = []
   const addressFiats = {}
@@ -15,6 +17,8 @@ const getFiatCurrency = (callback, data) => {
         date: trx.Executedat,
         trxHash: trx.TransactionHash
       })
+    } else {
+      trx.FiatValue = 12.08
     }
 
   })
@@ -25,24 +29,10 @@ const getFiatCurrency = (callback, data) => {
     method: 'GET',
     redirect: 'follow'
   }
-  const requests = []
-  addressArray.forEach(address => {
-    requests.push('https://safe-transaction-mainnet.safe.global/api/v1/tokens/' + address + '/prices/usd')
-  })
-  historicalFiats.forEach(data => {
-    requests.push('https://api.coingecko.com/api/v3/coins/' + data.tokenSymbol + '/history?date=' + data.date  + '&localization=false')
-  })
-  Promise.all(
-    requests.map(url =>
-      fetch(url, requestOptions)
-        .then(checkStatus) // check the response of our APIs
-        .then(response => response.json()) // parse it to Json
-        .catch(error => console.log('There was a problem!', error))
-    )
-  ).then(results => {
-  addressArray.forEach((add, index) => {
-      addressFiats[add] = results[index]
-  })
+
+  const client = new Client("cqt_rQJ7F4cYXR7HjR7mXpx6fB4DpqPv")
+
+  const promises = []
 
   let onehistory = {
     id: "bankless-dao",
@@ -87,25 +77,77 @@ const getFiatCurrency = (callback, data) => {
       bing_matches: null
     }
   }
+  historicalFiats.forEach((data, i) => {
+    const formattedDate = getFormattedDate(data.date)
+
+    const promise = client.PricingService.getTokenPrices("eth-mainnet","USD", data.token, {"from": formattedDate,"to": formattedDate})
+      .then(resp => {
+        if (!resp.data[0].prices[0] || resp.data[0].prices[0] == undefined || resp.data[0].prices[0] == null) {
+          // console.log('no responce price data', data)
+          data.usd = 12.08 // pushed some hard coded values which is to be  removed in future when data is available
+          data.response = onehistory
+        } else {
+          data.usd = resp.data[0].prices[0].price
+          data.response = resp.data[0]
+        }
+      })
+      .catch(error => {
+        console.error(`Error token price for call ${i + 1}:`, error)
+      })
+
+      promises.push(promise)
+  })
+
+    Promise.all(promises).then(() => {
+      console.log("All token price API calls completed.")
+    })
+    .catch(error => {
+      console.error("Error in token price API calls:", error)
+    })
+
+  const requests = []
+  addressArray.forEach(address => {
+    requests.push('https://safe-transaction-mainnet.safe.global/api/v1/tokens/' + address + '/prices/usd')
+  })
+
+  /*
+  * coingeko API calls removed, can be used after license
+  */
+  // historicalFiats.forEach(data => {
+    // requests.push('https://api.coingecko.com/api/v3/coins/' + data.tokenSymbol + '/history?date=' + data.date  + '&localization=false')
+  // })
+
+  Promise.all(
+    requests.map(url =>
+      fetch(url, requestOptions)
+        .then(checkStatus) // check the response of our APIs
+        .then(response => response.json()) // parse it to Json
+        .catch(error => console.log('There was a problem!', error))
+    )
+  ).then(results => {
+  addressArray.forEach((add, index) => {
+      addressFiats[add] = results[index]
+  })
+
+ /*
+  * coingeko API response removed, can be used after license
+  
   results.forEach((historicaldata, index) => {
     if (historicaldata && index > (addressArray.length - 1)) {
-      historicalFiats[index - (addressArray.length)].usd = historicaldata.market_data.current_price.usd
-      historicalFiats[index - (addressArray.length)].response = historicaldata
+      // historicalFiats[index - (addressArray.length)].usd = historicaldata.market_data.current_price.usd
+      // historicalFiats[index - (addressArray.length)].response = historicaldata
       // onehistory = historicaldata
     } else {
       // historicalFiats[index - (addressArray.length)].usd = onehistory.market_data.current_price.usd
       // historicalFiats[index - (addressArray.length)].response = onehistory
     }
   })
+  
+  */
     console.log(results)
     data.forEach(trx => {
       if (addressFiats[trx.Token]) {
         trx['FiatValue'] = parseFloat(addressFiats[trx.Token]['fiatPrice'] * trx.TokenAmount).toFixed(2)
-        // if (trx['FiatValue'] > 1) {
-        //   trx['FiatValue'].toFixed(4)
-        // } else {
-        //   trx['FiatValue'].toFixed(2)
-        // }
         trx['FiatPrice'] = addressFiats[trx.Token]['fiatPrice']
       }
       // debugger
@@ -124,6 +166,15 @@ function checkStatus(response) {
   } else {
     return Promise.reject(new Error(response.statusText))
   }
+}
+
+function getFormattedDate(date) {
+  const parts = date.split(" ");
+    const datePart = parts[0];
+    const [day, month, year] = datePart.split("-");
+    const formattedDate = `${year}-${month}-${day}`
+
+    return formattedDate
 }
 
 export default getFiatCurrency
