@@ -1,10 +1,10 @@
-import { Client } from "@covalenthq/client-sdk";
+import { Client } from '@covalenthq/client-sdk'
 
 const getFiatCurrency = (callback, data) => {
   const addressArray = []
   const addressFiats = {}
   const historicalFiats = []
-  
+
   data.forEach(trx => {
     if (trx.Token && addressArray.findIndex(ad => ad == trx.Token) < 0 && trx.Token != '--') {
       addressArray.push(trx.Token)
@@ -20,7 +20,6 @@ const getFiatCurrency = (callback, data) => {
     } else {
       trx.FiatValue = 12.08
     }
-
   })
   // addressArray.push('0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198')
   // addressArray.push('0x2d94AA3e47d9D5024503Ca8491fcE9A2fB4DA198')
@@ -30,17 +29,17 @@ const getFiatCurrency = (callback, data) => {
     redirect: 'follow'
   }
 
-  const client = new Client("cqt_rQJ7F4cYXR7HjR7mXpx6fB4DpqPv")
+  const client = new Client('cqt_rQJ7F4cYXR7HjR7mXpx6fB4DpqPv')
 
   const promises = []
 
   let onehistory = {
-    id: "bankless-dao",
-    symbol: "bank",
-    name: "Bankless DAO",
+    id: 'bankless-dao',
+    symbol: 'bank',
+    name: 'Bankless DAO',
     image: {
-      thumb: "https://assets.coingecko.com/coins/images/15227/thumb/j4WEJrwU.png?1622615796",
-      small: "https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796"
+      thumb: 'https://assets.coingecko.com/coins/images/15227/thumb/j4WEJrwU.png?1622615796',
+      small: 'https://assets.coingecko.com/coins/images/15227/small/j4WEJrwU.png?1622615796'
     },
     market_data: {
       current_price: {
@@ -80,7 +79,10 @@ const getFiatCurrency = (callback, data) => {
   historicalFiats.forEach((data, i) => {
     const formattedDate = getFormattedDate(data.date)
 
-    const promise = client.PricingService.getTokenPrices("eth-mainnet","USD", data.token, {"from": formattedDate,"to": formattedDate})
+    const promise = client.PricingService.getTokenPrices('eth-mainnet', 'USD', data.token, {
+      from: formattedDate,
+      to: formattedDate
+    })
       .then(resp => {
         if (!resp.data[0].prices[0] || resp.data[0].prices[0] == undefined || resp.data[0].prices[0] == null) {
           // console.log('no responce price data', data)
@@ -95,14 +97,15 @@ const getFiatCurrency = (callback, data) => {
         console.error(`Error token price for call ${i + 1}:`, error)
       })
 
-      promises.push(promise)
+    promises.push(promise)
   })
 
-    Promise.all(promises).then(() => {
-      console.log("All token price API calls completed.")
+  Promise.all(promises)
+    .then(() => {
+      console.log('All token price API calls completed.')
     })
     .catch(error => {
-      console.error("Error in token price API calls:", error)
+      console.error('Error in token price API calls:', error)
     })
 
   const requests = []
@@ -111,10 +114,10 @@ const getFiatCurrency = (callback, data) => {
   })
 
   /*
-  * coingeko API calls removed, can be used after license
-  */
+   * coingeko API calls removed, can be used after license
+   */
   // historicalFiats.forEach(data => {
-    // requests.push('https://api.coingecko.com/api/v3/coins/' + data.tokenSymbol + '/history?date=' + data.date  + '&localization=false')
+  // requests.push('https://api.coingecko.com/api/v3/coins/' + data.tokenSymbol + '/history?date=' + data.date  + '&localization=false')
   // })
 
   Promise.all(
@@ -125,11 +128,11 @@ const getFiatCurrency = (callback, data) => {
         .catch(error => console.log('There was a problem!', error))
     )
   ).then(results => {
-  addressArray.forEach((add, index) => {
+    addressArray.forEach((add, index) => {
       addressFiats[add] = results[index]
-  })
+    })
 
- /*
+    /*
   * coingeko API response removed, can be used after license
   
   results.forEach((historicaldata, index) => {
@@ -152,10 +155,12 @@ const getFiatCurrency = (callback, data) => {
       }
       // debugger
       if (historicalFiats.findIndex(incTrx => incTrx.trxHash == trx.TransactionHash) > -1) {
-        trx.USDAmount = parseFloat(trx.TokenAmount * (historicalFiats.find(incTrx => incTrx.trxHash == trx.TransactionHash).usd)).toFixed(2)
+        trx.USDAmount = parseFloat(
+          trx.TokenAmount * historicalFiats.find(incTrx => incTrx.trxHash == trx.TransactionHash).usd
+        ).toFixed(2)
       }
     })
-    
+
     callback(data)
   })
 }
@@ -169,12 +174,12 @@ function checkStatus(response) {
 }
 
 function getFormattedDate(date) {
-  const parts = date.split(" ");
-    const datePart = parts[0];
-    const [day, month, year] = datePart.split("-");
-    const formattedDate = `${year}-${month}-${day}`
+  const parts = date.split(' ')
+  const datePart = parts[0]
+  const [day, month, year] = datePart.split('-')
+  const formattedDate = `${year}-${month}-${day}`
 
-    return formattedDate
+  return formattedDate
 }
 
 export default getFiatCurrency
