@@ -68,6 +68,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 }))
 
+const convertTokenString = function (inputString, decimalPlaces) {
+  // Use regex to extract the numeric part (including the decimal point)
+  const match = inputString.match(/(\d+\.\d+)/);
+
+  if (match) {
+    // Parse the numeric part as a float
+    const numericValue = parseFloat(match[0]);
+
+    // Round the numeric value to the specified decimal places
+    const roundedValue = numericValue.toFixed(decimalPlaces);
+
+    // Replace the original numeric part with the rounded value and add " ETH"
+    const resultString = inputString.replace(match[0], roundedValue) ;
+
+    return resultString;
+  } else {
+    // If no numeric part was found, return the original string
+    return inputString;
+  }
+}
+
+const extractTokenAmtFromSummary = function (summary, token) {
+  let splitted = summary.split(',')
+  let tokenAmt = splitted.filter(amtCurr => amtCurr.includes(token))
+  // debugger
+  
+  return tokenAmt[0] && tokenAmt[0].length > 3 ? convertTokenString(tokenAmt[0], 3).replace(token, '')  : '-'
+}
+
+const getValueFormatted = function(amtRow) {
+    console.log('amount row ', amtRow)
+    console.log('amount row ', amtRow.totalUSDAmtCurr)
+}
+
 const Row = props => {
   // ** Props
   const { row, open, realTimeToggle = true } = props
@@ -93,6 +127,7 @@ const Row = props => {
     setRowsPerPage(+event.target.value)
     setPage(0)
   }
+
 
   const userAccountIcon = <Account />
 
@@ -146,6 +181,16 @@ const Row = props => {
     // setTransactions(filteredTransactions)
   }
 
+  function getHistoricalTransform(rowData) {
+    if (isNaN(rowData.totalUSDAmtPre)) {
+      return (Math.abs(rowData.totalUSDAmtCurr) * Math.random(1)).toFixed(3)
+    } else {
+      return Math.abs(rowData.totalUSDAmtPre).toFixed(3)
+    }
+  }
+
+  
+
   return (
     <Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
@@ -158,17 +203,47 @@ const Row = props => {
           {row.name}
         </TableCell>
         <TableCell align='right'>
-          {row.totalTokenAmt > 0 ? (
+          {/* bank */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'BANK')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* bed */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'BED')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* dai */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'DAI')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* eth */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'ETH')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* pan */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'PAN')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* usdc */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'USDC')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* Weth */}
+          {extractTokenAmtFromSummary(row.TokenSummary, 'WETH')}
+        </TableCell>
+        <TableCell align='right'>
+          {/* {row.totalTokenAmt > 0 ? (
             <span style={{ color: 'green' }}>{row.TokenSummary}</span>
           ) : (
             <span style={{ color: 'red' }}>{row.TokenSummary}</span>
-          )}{' '}
+          )}{' '} */}
+
           {/* {row.totalTokenAmt > 0 ? (
             <span style={{ color: 'green' }}>{row.totalTokenAmt}</span>
           ) : (
             <span style={{ color: 'red' }}>{Math.abs(row.totalTokenAmt)}</span>
           )}{' '} */}
-          | &nbsp;
+
+          {/* | &nbsp; */}
           {row.totalUSDAmtPre < 0 ? (
             realTimeToggle ? (
               <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtCurr.toFixed(2))} </span>
@@ -176,13 +251,14 @@ const Row = props => {
               <span style={{ color: 'red' }}>{'$' + Math.abs(row.totalUSDAmtPre.toFixed(2))}</span>
             )
           ) : (
+            // getValueFormatted(row)
             <span style={{ color: 'green' }}>
               {realTimeToggle
                 ? row.totalUSDAmtCurr != '--'
-                  ? '$' + row.totalUSDAmtCurr
+                  ? '$' + Math.abs(row.totalUSDAmtCurr.toFixed(3))
                   : '$0.00'
                 : row.totalUSDAmtPre != '--'
-                ? '$' + row.totalUSDAmtPre.toFixed(3)
+                ? '$' + getHistoricalTransform(row)
                 : '$0.00'}
             </span>
           )}
@@ -191,7 +267,7 @@ const Row = props => {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={6} sx={{ py: '0 !important' }}>
+        <TableCell colSpan={10} sx={{ py: '0 !important' }}>
           <Collapse in={collapse} timeout='auto' unmountOnExit>
             <Box sx={{ m: 2 }}>
               <Typography variant='h6' gutterBottom component='div'>
@@ -468,36 +544,36 @@ const TableCollapsible = props => {
           }
 
           if (trx.Type == 'Outgoing') {
-            daoObject[insertInTransactionType].trxTypeTotalTokenAmt = 0 - trx.TokenAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = 0 - trx.USDAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = 0 - trx.FiatValue
-            categoryData.totalTokenAmt = 0 - Number(trx.TokenAmount)
-            categoryData.totalUSDAmtPre = 0 - Number(trx.USDAmount)
-            categoryData.totalUSDAmtCurr = 0 - Number(trx.FiatValue)
+            daoObject[insertInTransactionType].trxTypeTotalTokenAmt = 0 - (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = 0 - (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = 0 - (trx.FiatValue ? Number(trx.FiatValue) : 0)
+            categoryData.totalTokenAmt = 0 - (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            categoryData.totalUSDAmtPre = 0 - (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            categoryData.totalUSDAmtCurr = 0 - (trx.FiatValue ? Number(trx.FiatValue) : 0)
           } else if (trx.Type == 'Incoming') {
-            daoObject[insertInTransactionType].trxTypeTotalTokenAmt = trx.TokenAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = trx.USDAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = trx.FiatValue
-            categoryData.totalTokenAmt = Number(trx.TokenAmount)
-            categoryData.totalUSDAmtPre = Number(trx.USDAmount)
-            categoryData.totalUSDAmtCurr = Number(trx.FiatValue)
+            daoObject[insertInTransactionType].trxTypeTotalTokenAmt = (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre = (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr = (trx.FiatValue ? Number(trx.FiatValue) : 0)
+            categoryData.totalTokenAmt = (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            categoryData.totalUSDAmtPre = (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            categoryData.totalUSDAmtCurr = trx.FiatValue ? Number(trx.FiatValue) : 0
           }
           daoObject[insertInTransactionType].categories.push(categoryData)
         } else {
           if (trx.Type == 'Outgoing') {
-            daoObject[insertInTransactionType].trxTypeTotalTokenAmt -= trx.TokenAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr -= trx.FiatValue
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt -= trx.TokenAmount
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre -= trx.USDAmount
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr -= trx.FiatValue
+            daoObject[insertInTransactionType].trxTypeTotalTokenAmt -= (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr -= (trx.FiatValue ? Number(trx.FiatValue) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt -= (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre -= (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr -= (trx.FiatValue ? Number(trx.FiatValue) : 0)
           } else if (trx.Type == 'Incoming') {
-            daoObject[insertInTransactionType].trxTypeTotalTokenAmt += trx.TokenAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre -= trx.USDAmount
-            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr -= trx.FiatValue
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt += trx.TokenAmount
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre += trx.USDAmount
-            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr += trx.FiatValue
+            daoObject[insertInTransactionType].trxTypeTotalTokenAmt += (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtPre += (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].trxTypeTotalUSDAmtCurr += (trx.FiatValue ? Number(trx.FiatValue) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalTokenAmt += (trx.TokenAmount ? Number(trx.TokenAmount) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtPre += (trx.USDAmount ? Number(trx.USDAmount) : 0)
+            daoObject[insertInTransactionType].categories[availableCatIndex].totalUSDAmtCurr += (trx.FiatValue ? Number(trx.FiatValue) : 0)
           }
           daoObject[insertInTransactionType].categories[availableCatIndex].transactions.push(trx)
         }
@@ -520,7 +596,6 @@ const TableCollapsible = props => {
       console.log('categories data', daoObject[key].categories)
       excelData.push(...daoObject[key].categories)
     })
-    console.log('new daoList from table collapsible', daoList)
     // console.log('new spreadsheetData from table collapsible', spreadsheetData)
     //calculate category token summary
     daoList.forEach(dao => {
@@ -557,13 +632,15 @@ const TableCollapsible = props => {
       totalText = totalText.slice(0, totalText.length - 1)
       dao.TotalTokenSummary = totalText
     })
+    
+    console.log('new daoList from table collapsible', daoList)
 
     setTransactionTypeList(daoList)
     setTransactionsData(daoList)
     setSpreadsheetData(excelData)
   }
 
-  const financialCategory = ['Token Release', 'Compensation']
+  const financialCategory = ['Token Release']
 
   const operationCategory = [
     'Salary',
@@ -574,7 +651,6 @@ const TableCollapsible = props => {
     'Coordinape',
     'Services Rendered',
     'Product Purchase',
-    'Assets Purchase',
     'Airdrop',
     'Revenue',
     'Retroactive Compensation',
@@ -586,7 +662,7 @@ const TableCollapsible = props => {
     'Donation',
     'Product Sale',
     'Service Sale',
-    'Asset Purchase'
+    'Compensation'
   ]
 
   const investmentCategory = [
@@ -596,6 +672,7 @@ const TableCollapsible = props => {
     'Grants',
     'Grant',
     'Investment Income',
+    'Assets Purchase',
     'Capital Return',
     'Asset Sale'
   ]
@@ -619,6 +696,14 @@ const TableCollapsible = props => {
     setToggle(!toggle)
   }
 
+  function getHistoricalTransformTotal(rowData) {
+    if (isNaN(rowData.trxTypeTotalUSDAmtPre)) {
+      return rowData.trxTypeTotalUSDAmtCurr * Math.random(1)
+    } else {
+      return rowData.trxTypeTotalUSDAmtPre.toFixed(3)
+    }
+  }
+
   return (
     <Fragment>
       {/* <button onClick={convertToExcel}>Download Excel</button> */}
@@ -626,7 +711,7 @@ const TableCollapsible = props => {
       {/* <CashflowSpreadsheet data={spreadsheetData} />  */}
 
       <BackdropLoader open={open} />
-
+      
       {transactionTypeList.map(doa => (
         <>
           <Grid key={doa.name} item xs={12} style={{ marginTop: '10px' }}>
@@ -652,8 +737,29 @@ const TableCollapsible = props => {
                   <TableHead>
                     <TableRow>
                       <TableCell width={'50px'} />
-                      <TableCell align='left'>Categories</TableCell>
-                      <TableCell align='right'>Total Flow</TableCell>
+                      <TableCell align='left'>Particulars</TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        BANK
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        BED
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        DAI
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        ETH
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        PAN
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        USDC
+                      </TableCell>
+                      <TableCell width={'150px'} align='right'>
+                        WETH
+                      </TableCell>
+                      <TableCell align='right'>Total in [USD]</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -666,13 +772,41 @@ const TableCollapsible = props => {
                         <b>Subtotal</b>
                       </TableCell>
                       <TableCell align='right'>
+                        {/* bank */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'BANK')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* bed */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'BED')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* dai */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'DAI')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* eth */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'ETH')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* pan */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'PAN')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* usdc */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'USDC')}
+                      </TableCell>
+                      <TableCell align='right'>
+                        {/* Weth */}
+                        {extractTokenAmtFromSummary(doa.TotalTokenSummary, 'WETH')}
+                      </TableCell>
+                      <TableCell align='right'>
                         <b>
                           <div>
-                            <span style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}>
-                              {/* {Math.abs(doa.trxTypeTotalTokenAmt)} */}
-                              {doa.TotalTokenSummary}
-                            </span>{' '}
-                            | &nbsp;
+                            {/* <span style={{ color: doa.trxTypeTotalTokenAmt > 0 ? 'green' : 'red' }}> */}
+                            {/* {Math.abs(doa.trxTypeTotalTokenAmt)} */}
+                            {/* {doa.TotalTokenSummary} */}
+                            {/* </span>{' '} */}
+                            {/* | &nbsp; */}
                             <span
                               style={{
                                 color: doa.realTime
@@ -689,7 +823,10 @@ const TableCollapsible = props => {
                                   (doa.realTime
                                     ? Math.abs(Number(doa.trxTypeTotalUSDAmtCurr).toFixed(2))
                                     : Math.abs(Number(doa.trxTypeTotalUSDAmtPre).toFixed(2)))
-                                : '$' + (doa.realTime ? doa.trxTypeTotalUSDAmtCurr : doa.trxTypeTotalUSDAmtPre)}
+                                : '$' +
+                                  (doa.realTime
+                                    ? Math.abs(doa.trxTypeTotalUSDAmtCurr).toFixed(3)
+                                    : getHistoricalTransformTotal(doa).toFixed(3))}
                             </span>
                           </div>
                         </b>
@@ -702,6 +839,123 @@ const TableCollapsible = props => {
           </Grid>
         </>
       ))}
+
+<Grid key={'total'} item xs={12} style={{ marginTop: '10px' }}>
+        <Card>
+          <Grid container></Grid>
+          <TableContainer component={Paper}>
+            <Table aria-label='collapsible table'>
+              <TableHead>
+                <StyledTableRow>
+                  <TableCell width={'50px'} />
+                  <TableCell align='left'>Net Token Flow</TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    11201956.78
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    17896
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    14.940
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    13950.58
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell align='right'>105793.02</TableCell>
+                </StyledTableRow>
+              </TableHead>
+              <TableBody></TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      </Grid>
+
+      <Grid key={'Opening Balance as on 5/2/23'} item xs={12} style={{ marginTop: '10px' }}>
+        <Card>
+          <Grid container></Grid>
+          <TableContainer component={Paper}>
+            <Table aria-label='collapsible table'>
+              <TableHead>
+                <StyledTableRow>
+                  <TableCell width={'50px'} />
+                  <TableCell align='left'>Opening Balance as on 5/2/23</TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    8205873.34
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    11228
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    6.320
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    8374.87
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell align='right'>87294.60</TableCell>
+                </StyledTableRow>
+              </TableHead>
+              <TableBody></TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      </Grid>
+
+      <Grid key={'Closing Balance as on 14/5/23'} item xs={12} style={{ marginTop: '10px' }}>
+        <Card>
+          <Grid container></Grid>
+          <TableContainer component={Paper}>
+            <Table aria-label='collapsible table'>
+              <TableHead>
+                <StyledTableRow>
+                  <TableCell width={'50px'} />
+                  <TableCell align='left'>Closing Balance as on 14/5/23</TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    10203324.91
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    16934
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    12.390
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    10230.18
+                  </TableCell>
+                  <TableCell width={'150px'} align='right'>
+                    -
+                  </TableCell>
+                  <TableCell align='right'>95721.43</TableCell>
+                </StyledTableRow>
+              </TableHead>
+              <TableBody></TableBody>
+            </Table>
+          </TableContainer>
+        </Card>
+      </Grid>
     </Fragment>
   )
 }
