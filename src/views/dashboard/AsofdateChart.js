@@ -144,8 +144,8 @@ export default class AsofdateChart extends PureComponent {
         width: '100%',
         backgroundColor: '#FFF'
       }}>
-<CardHeader title={'Season Performance'} titleTypographyProps={{ variant: 'h6' }} />
 
+<CardHeader title={'Over the month Treasury Balance'} titleTypographyProps={{ variant: 'h6' }} />
       
       <div
         style={{
@@ -158,8 +158,6 @@ export default class AsofdateChart extends PureComponent {
           borderRadius: '6px'
         }}
       >
-
-        
 
         <ResponsiveContainer>
           <ComposedChart
