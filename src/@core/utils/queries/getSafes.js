@@ -28,8 +28,9 @@ import { mappingTokens } from "./getTransactions";
 
 const getSafesAddress = (userAccountNumber, setSafeAddress) => {
 
-  var myHeaders = new Headers();
-  myHeaders.append("x-parcel-app-token", "Ration.Production.4a2bd5d2-c68f-4953-9bb0-942b2a2368de");
+  var myHeaders = new Headers()
+
+  myHeaders.append("x-parcel-app-token", process.env.NEXT_PUBLIC_X_APP_TOKEN);
   myHeaders.append("x-parcel-network", "1");
   myHeaders.append("Content-Type", "application/json");
 
