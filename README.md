@@ -110,8 +110,6 @@ To view recent changes, click [Releases](../../releases). -->
 
 # Authors
  + Smit Baranwal
- + Vineeth Purshotam
- + Kapil Shinde
  
 # License
 
