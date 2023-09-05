@@ -1,29 +1,4 @@
-// const getSafesAddress = (userAccountNumber, setSafeAddress) => {
-//     console.log("userAccountNumber", userAccountNumber)
-//     const safes = []
-
 import { mappingTokens } from "./getTransactions";
-
-
-  
-//     var requestOptions = {
-//       method: 'GET'
-//     }
-    
-  
-//     fetch(
-//         `https://safe-transaction-mainnet.safe.global/api/v1/owners/${userAccountNumber}/safes/`,
-//         requestOptions
-//     )
-//       .then(response => response.text())
-//       .then(result => {
-//         console.log("result", { result })
-//          result = JSON.parse(result)
-//          console.log("result", result)
-//         setSafeAddress(result.safes)
-//       })
-//       .catch(error => console.log('error', error))
-//   }
 
 
 const getSafesAddress = (userAccountNumber, setSafeAddress) => {
@@ -36,9 +11,9 @@ const getSafesAddress = (userAccountNumber, setSafeAddress) => {
 
   var raw = JSON.stringify({
     "auth": {
-      "walletAddress": "0xb34e945bfb07924dfe29ff914f82bc72dc153903",
-      "auth_msg": "Allow third party app to access your data on Parcel 1684309631238",
-      "signature": "0x437184e3326e0f007d8b1b6f4e05ac6e3e13051475c0cae1a638ff7acaaa264371008707e11b532dc644569ce6efb098c4fc36bdf197e104a86c82e58e3036511c"
+      "walletAddress": process.env.NEXT_PUBLIC_X_WALLET_ADDRESS,
+      "auth_msg": process.env.NEXT_PUBLIC_AUTH_MSG,
+      "signature": process.env.NEXT_PUBLIC_GET_SAFE_SIGNATURE
     },
     "concernedWallet": userAccountNumber
   })
@@ -53,10 +28,8 @@ fetch("https://integrations-api.parcel.money/api/v1/safes/connectedSafes", reque
   .then(response => response.text())
   .then(result => {
     result = JSON.parse(result)
-    console.log('data safes all', result)
     const mappingSafes = mappingTokens
     result.safes = result.safes.filter(safe => mappingSafes.findIndex(s => s.safeAddress == safe.safeAddress) > -1)
-    console.log('data safes filtered', result)
     setSafeAddress(result.safes)
   })
   .catch(error => {

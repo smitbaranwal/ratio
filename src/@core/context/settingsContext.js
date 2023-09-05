@@ -21,7 +21,6 @@ export const SettingsProvider = ({ children }) => {
   const [settings, setSettings] = useState({ ...initialSettings })
 
   const saveSettings = updatedSettings => {
-    debugger
     setSettings(updatedSettings)
   }
 

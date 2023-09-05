@@ -288,6 +288,7 @@ const TableCustomized = () => {
                     {/* <div>{row.TokenAmount !== '--' ? '$' + row.TokenAmount : '--'}</div> */}
                     <div style={{ width: '200px' }}>
                       <span style={{ verticalAlign: 'super' }}>
+                        {/* {row.RecipientName == 'Liviu' || row.Nonce == 49 ? row.FiatValue + 'III' : ''} */}
                         {row.TokenAmount == '--' ? (
                           ''
                         ) : isFloat(row.TokenAmount) == true ? (

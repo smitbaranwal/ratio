@@ -64,8 +64,6 @@ let spreadsheet
 
 const CashflowSpreadsheet = props => {
   const { dataAll, categorisedDataAll } = props
-  console.log('data from spreadsheet', dataAll)
-  console.log('categorized data from cashflowspreadsheet', categorisedDataAll)
   const categorisedData = JSON.parse(JSON.stringify(categorisedDataAll)) //[...categorisedData]
   const data = JSON.parse(JSON.stringify(dataAll)) //[...dataAll]
 
@@ -173,7 +171,6 @@ data.forEach(cat => {
     // insert blank row for netflow separation
     rowsModel.push({ index: currentIndex, cells: [{ value: '', colSpan: 4 }] })
     // insert net cashflow
-    console.log("categorisedData", categorisedData)
     let total = categorisedData.reduce((acc, cat) => acc + Number(cat.trxTypeTotalTokenAmt), 0)
     let totalUsd = categorisedData.reduce((acc, cat) =>  acc + (cat.trxTypeTotalUSDAmtPre != '--' ? Number(cat.trxTypeTotalUSDAmtPre) : 0), 0)
     // let totalTokenSummary = categorisedData.TotalTokenSummary
@@ -195,7 +192,6 @@ data.forEach(cat => {
       // sheet.cellFormat({ fontWeight: 'bold', textAlign: 'center' }, 'A1:G1')
       setTimeout(() => {
         if (index > 0 && index < spreadsheet.sheets.length - 1) {
-          console.log('index of sheet if', index)
           spreadsheet.moveSheet(index, [index + 1])
           // sheet.cellFormat({fontWeight: 'bold'}, 'A1:D1')
         }
@@ -240,9 +236,6 @@ data.forEach(cat => {
 
 
 
-  // data.forEach(dao => {
-  //   const totalTokenSummary = {}
-  //   let totalText = ''
     data.forEach(category => {
       const tokenSummary = {}
       let text = ''
@@ -253,11 +246,6 @@ data.forEach(cat => {
           } else {
             tokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
           }
-          // if (totalTokenSummary[trx.TokenSymbol]) {
-          //   totalTokenSummary[trx.TokenSymbol] += +(trx.TokenAmount.toFixed(2))
-          // } else {
-          //   totalTokenSummary[trx.TokenSymbol] = +(trx.TokenAmount.toFixed(2))
-          // }
         }
       })
       Object.keys(tokenSummary).forEach(key => {
@@ -265,7 +253,6 @@ data.forEach(cat => {
       })
       text = text.slice(0, text.length - 1)
       category.TokenSummary = text
-      console.log('token summary for ' + category.name + ' ' + text)
     })
   //   Object.keys(totalTokenSummary).forEach(key => {
   //     totalText += ' ' + totalTokenSummary[key] + ' ' + key + ','

@@ -414,10 +414,6 @@ const Row = props => {
                                           )}
                                         </Typography>
                                       ) : (
-                                        // <Typography>
-                                        //   {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol} ($
-                                        //   {item.USDAmount})
-                                        // </Typography>
                                         <Typography>
                                           {parseFloat(item.TokenAmount).toFixed(3)} {item.TokenSymbol}
                                           {realTimeToggle ? (
@@ -432,9 +428,6 @@ const Row = props => {
                                         </Typography>
                                       )
                                     ) : (
-                                      // <Typography>
-                                      //   {item.TokenAmount} {item.TokenSymbol} (${item.USDAmount})
-                                      // </Typography>
                                       <Typography>
                                         {item.TokenAmount} {item.TokenSymbol}
                                         {realTimeToggle ? (
@@ -451,13 +444,6 @@ const Row = props => {
                                   </span>
                                 </div>
                               </StyledTableCell>
-                              {/* <StyledTableCell align='right'>
-                            <div style={{ width: '100px' }}>${item.FiatValue}</div>
-                          </StyledTableCell> */}
-                              {/* <StyledTableCell align='right'>
-                            <div>{item.USDAmount !== '--' ? '$' + item.USDAmount : '--'}</div>
-                          </StyledTableCell> */}
-
                               <StyledTableCell align='center' sx={{ right: '0', width: '300' }}>
                                 <div style={{ width: '180px' }}>
                                   <LongText content={item.Description} limit={200} />
@@ -507,7 +493,6 @@ const TableCollapsible = props => {
   const daoObject = {}
 
   const [transactionTypeList, setTransactionTypeList] = useState([])
-  // const [spreadsheetData, setSpreadsheetData] = useState([])
   const [open, setOpen] = useState(false)
   const [toggle, setToggle] = useState(false)
 
@@ -518,7 +503,6 @@ const TableCollapsible = props => {
   }
 
   const updateTrx = function (data) {
-    console.log('dataaaaaaaaaaaaaaaaaaaaaaaaaaaa', data)
     data.forEach(trx => {
       let insertInTransactionType = ''
       if (operationCategory.findIndex(c => c == trx.Category) > -1) {
@@ -580,8 +564,6 @@ const TableCollapsible = props => {
       }
     })
 
-    console.log('data from table collapsible', data)
-    console.log('new list from table collapsible', daoObject)
     let daoList = []
     let excelData = []
     Object.keys(daoObject).forEach(key => {
@@ -593,7 +575,6 @@ const TableCollapsible = props => {
         trxTypeTotalUSDAmtCurr: daoObject[key].trxTypeTotalUSDAmtCurr,
         categories: daoObject[key].categories
       })
-      console.log('categories data', daoObject[key].categories)
       excelData.push(...daoObject[key].categories)
     })
     // console.log('new spreadsheetData from table collapsible', spreadsheetData)
@@ -624,7 +605,6 @@ const TableCollapsible = props => {
         })
         text = text.slice(0, text.length - 1)
         category.TokenSummary = text
-        console.log('token summary for ' + category.name + ' ' + text)
       })
       Object.keys(totalTokenSummary).forEach(key => {
         totalText += ' ' + totalTokenSummary[key] + ' ' + key + ','
@@ -633,8 +613,6 @@ const TableCollapsible = props => {
       dao.TotalTokenSummary = totalText
     })
     
-    console.log('new daoList from table collapsible', daoList)
-
     setTransactionTypeList(daoList)
     setTransactionsData(daoList)
     setSpreadsheetData(excelData)
@@ -840,7 +818,7 @@ const TableCollapsible = props => {
         </>
       ))}
 
-<Grid key={'total'} item xs={12} style={{ marginTop: '10px' }}>
+<Grid key={'total'} item xs={12} style={{ marginTop: '20px' }}>
         <Card>
           <Grid container></Grid>
           <TableContainer component={Paper}>

@@ -84,16 +84,6 @@ function QontoStepIcon(props) {
   )
 }
 
-// const safes = [
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'},
-//   {label: '0x39cBD3814757Be997192rgiu98'}
-// ];
-
 const steps = [1, 2, 3]
 function SafeDialog(props) {
   const { onClose, selectedValue, open } = props
@@ -259,7 +249,6 @@ function SafeDialog(props) {
           </Box>
 
           <WalletContent value={noSafe} image={noSafeImage} />
-          {/* <Icon><AccountBox/></Icon> */}
 
           <Box sx={{ position: 'absolute', bottom: '1rem', width: '16rem', left: '36%' }}>
             <Stepper activeStep={3} sx={{ paddingBottom: 4 }}>
@@ -299,7 +288,6 @@ SafeDialog.propTypes = {
 
 export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, props) {
   const { account, setSafeContributors } = useContext(WalletContext)
-  // 0x4f285257849B840ADc1e293F735cb1F31e5cF026
   const userAccountNumber = getUserID()
   const [safesAddress, setSafeAddress] = React.useState([])
   const [gettingSafesAddress, setGettingSafesAddress] = React.useState(true)
@@ -315,11 +303,7 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
 
   const handleClickOpen = () => {
     setOpen(true)
-    console.log('account', { account })
-    // getSafesAddress({account}, setSafeAddress)
-
     getSafesAddress(userAccountNumber, getAllSafes)
-    // const result = await
   }
 
   const getAllSafes = data => {
@@ -329,7 +313,6 @@ export default function SafeDemo({ handleSafe, closeSafeDialog, userAccount }, p
   }
 
   const getSafeContributorList = data => {
-    console.log('form get getSafeContributorList ', data.contributors)
     setSafeContributors(data.contributors)
   }
 
